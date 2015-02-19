@@ -23,11 +23,13 @@
         <tr><td></td><td><input type="checkbox" id="place" checked>Place</td></tr></table>
 </div>
 </form>
+<div style="width: 100%; display: float; float: left;"></div>
 <br><br>
 <div id="Results" style="width: 100%; display: float; float: left;"></div>
 <script>
 function SubmitInfo() {
     event.preventDefault();
+    document.getElementById("Results").innerHTML = "Loading...";
     OrderBy = document.getElementById("OrderBy").options[document.getElementById("OrderBy").selectedIndex].value;
     PostString = "OrderBy=" + OrderBy;
     TID = document.getElementById("Tournament").options[document.getElementById("Tournament").selectedIndex].value;

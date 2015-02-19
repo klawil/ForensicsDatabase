@@ -141,7 +141,7 @@ if ( isset($_POST['Tournaments']) ) {
 	$query = mysql_query('select Results.RID as RID, concat(LName, ", ", FName) as Name, TName, EName, Rank, Qual, Judge, Round, broke, State, place from Students, Events, Tournaments, Results, Ballots' . $WString . $OString . ";");
 	//echo 'select Results.RID as RID, concat(LName, ", ", FName) as Name, TName, EName, Rank, Qual, Judge, Round, broke, State, place from Students, Events, Tournaments, Results, Ballots' . $WString . $OString . ";<br>
 //";
-	echo '<table border="1"><tr><td>Name</td><td>Event</td><td>Tournament</td><td>Broke</td><td>Qualified</td><td>Place</td>';
+	echo '<table border="1" style="border-collapse: collapse;"><tr><td>Name</td><td>Event</td><td>Tournament</td><td>Broke</td><td>Qualified</td><td>Place</td>';
 	for ( $x = 1; $x <= $NumRounds; $x++ ) {
 		echo "<td>Round " . $x . "</td>";
 	}
@@ -153,10 +153,14 @@ if ( isset($_POST['Tournaments']) ) {
 	$On = "Prelim";
 	$x = 1;
 	$y = 1;
-	while ( $y <= $NumRows ) {
+	$z = 1;
+	while ( $z <= $NumRows ) {
 	//for ( $y = 1; $y <= $NumRows; $y++ ) {
 		$Data = mysql_fetch_assoc($query);
 		if ( $Data['RID'] != $RID ) {
+			for ( $y = 1; $y <= $CellsLeft; $y++ ){
+				echo "<td></td>";
+			}
 			echo "</tr>
 <tr><td>" . $Data['Name'] . "</td><td>" . $Data['EName'] . "</td><td>" . $Data['TName'] . "</td><td>";
 			if ( $Data['broke'] == "1" ) {
@@ -177,23 +181,37 @@ if ( isset($_POST['Tournaments']) ) {
 		if ( $On == "Prelim" ) {
 			if ( $Data['Round'] == $x ) {
 				echo "<td>" . $Data['Rank'] . "/" . $Data['Qual'] . "</td>";
+			} elseif ( $x < $NumRounds ) {
+				for ( $x = $x; $x <= $NumRounds; $x++ ) {
+					echo "<td></td>";
+				}
 			}
-			if ($x == $NumRounds) {
+			$CellsLeft = ($NumRounds - $x) + $NumJudges;
+			if ( $x == $NumRounds ) {
 				$On = "Final";
 				$x = 0;
 			}
 		} elseif ( $On == "Final" ) {
+			if ( $x == 1 && $CellsLeft > $NumJudges ) {
+				for ( $y = 1; $y <= $CellsLeft - $NumJudges; $y++ ) {
+					echo "<td></td>";
+				}
+			}
 			if ( $Data['Judge'] == $x ) {
 				echo "<td>" . $Data['Rank'] . "/" . $Data['Qual'] . "</td>";
 			}
+			$CellsLeft = ($NumJudges - $x);
 			if ($x == $NumJudges) {
 				$On = "Prelim";
 				$x = 0;
 			}
 		}
 		$x = $x + 1;
-		$y = $y + 1;
+		$z = $z + 1;
 		//echo $x . "-" . $Data['Name'] . "<br>";
+	}
+	for ( $x = 1; $x <= $CellsLeft; $x++ ) {
+		echo "<td></td>";
 	}
 	echo "</tr></table>";
 } else {
