@@ -22,9 +22,9 @@
         <tr><td><input type="checkbox" id="Event" checked>Event</td><td><input type="checkbox" id="Totals" dir="" checked>Totals</td></tr>
         <tr><td></td><td><input type="checkbox" id="place" checked>Place</td></tr></table>
 </div>
-<div style="display: float; float: left;"></div>
 </form>
-<div id="Results"></div>
+<br><br>
+<div id="Results" style="width: 100%; display: float; float: left;"></div>
 <script>
 function SubmitInfo() {
     event.preventDefault();
@@ -34,64 +34,28 @@ function SubmitInfo() {
     if ( TID != "-1" ) {
         PostString = PostString + "&TID=" + TID;
     }
-    EID = document.getElementById("Tournament").options[document.getElementById("Tournament").selectedIndex].value;
-    if ( TID != "-1" ) {
-        PostString = PostString + "&TID=" + TID;
+    EID = document.getElementById("Event").options[document.getElementById("Event").selectedIndex].value;
+    if ( EID != "-1" ) {
+        PostString = PostString + "&EID=" + EID;
     }
-    
-    /*new Info()
-    x = 3;
-    RString = "";
-    while (document.getElementById("EntryID").elements[x].value != "broke") {
-        RString = RString + document.getElementById("EntryID").elements[x].id + "=" + document.getElementById("EntryID").elements[x].value + "&";
-        if ( document.getElementById("EntryID").elements[x].value == "" ) {
-            document.getElementById("Message").innerHTML = "Enter value for " + document.getElementById("EntryID").elements[x].id;
-            return;
-        }
-        x = x + 1;
+    SID = document.getElementById("Student").options[document.getElementById("Student").selectedIndex].value;
+    if ( SID != "-1" ) {
+        PostString = PostString + "&SID=" + SID;
     }
-    y = x - 1;
-    IString = "";
-    for ( x = 0; x < 3; x++) {
-        IString = IString + document.getElementById("EntryID").elements[x].id + "=" + document.getElementById("EntryID").elements[x].value + "&";
-    }
-    BString = "";
-    if ( document.getElementById("broke").checked ) {
-        IString = IString + "broke=1&";
-        z = y + 3;
-        for ( x = z; x < document.getElementById("EntryID").elements.length - 1; x++ ) {
-            BString = BString + document.getElementById("EntryID").elements[x].id + "=" + document.getElementById("EntryID").elements[x].value + "&";
-            if ( document.getElementById("EntryID").elements[x].value == "" ) {
-                document.getElementById("Message").innerHTML = "Enter value for " + document.getElementById("EntryID").elements[x].id;
-                return;
-            }
-        }
-    } else {
-        IString = IString + "broke=0&";
-    }
-    if ( document.getElementById("Qual").checked ) {
-        IString = IString + "qual=1";
-    } else {
-        IString = IString + "qual=0";
-    }
-    document.getElementById("Message").innerHTML = "";//RString + BString + IString;
-    document.getElementById("Message").innerHTML = "Submitting...";
+    broke = document.getElementById("broke").options[document.getElementById("broke").selectedIndex].value;
+    PostString = PostString + "&broke=" + broke;
+    State = document.getElementById("State").options[document.getElementById("State").selectedIndex].value;
+    PostString = PostString + "&State=" + State;
     if ( window.XMLHttpRequest ) {
         xmlhttp = new XMLHttpRequest();
     } else {
         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
-    xmlhttp.open("POST","TournamentUpdate.php",false);
+    xmlhttp.open("POST","TournamentInfo.php",false);
     xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    xmlhttp.send(RString + BString + IString);
+    xmlhttp.send(PostString);
     response = xmlhttp.responseText;
-    if ( response == "true" ) {
-        document.getElementById("Message").innerHTML = "Submitted successfully.";
-        document.getElementById("EntryID").reset();
-        OutsHideShow();
-    } else {
-        document.getElementById("Message").innerHTML = response;
-    }*/
+    document.getElementById("Results").innerHTML = response;
 }
 function Tournaments() {
     document.getElementById("Tourneys").innerHTML = "Loading...";

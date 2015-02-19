@@ -60,70 +60,70 @@ if ( isset($_POST['Tournaments']) ) {
 	}
 	$EventString = $EventString . "</select>";
 	echo $EventString;
-} elseif ( isset($_POST['OrderBy']) ) {
-	if ( ! isset($_POST['broke']) ) {
+} elseif ( isset($_GET['OrderBy']) ) {
+	if ( ! isset($_GET['broke']) ) {
 		echo "Error - No break selection.";
 		return 0;
-	} elseif ( ! isset($_POST['State']) ) {
+	} elseif ( ! isset($_GET['State']) ) {
 		echo "Error - No State Qualifier selection.";
 		return 0;
 	}
-	if ( $_POST['OrderBy'] == "NameDate" ) {
+	if ( $_GET['OrderBy'] == "NameDate" ) {
 		$OString = " order by Name, Date, EName, Judge asc, Round";
-	} elseif ( $_POST['OrderBy'] == "NameEvent" ) {
+	} elseif ( $_GET['OrderBy'] == "NameEvent" ) {
 		$OString = " order by Name, EName, Date, Judge asc, Round";
-	} elseif ( $_POST['OrderBy'] == "EventName" ) {
+	} elseif ( $_GET['OrderBy'] == "EventName" ) {
 		$OString = " order by EName, Name, Date, Judge asc, Round";
-	} elseif ( $_POST['OrderBy'] == "EventDate" ) {
+	} elseif ( $_GET['OrderBy'] == "EventDate" ) {
 		$OString = " order by EName, Date, Name, Judge asc, Round";
-	} elseif ( $_POST['OrderBy'] == "DateName" ) {
+	} elseif ( $_GET['OrderBy'] == "DateName" ) {
 		$OString = " order by Date, Name, EName, Judge asc, Round";
-	} elseif ( $_POST['OrderBy'] == "DateEvent" ) {
+	} elseif ( $_GET['OrderBy'] == "DateEvent" ) {
 		$OString = " order by Date, EName, Name, Judge asc, Round";
 	} else {
 		echo "Error - No valid sorting parameter given.";
 		return 0;
 	}
 	$WString = " where Results.SID = Students.SID and Results.TID = Tournaments.TID and Results.RID = Ballots.RID and Events.EID = Results.EID";
-	if ( isset($_POST['TID']) ) {
+	if ( isset($_GET['TID']) ) {
 		if ( ! $WString == "" ) {
 			$WString = $WString . " and ";
 		} else {
 			$WString = " where ";
 		}
-		$WString = $WString . "Results.TID='" . $_POST['TID'] . "'";
+		$WString = $WString . "Results.TID='" . $_GET['TID'] . "'";
 	}
-	if ( isset($_POST['SID']) ) {
+	if ( isset($_GET['SID']) ) {
 		if ( ! $WString == "" ) {
 			$WString = $WString . " and ";
 		} else {
 			$WString = " where ";
 		}
-		$WString = $WString . "Results.SID='" . $_POST['SID'] . "'";
+		$WString = $WString . "Results.SID='" . $_GET['SID'] . "'";
 	}
-	if ( isset($_POST['EID']) ) {
+	if ( isset($_GET['EID']) ) {
 		if ( ! $WString == "" ) {
 			$WString = $WString . " and ";
 		} else {
 			$WString = " where ";
 		}
-		$WString = $WString . "Results.EID='" . $_POST['EID'] . "'";
+		$WString = $WString . "Results.EID='" . $_GET['EID'] . "'";
 	}
-	if ( $_POST['broke'] != "2" ) {
+	if ( $_GET['broke'] != "2" ) {
 		if ( ! $WString == "" ) {
 			$WString = $WString . " and ";
 		} else {
 			$WString = " where ";
 		}
-		$WString = $WString . "Results.broke='" . $_POST['broke'] . "'";
+		$WString = $WString . "Results.broke='" . $_GET['broke'] . "'";
 	}
-	if ( $_POST['State'] != "2" ) {
+	if ( $_GET['State'] != "2" ) {
 		if ( ! $WString == "" ) {
 			$WString = $WString . " and ";
 		} else {
 			$WString = " where ";
 		}
-		$WString = $WString . "Results.State='" . $_POST['State'] . "'";
+		$WString = $WString . "Results.State='" . $_GET['State'] . "'";
 	}
 	//echo 'select Results.RID, concat(LName, ", ", FName) as Name, TName, EName, Rank, Qual, Judge, Round, broke, State, place, Date from Students, Events, Tournaments, Results, Ballots' . $WString . $OString . ";";
 	if (( mysql_errno() )) {
@@ -141,7 +141,7 @@ if ( isset($_POST['Tournaments']) ) {
 	$query = mysql_query('select Results.RID as RID, concat(LName, ", ", FName) as Name, TName, EName, Rank, Qual, Judge, Round, broke, State, place from Students, Events, Tournaments, Results, Ballots' . $WString . $OString . ";");
 	//echo 'select Results.RID as RID, concat(LName, ", ", FName) as Name, TName, EName, Rank, Qual, Judge, Round, broke, State, place from Students, Events, Tournaments, Results, Ballots' . $WString . $OString . ";<br>
 //";
-	echo '<table border="1"><tr><td>Name</td><td>Event</td><td>Tournament</td><td>Broke</td><td>Qualified</td><td>Place</td>';
+	echo '<table style="width: 100%; border-style: solid; border-width: 1;"><tr><td>Name</td><td>Event</td><td>Tournament</td><td>Broke</td><td>Qualified</td><td>Place</td>';
 	for ( $x = 1; $x <= $NumRounds; $x++ ) {
 		echo "<td>Round " . $x . "</td>";
 	}
