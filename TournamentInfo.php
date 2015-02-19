@@ -141,7 +141,7 @@ if ( isset($_POST['Tournaments']) ) {
 	$query = mysql_query('select Results.RID as RID, concat(LName, ", ", FName) as Name, TName, EName, Rank, Qual, Judge, Round, broke, State, place from Students, Events, Tournaments, Results, Ballots' . $WString . $OString . ";");
 	//echo 'select Results.RID as RID, concat(LName, ", ", FName) as Name, TName, EName, Rank, Qual, Judge, Round, broke, State, place from Students, Events, Tournaments, Results, Ballots' . $WString . $OString . ";<br>
 //";
-	echo '<table border="1" style="border-collapse: collapse;"><tr><td>Name</td><td>Event</td><td>Tournament</td><td>Broke</td><td>Qualified</td><td>Place</td>';
+	echo '<table border="1" style="border-collapse: collapse;"><tr><th>Name</th><th>Event</th><th>Tournament</th><th>Broke</th><th>Qualified</th><th>Place</th>';
 	for ( $x = 1; $x <= $NumRounds; $x++ ) {
 		echo "<td>Round " . $x . "</td>";
 	}
