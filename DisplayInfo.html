@@ -2,40 +2,43 @@
 <head><title>Display Info</title></head>
 <body>
 <form id="display">
-<h1><div id="Header">Select Information To Be Returned</div></h1>
-<h3>Select Information From...</h3>
-<div  style="width:33%; display: float; float: left">Tournament: <div id="Tourneys"></div></div>
-<div  style="width:33%; display: float; float: right">Event: <div id="Events"></div></div>
-<div style="width:33%; display: inline-block;">Student: <div id="Students"></div></div>
-<br><br>
-<div id="Info" style="width: 33%; display: float; float: left">
-    Order By: <select id="OrderBy"><option value="DateName">Date then Name</option><option value="DateEvent">Date then Event</option><option value="NameDate">Name then Date</option><option value="NameEvent">Name then Event</option><option value="EventDate">Event then Date</option><option value="EventName">Event then Name</option></select>
+<h1><div id="Header" style="width: 100%;">Select Information To Be Returned</div></h1>
+<div style="display: float; float: left;">
+<h3>Select Information From:</h3>
+<b>Tournament:</b> <div id="Tourneys"></div><br>
+<b>Event:</b> <div id="Events"></div><br>
+<b>Student:</b> <div id="Students"></div><br>
+<div><b>Order By:</b> <select id="OrderBy"><option value="DateName">Date then Name</option><option value="DateEvent">Date then Event</option><option value="NameDate">Name then Date</option><option value="NameEvent">Name then Event</option><option value="EventDate">Event then Date</option><option value="EventName">Event then Name</option></select></div><br>
+<div><b>Broke:</b> <select id="broke"><option value='2'>Both</option><option value='1'>Yes</option><option value='0'>No</option></select></div><br>
+<div><b>State Qual:</b> <select id="State"><option value='2'>Both</option><option value='1'>Yes</option><option value='0'>No</option></select></div><br>
+<div><input type="submit" onclick="SubmitInfo();" value="Show Results"></div>
 </div>
-<div id="Info2" style="width: 66%; display: inline-block; float: right;">
-    Broke: <select id="broke"><option value='2'>Both</option><option value='1'>Yes</option><option value='0'>No</option></select>
-    State Qual: <select id="State"><option value='2'>Both</option><option value='1'>Yes</option><option value='0'>No</option></select>
-</div><br><br>
-<div id="Selection" style="width: 100%; display: float; float: left; border-width: 1px; border-style: solid;">
-    <h3>Information to Return</h3>
-    <div id="leftinfo" style="display:float; float:left; width:50%;">
-    <h4>Entry Information:</h4>
-    <input type="checkbox" value="Name">Name
-    <input type="checkbox" value="Tournament">Tournament
-    <input type="checkbox" value="Event">Event
-    </div>
-    <div id="leftinfo" style="display:float; float:right; width:50%;">
-    <h4>Scores:</h4>
-    <input type="checkbox" value="Prelims">Prelim Scores
-    <input type="checkbox" value="Finals">Finals Scores
-    <input type="checkbox" value="place">Place
-    </div>
+<div id="Selection" style="display: float; padding-left: 20;"><br>
+    <table style="padding-left: 30;">
+        <tr><th><h3>Information to Return:</h3></th></tr>
+        <tr><th style="padding-right: 15; text-align: left;">Entry Information:</th><th style="text-align: left;">Results:</th></tr>
+        <tr><td><input type="checkbox" id="Name" checked>Name</td><td><input type="checkbox" id="Prelims" checked>Prelim Scores</td></tr>
+        <tr><td><input type="checkbox" id="Tournament" checked>Tournament</td><td><input type="checkbox" id="Finals" checked>Finals Scores</td></tr>
+        <tr><td><input type="checkbox" id="Event" checked>Event</td><td><input type="checkbox" id="Totals" dir="" checked>Totals</td></tr>
+        <tr><td></td><td><input type="checkbox" id="place" checked>Place</td></tr></table>
 </div>
-<input type="submit" onclick="SubmitInfo();" value="Show Results" style="display: float;">
+<div style="display: float; float: left;"></div>
 </form>
 <div id="Results"></div>
 <script>
 function SubmitInfo() {
     event.preventDefault();
+    OrderBy = document.getElementById("OrderBy").options[document.getElementById("OrderBy").selectedIndex].value;
+    PostString = "OrderBy=" + OrderBy;
+    TID = document.getElementById("Tournament").options[document.getElementById("Tournament").selectedIndex].value;
+    if ( TID != "-1" ) {
+        PostString = PostString + "&TID=" + TID;
+    }
+    EID = document.getElementById("Tournament").options[document.getElementById("Tournament").selectedIndex].value;
+    if ( TID != "-1" ) {
+        PostString = PostString + "&TID=" + TID;
+    }
+    /*new Info()
     x = 3;
     RString = "";
     while (document.getElementById("EntryID").elements[x].value != "broke") {
@@ -87,7 +90,7 @@ function SubmitInfo() {
         OutsHideShow();
     } else {
         document.getElementById("Message").innerHTML = response;
-    }
+    }*/
 }
 function Tournaments() {
     document.getElementById("Tourneys").innerHTML = "Loading...";
