@@ -6,8 +6,8 @@
 <div style="display: float; float: left;">
 <h3>Select Information From:</h3>
 <b>Tournament:</b> <div id="Tourneys"></div><br>
-<b>Event:</b> <div id="Events"></div><br>
 <b>Student:</b> <div id="Students"></div><br>
+<b>Event:</b> <div id="Events"></div><br>
 <div><b>Order By:</b> <select id="OrderBy"><option value="DateName">Date then Name</option><option value="DateEvent">Date then Event</option><option value="NameDate">Name then Date</option><option value="NameEvent">Name then Event</option><option value="EventDate">Event then Date</option><option value="EventName">Event then Name</option></select></div><br>
 <div><b>Broke:</b> <select id="broke"><option value='2'>Both</option><option value='1'>Yes</option><option value='0'>No</option></select></div><br>
 <div><b>State Qual:</b> <select id="State"><option value='2'>Both</option><option value='1'>Yes</option><option value='0'>No</option></select></div><br>
@@ -38,6 +38,7 @@ function SubmitInfo() {
     if ( TID != "-1" ) {
         PostString = PostString + "&TID=" + TID;
     }
+    
     /*new Info()
     x = 3;
     RString = "";
