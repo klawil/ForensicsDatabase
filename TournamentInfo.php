@@ -12,6 +12,9 @@ if ( isset($_POST['Tournaments']) ) {
 	$NumRows = mysql_num_rows($query);
 	$CurrentRow = 0;
 	$TournamentString = '<select id="Tournament">';
+	if ( isset($_POST['IncludeAll']) ) {
+		$TournamentString = $TournamentString . "<option value='-1'>All Tournaments</option>";
+	}
 	while ( $CurrentRow < $NumRows ) {
 		$results = mysql_fetch_assoc($query);
 		$TournamentString = $TournamentString . '<option value="' . $results['TID'] . '">' . $results['TName'] . "</option>";
@@ -24,6 +27,9 @@ if ( isset($_POST['Tournaments']) ) {
 	$NumRows = mysql_num_rows($query);
 	$CurrentRow = 0;
 	$StudentString = '<select id="Student">';
+	if ( isset($_POST['IncludeAll']) ) {
+		$StudentString = $StudentString . "<option value='-1'>All Students</option>";
+	}
 	while ( $CurrentRow < $NumRows ) {
 		$results = mysql_fetch_assoc($query);
 		$StudentString = $StudentString . '<option value="' . $results['SID'] . '">' . $results['LName'] . ", " . $results['FName'] . "</option>";
@@ -44,6 +50,9 @@ if ( isset($_POST['Tournaments']) ) {
 	$NumRows = mysql_num_rows($query);
 	$CurrentRow = 0;
 	$EventString = '<select id="Event">';
+	if ( isset($_POST['IncludeAll']) ) {
+		$EventString = $EventString . "<option value='-1'>All Events</option>";
+	}
 	while ( $CurrentRow < $NumRows ) {
 		$results = mysql_fetch_assoc($query);
 		$EventString = $EventString . '<option value="' . $results['EID'] . '">' . $results['EName'] . "</option>";

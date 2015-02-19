@@ -1,0 +1,136 @@
+<html>
+<head><title>Display Info</title></head>
+<body>
+<form id="display">
+<h1><div id="Header">Select Information To Be Returned</div></h1>
+<h3>Select Information From...</h3>
+<div  style="width:33%; display: float; float: left">Tournament: <div id="Tourneys"></div></div>
+<div  style="width:33%; display: float; float: right">Event: <div id="Events"></div></div>
+<div style="width:33%; display: inline-block;">Student: <div id="Students"></div></div>
+<br><br>
+<div id="Info" style="width: 33%; display: float; float: left">
+    Order By: <select id="OrderBy"><option value="DateName">Date then Name</option><option value="DateEvent">Date then Event</option><option value="NameDate">Name then Date</option><option value="NameEvent">Name then Event</option><option value="EventDate">Event then Date</option><option value="EventName">Event then Name</option></select>
+</div>
+<div id="Info2" style="width: 66%; display: inline-block; float: right;">
+    Broke: <select id="broke"><option value='2'>Both</option><option value='1'>Yes</option><option value='0'>No</option></select>
+    State Qual: <select id="State"><option value='2'>Both</option><option value='1'>Yes</option><option value='0'>No</option></select>
+</div><br><br>
+<div id="Selection" style="width: 100%; display: float; float: left; border-width: 1px; border-style: solid;">
+    <h3>Information to Return</h3>
+    <div id="leftinfo" style="display:float; float:left; width:50%;">
+    <h4>Entry Information:</h4>
+    <input type="checkbox" value="Name">Name
+    <input type="checkbox" value="Tournament">Tournament
+    <input type="checkbox" value="Event">Event
+    </div>
+    <div id="leftinfo" style="display:float; float:right; width:50%;">
+    <h4>Scores:</h4>
+    <input type="checkbox" value="Prelims">Prelim Scores
+    <input type="checkbox" value="Finals">Finals Scores
+    <input type="checkbox" value="place">Place
+    </div>
+</div>
+<input type="submit" onclick="SubmitInfo();" value="Show Results" style="display: float;">
+</form>
+<div id="Results"></div>
+<script>
+function SubmitInfo() {
+    event.preventDefault();
+    x = 3;
+    RString = "";
+    while (document.getElementById("EntryID").elements[x].value != "broke") {
+        RString = RString + document.getElementById("EntryID").elements[x].id + "=" + document.getElementById("EntryID").elements[x].value + "&";
+        if ( document.getElementById("EntryID").elements[x].value == "" ) {
+            document.getElementById("Message").innerHTML = "Enter value for " + document.getElementById("EntryID").elements[x].id;
+            return;
+        }
+        x = x + 1;
+    }
+    y = x - 1;
+    IString = "";
+    for ( x = 0; x < 3; x++) {
+        IString = IString + document.getElementById("EntryID").elements[x].id + "=" + document.getElementById("EntryID").elements[x].value + "&";
+    }
+    BString = "";
+    if ( document.getElementById("broke").checked ) {
+        IString = IString + "broke=1&";
+        z = y + 3;
+        for ( x = z; x < document.getElementById("EntryID").elements.length - 1; x++ ) {
+            BString = BString + document.getElementById("EntryID").elements[x].id + "=" + document.getElementById("EntryID").elements[x].value + "&";
+            if ( document.getElementById("EntryID").elements[x].value == "" ) {
+                document.getElementById("Message").innerHTML = "Enter value for " + document.getElementById("EntryID").elements[x].id;
+                return;
+            }
+        }
+    } else {
+        IString = IString + "broke=0&";
+    }
+    if ( document.getElementById("Qual").checked ) {
+        IString = IString + "qual=1";
+    } else {
+        IString = IString + "qual=0";
+    }
+    document.getElementById("Message").innerHTML = "";//RString + BString + IString;
+    document.getElementById("Message").innerHTML = "Submitting...";
+    if ( window.XMLHttpRequest ) {
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.open("POST","TournamentUpdate.php",false);
+    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xmlhttp.send(RString + BString + IString);
+    response = xmlhttp.responseText;
+    if ( response == "true" ) {
+        document.getElementById("Message").innerHTML = "Submitted successfully.";
+        document.getElementById("EntryID").reset();
+        OutsHideShow();
+    } else {
+        document.getElementById("Message").innerHTML = response;
+    }
+}
+function Tournaments() {
+    document.getElementById("Tourneys").innerHTML = "Loading...";
+    if ( window.XMLHttpRequest ) {
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.open("POST","TournamentInfo.php",false);
+    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xmlhttp.send("Tournaments=1&IncludeAll=1");
+    response = xmlhttp.responseText;
+    document.getElementById("Tourneys").innerHTML = response;
+}
+function Students() {
+    if ( window.XMLHttpRequest ) {
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.open("POST","TournamentInfo.php",false);
+    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xmlhttp.send("Students=1&IncludeAll=1");
+    response = "";
+    response = xmlhttp.responseText;
+    document.getElementById("Students").innerHTML = response;
+}
+function Events() {
+    if ( window.XMLHttpRequest ) {
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.open("POST","TournamentInfo.php",false);
+    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xmlhttp.send("Events=1&IncludeAll=1");
+    response = "";
+    response = xmlhttp.responseText;
+    document.getElementById("Events").innerHTML = response;
+}
+Tournaments();
+Students();
+Events();
+</script>
+</body>
+</html>
