@@ -1,5 +1,17 @@
 <html>
-<head><title>Display Info</title></head>
+<head><title>Display Info</title>
+<style>
+td {
+    padding-right: 10;
+    padding-left: 1;
+}
+th {
+    padding-right: 10;
+    padding-left: 10;
+    text-align: center;
+}
+</style>
+</head>
 <body>
 <form id="display">
 <h1><div id="Header" style="width: 100%;">Select Information To Be Returned</div></h1>
@@ -17,10 +29,12 @@
     <table style="padding-left: 30;">
         <tr><th><h3>Information to Return:</h3></th></tr>
         <tr><th style="padding-right: 15; text-align: left;">Entry Information:</th><th style="text-align: left;">Results:</th></tr>
-        <tr><td><input type="checkbox" id="Name" checked>Name</td><td><input type="checkbox" id="Prelims" checked>Prelim Scores</td></tr>
-        <tr><td><input type="checkbox" id="Tournament" checked>Tournament</td><td><input type="checkbox" id="Finals" checked>Finals Scores</td></tr>
-        <tr><td><input type="checkbox" id="Event" checked>Event</td><td><input type="checkbox" id="Totals" dir="" checked>Totals</td></tr>
-        <tr><td></td><td><input type="checkbox" id="place" checked>Place</td></tr></table>
+        <tr><td><input type="checkbox" id="CName" checked>Name</td><td><input type="checkbox" id="CPrelims" checked>Prelim Scores</td></tr>
+        <tr><td><input type="checkbox" id="CTournament" checked>Tournament</td><td><input type="checkbox" id="CFinals" checked>Finals Scores</td></tr>
+        <tr><td><input type="checkbox" id="CEvent" checked>Event</td><td><input type="checkbox" id="CTotals" dir="" checked>Totals</td></tr>
+        <tr><td><input type="checkbox" id="CBroke" dir="" checked>Broke</td><td><input type="checkbox" id="CPlace" checked>Place</td></tr>
+        <tr><td><input type="checkbox" id="CQual" checked>State Qualifier</td><td></td></tr>
+    </table>
 </div>
 </form>
 <div style="width: 100%; display: float; float: left;"></div>
@@ -48,6 +62,51 @@ function SubmitInfo() {
     PostString = PostString + "&broke=" + broke;
     State = document.getElementById("State").options[document.getElementById("State").selectedIndex].value;
     PostString = PostString + "&State=" + State;
+    if ( document.getElementById("CName").checked ) {
+        PostString = PostString + "&NCol=1";
+    } else {
+        PostString = PostString + "&NCol=0";
+    }
+    if ( document.getElementById("CTournament").checked ) {
+        PostString = PostString + "&TCol=1";
+    } else {
+        PostString = PostString + "&TCol=0";
+    }
+    if ( document.getElementById("CEvent").checked ) {
+        PostString = PostString + "&ECol=1";
+    } else {
+        PostString = PostString + "&ECol=0";
+    }
+    if ( document.getElementById("CBroke").checked ) {
+        PostString = PostString + "&BCol=1";
+    } else {
+        PostString = PostString + "&BCol=0";
+    }
+    if ( document.getElementById("CQual").checked ) {
+        PostString = PostString + "&QCol=1";
+    } else {
+        PostString = PostString + "&QCol=0";
+    }
+    if ( document.getElementById("CPrelims").checked ) {
+        PostString = PostString + "&RCol=1";
+    } else {
+        PostString = PostString + "&RCol=0";
+    }
+    if ( document.getElementById("CFinals").checked ) {
+        PostString = PostString + "&JCol=1";
+    } else {
+        PostString = PostString + "&JCol=0";
+    }
+    if ( document.getElementById("CTotals").checked ) {
+        PostString = PostString + "&ToCol=1";
+    } else {
+        PostString = PostString + "&ToCol=0";
+    }
+    if ( document.getElementById("CPlace").checked ) {
+        PostString = PostString + "&PCol=1";
+    } else {
+        PostString = PostString + "&PCol=0";
+    }
     if ( window.XMLHttpRequest ) {
         xmlhttp = new XMLHttpRequest();
     } else {
