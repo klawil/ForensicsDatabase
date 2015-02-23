@@ -1,8 +1,7 @@
 <?php
+include "MySQLAuth.php";
 $DB = "Forensics_2015";
 $tbl = "Tournaments";
-$UN = "forensics";
-$PW = "A15j89%%8JsTk991LexzQ#";
 $HOST = "localhost";
 $DBConn = mysql_connect($HOST, $UN, $PW);
 mysql_select_db($DB, $DBConn);
