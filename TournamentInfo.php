@@ -239,7 +239,7 @@ if ( isset($_POST['OrderBy']) ) {
 	}
 	echo "</tr></table>";
 } elseif ( isset($_POST['Tournaments']) ) {
-	$query = mysql_query("select TName, TID from Tournaments order by TName;");
+	$query = mysql_query("select TName, TID from Tournaments order by Date desc, TName;");
 	$NumRows = mysql_num_rows($query);
 	$CurrentRow = 0;
 	$TournamentString = '<select id="Tournament">';
