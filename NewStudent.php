@@ -29,7 +29,7 @@ echo '<form id="NewStudent" action="NewStudent.php" method="post">
 <table>
     <tr><td>First Name</td><td><input type="text" name="FName" onblur="CheckFName();"></td><td id="FNameWarn"></td></tr>
     <tr><td>Last Name</td><td><input type="text" name="LName" onblur="CheckLName();"></td><td id="LNameWarn"></td></tr>
-    <tr><td>Year</td><td><select form="NewStudent" name="Year"><option value="1">1</option><option value="1">2</option><option value="1">3</option><option value="1">4</option></select></td></tr>
+    <tr><td>Year</td><td><select form="NewStudent" name="Year"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></td></tr>
 </table>
 <input type="submit" value="Submit">
 </form>
