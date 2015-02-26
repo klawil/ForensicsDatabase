@@ -58,7 +58,10 @@ Password: <input type="password" name="PWord"><br>
 		echo "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . ".";
 		return 0;
 	}
-	echo 'User ' . $_POST['FName'] . ' ' . $_POST['LName'] . ' (' . $_POST['UName'] . ') has been added.';
+	echo 'User ' . $_POST['FName'] . ' ' . $_POST['LName'] . ' (' . $_POST['UName'] . ') has been added.
+<a href="/">Return to Main Page</a>
+</body>
+</html>';
 } else {
 	echo '<form id="UserForm" action="NewUser.php" method="post"><br>
 First Name: <input type="text" name="FName"><br>

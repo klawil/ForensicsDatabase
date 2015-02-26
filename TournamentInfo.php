@@ -84,6 +84,9 @@ if ( isset($_POST['OrderBy']) ) {
 	$NumJudges = $Data['Jdg'];
 	$query = mysql_query('select Results.RID as RID, concat(LName, ", ", FName) as Name, TName, EName, Rank, Qual, Judge, Round, broke, State, place from Students, Events, Tournaments, Results, Ballots' . $WString . $OString . ";");
 	echo '<table border="1" style="border-collapse: collapse;"><tr>';
+	if ( $_POST['Edit'] == '1' ) {
+		echo '<th></th>';
+	}
 	if ( $_POST['NCol'] == '1' ) {
 		echo '<th>Name</th>';
 	}
@@ -139,6 +142,9 @@ if ( isset($_POST['OrderBy']) ) {
 			$First = 0;
 			echo '</tr>
 <tr>';
+			if ( $_POST['Edit'] == '1' ) {
+				echo '<td><input type="button" value="Select" onclick="edit_RID(' . $Data['RID'] . ')"></td>';
+			}
 			if ( $_POST['NCol'] == '1' ) {
 				echo '<td>' . $Data['Name'] . '</td>';
 			}
