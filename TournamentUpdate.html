@@ -10,7 +10,7 @@ input[type="number"] {
 <form id="EntryID" action="TournamentUpdate.php">
 <h1><div id="Header">Select a Tournament</div></h1>
 <h3 id="Message"></h3>
-<div id="Tourneys"></div><br>
+<div id="Tourneys"></div><div id="TourneyID"></div><br>
 <div id="Students"></div><br>
 <div id="Events"></div><br>
 <div id="Rounds"></div>
@@ -150,7 +150,7 @@ function MakePage(){
     document.getElementById("Outs").innerHTML = HTMLString;
     document.getElementById("info").style.display = 'inline';
     document.getElementById("submit").style.display = 'inline';
-    document.getElementById("Tourneys").innerHTML = '<input type="hidden" id="TID" value="' + document.getElementById("Tournament").options[document.getElementById("Tournament").selectedIndex].value + '">';
+    document.getElementById("TorneyID").innerHTML = '<input type="hidden" id="TID" value="' + document.getElementById("Tournament").options[document.getElementById("Tournament").selectedIndex].value + '">';
 }
 function OutsHideShow() {
     if ( document.getElementById("broke").checked ) {
