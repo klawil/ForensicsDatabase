@@ -1,7 +1,7 @@
 <h1>Forensics Database</h1>
 <h2>Installation</h2>
 <h4>Pre-Requisites</h4>
-A Linux server (this version was tested and written on Ubuntu 14.04) running a LAMP server.
+A LAMP server (this version was tested and written on Ubuntu 14.04).
 <h4>Cloning the Repository</h4>
 Clone the repository into your web directory using:
 ````
