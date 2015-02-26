@@ -58,7 +58,7 @@ if ( isset($_POST['TID']) ) {
 	}*/
 	echo '<i>Those marked with an asterisk (*) qualified for state</i><br>
 ';
-	$query = mysql_query('select concat(LName, ", ", FName) as Name, place, EName, State from Events, Students, Results where TID="' . $_POST['TID'] . '" and Events.EID = Results.EID and Students.SID = Results.SID and place is not null order by place, Name;');
+	$query = mysql_query('select SID2, concat(LName, ", ", FName) as Name, place, EName, State from Events, Students, Results where TID="' . $_POST['TID'] . '" and Events.EID = Results.EID and Students.SID = Results.SID and place is not null order by place, Name;');
 	$NumRows = mysql_num_rows($query);
 	$CurrentRow = 0;
 	$OldPlace = 0;
@@ -80,11 +80,17 @@ if ( isset($_POST['TID']) ) {
 ';
 			}
 		}
+		$Name = $Data['Name'];
+		if ( $Data['SID2'] != NULL ) {
+			$NameQuery = mysql_query("select concat(LName, ', ', FName) as Name from Students where SID='" . $Data['SID2'] . "';");
+			$NameData = mysql_fetch_assoc($NameQuery);
+			$Name = $Name . " and " . $NameData['Name'];
+		}
 		if ( $Data['State'] == "1" ) {
-			echo '<span id="tab"><b>*' . $Data['Name'] . '</b> - ' . $Data['EName'] . '</span><br>
+			echo '<span id="tab"><b>*' . $Name . '</b> - ' . $Data['EName'] . '</span><br>
 ';
 		} else {
-			echo '<span id="tab"><b>' . $Data['Name'] . '</b> - ' . $Data['EName'] . '</span><br>
+			echo '<span id="tab"><b>' . $Name . '</b> - ' . $Data['EName'] . '</span><br>
 ';
 		}
 		$CurrentRow++;
