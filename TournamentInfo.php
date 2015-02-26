@@ -40,7 +40,7 @@ if ( isset($_POST['OrderBy']) ) {
 		} else {
 			$WString = " where ";
 		}
-		$WString = $WString . "Results.SID='" . $_POST['SID'] . "'";
+		$WString = $WString . "(Results.SID='" . $_POST['SID'] . "' or Results.SID2='" . $_POST['SID'] . "')";
 	}
 	if ( isset($_POST['EID']) ) {
 		if ( ! $WString == "" ) {
@@ -78,7 +78,7 @@ if ( isset($_POST['OrderBy']) ) {
 	$Data = mysql_fetch_assoc($NumRoundQuery);
 	$NumRounds = $Data['Rd'];
 	$NumJudges = $Data['Jdg'];
-	$query = mysql_query('select Results.RID as RID, concat(LName, ", ", FName) as Name, TName, EName, Rank, Qual, Judge, Round, broke, State, place from Students, Events, Tournaments, Results, Ballots' . $WString . $OString . ";");
+	$query = mysql_query('select SID2, Results.RID as RID, concat(LName, ", ", FName) as Name, TName, EName, Rank, Qual, Judge, Round, broke, State, place from Students, Events, Tournaments, Results, Ballots' . $WString . $OString . ";");
 	echo '<table border="1" style="border-collapse: collapse;"><tr>';
 	if ( $_POST['Edit'] == '1' ) {
 		echo '<th></th>';
@@ -142,7 +142,13 @@ if ( isset($_POST['OrderBy']) ) {
 				echo '<td><input type="button" value="Select" onclick="edit_RID(' . $Data['RID'] . ')"></td>';
 			}
 			if ( $_POST['NCol'] == '1' ) {
-				echo '<td>' . $Data['Name'] . '</td>';
+				if ( $Data['SID2'] != NULL ) {
+					$NameQuery = mysql_query("select concat(LName, ', ', FName) as Name from Students where SID='" . $Data['SID2'] . "';");
+					$NameData = mysql_fetch_assoc($NameQuery);
+					echo '<td>' . $Data['Name'] . ' and ' . $NameData['Name'] . '</td>';
+				} else {
+					echo '<td>' . $Data['Name'] . '</td>';
+				}
 			}
 			if ( $_POST['ECol'] == '1' ) {
 				echo '<td>' . $Data['EName'] . '</td>';

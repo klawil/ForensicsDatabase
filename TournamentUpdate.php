@@ -1,5 +1,18 @@
 <?php
 include "MySQLAuth.php";
+if ( isset($_POST['RID']) ) {
+	if ( ! isset($_POST['SID']) ) {
+		echo "Error - No partner selected.";
+		return 0;
+	}
+	$query = mysql_query("update Results set SID2='" . $_POST['SID'] . "' where RID='" . $_POST['RID'] . "';");
+	if (( mysql_errno() )) {
+		echo "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . ".";
+		return 0;
+	}
+	echo "true";
+	return 0;
+}
 $tbl = "Tournaments";
 if (( ! isset($_POST['TID']) )) {
 	echo "Error - No tournament ID specified";
@@ -73,5 +86,31 @@ for ( $x = 1; $x <= $NumRounds; $x++ ) {
 		return 0;
 	}
 }
-echo "true";
+$query = mysql_query("select Partner from Events where EID='" . $_POST['Event'] . "';");
+if (( mysql_errno() )) {
+	echo "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . ".";
+	return 0;
+}
+$Data = mysql_fetch_assoc($query);
+if ( $Data['Partner'] == "1" ) {
+	$query = mysql_query("select FName, LName, SID from Students order by LName, FName;");
+	$NumRows = mysql_num_rows($query);
+	$CurrentRow = 0;
+	$StudentString = '<select name="SID" form="SIDSelect" id="SID">';
+	while ( $CurrentRow < $NumRows ) {
+		$results = mysql_fetch_assoc($query);
+		$StudentString = $StudentString . '<option value="' . $results['SID'] . '">' . $results['LName'] . ", " . $results['FName'] . "</option>";
+		$CurrentRow++;
+	}
+	$StudentString = $StudentString . "</select>";
+	echo 'Select the partner:<br>
+<form id="SIDSelect" action="TournamentUpdate.php" method="post">
+<input type="hidden" value="' . $RID . '" id="RID">
+' . $StudentString . '<br>
+<input type="button" value="Select" onclick="SubmitPartner();">
+</form>
+';
+} else {
+	echo "true";
+}
 ?>
