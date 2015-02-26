@@ -7,11 +7,7 @@ echo '<html>
 ';
 if ( isset($_POST['TName']) ) {
 	include "MySQLAuth.php";
-	$DB = "Forensics_2015";
 	$tbl = "Tournaments";
-	$HOST = "localhost";
-	$DBConn = mysql_connect($HOST, $UN, $PW);
-	mysql_select_db($DB, $DBConn);
 	if ( strlen($_POST['TName']) > 30 ) {
 		echo 'Name is too long. Must be 30 characters or less.
 ';

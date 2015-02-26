@@ -1,10 +1,6 @@
 <?php
 include "MySQLAuth.php";
-$DB = "Forensics_2015";
 $tbl = "Tournaments";
-$HOST = "localhost";
-$DBConn = mysql_connect($HOST, $UN, $PW);
-mysql_select_db($DB, $DBConn);
 if (( ! isset($_POST['TID']) )) {
 	echo "Error - No tournament ID specified";
 	return 0;
