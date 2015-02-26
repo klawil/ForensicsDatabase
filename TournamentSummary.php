@@ -46,17 +46,7 @@ if ( isset($_POST['TID']) ) {
 ' . $TournamentString . '<br>
 <input type="submit" value="Select">
 </form>
-';
-	/*$query = mysql_query('select concat(LName, ", ", FName) as Name, place, EName from Events, Students, Results where TID="' . $_POST['TID'] . '" and Events.EID = Results.EID and Students.SID = Results.SID and place is not null and State = "1" order by place, Name;');
-	$NumRows = mysql_num_rows($query);
-	$CurrentRow = 0;
-	$OldPlace = 0;
-	echo '<h3>State Qualifiers</h4>';
-	while ( $CurrentRow < $NumRows ) {
-		
-		$CurrentRow++;
-	}*/
-	echo '<i>Those marked with an asterisk (*) qualified for state</i><br>
+<i>Those marked with an asterisk (*) qualified for state</i><br>
 ';
 	$query = mysql_query('select SID2, concat(LName, ", ", FName) as Name, place, EName, State from Events, Students, Results where TID="' . $_POST['TID'] . '" and Events.EID = Results.EID and Students.SID = Results.SID and place is not null order by place, Name;');
 	$NumRows = mysql_num_rows($query);
