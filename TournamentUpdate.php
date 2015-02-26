@@ -64,11 +64,15 @@ if ( isset($_POST['RID']) ) {
 	$RID = $data['RID'];
 	if (( $_POST['broke'] == 1 )) {
 		for ( $x = 1; $x <= $NumJudges; $x++ ) {
-			if (( ! isset($_POST['J' . $x . 'R']) || ! isset($_POST['J' . $x . 'Q']) )) {
-				echo "Error - Either quals or ranks for judge " . $x . " in finals are missing.";
+			if (( ! isset($_POST['J' . $x . 'R']) )) {
+				echo "Error - Ranks for judge " . $x . " in finals are missing.";
 				return 0;
 			}
-			$query = mysql_query("insert into Ballots set RID='" . $RID . "', Judge='" . $x . "', Rank='" . $_POST['J' . $x . 'R'] . "', Qual='" . $_POST['J' . $x . 'Q'] . "';");
+			if ( ! isset($_POST['J' . $x . 'Q']) ) {
+				$query = mysql_query("insert into Ballots set RID='" . $RID . "', Judge='" . $x . "', Rank='" . $_POST['J' . $x . 'R'] . "', Qual='" . $_POST['J' . $x . 'Q'] . "';");
+			} else {
+				$query = mysql_query("insert into Ballots set RID='" . $RID . "', Judge='" . $x . "', Rank='" . $_POST['J' . $x . 'R'] . "';");
+			}
 			if (( mysql_errno() )) {
 				echo "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . " on Judge " . $x . ".";
 				return 0;
@@ -182,7 +186,9 @@ function SubmitInfo() {
         z = y + 3;
         for ( x = z; x < document.getElementById("EntryID").elements.length - 1; x++ ) {
             BString = BString + document.getElementById("EntryID").elements[x].id + "=" + document.getElementById("EntryID").elements[x].value + "&";
-            if ( document.getElementById("EntryID").elements[x].value == "" ) {
+            IDQ = document.getElementById("EntryID").elements[x].id;
+            Character = IDQ.charAt(2);
+            if ( Character != "Q" && document.getElementById("EntryID").elements[x].value == "" ) {
                 document.getElementById("Message").innerHTML = "Enter value for " + document.getElementById("EntryID").elements[x].id;
                 return;
             }

@@ -221,7 +221,12 @@ if ( isset($_POST['OrderBy']) ) {
 			}
 			if ( $Data['Judge'] == $x ) {
 				if ( $_POST['JCol'] == '1' ) {
-					echo '<td>' . $Data['Rank'] . "/" . $Data['Qual'] . "</td>";
+					echo '<td>' . $Data['Rank'];
+					if ( $Data['Qual'] != NULL ) {
+						echo "/" . $Data['Qual'] . "</td>";
+					} else {
+						echo "</td>";
+					}
 				}
 				$TotalR = $TotalR + $Data['Rank'];
 				$TotalQ = $TotalQ + $Data['Qual'];
