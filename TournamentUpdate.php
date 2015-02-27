@@ -51,6 +51,12 @@ if ( isset($_POST['RID']) ) {
 	if ( $_POST['broke'] == "1" ) {
 		$PString = ", place='" . $_POST['place'] . "'";
 	}
+	$PString = $PString . ", NumberRounds=" . $NumRounds;
+	if ( $_POST['broke'] == "1" ) {
+		$PString = $PString . ", NumberJudges=" . $NumJudges;
+	} else {
+		$PString = $PString . ", NumberJudges=0";
+	}
 	$query = mysql_query("insert into Results set SID='" . $_POST['Student'] . "', EID='" . $_POST['Event'] . "', TID='" . $_POST['TID'] . "', broke='" . $_POST['broke'] . "', State='" . $_POST['qual'] . "'" . $PString . ";");
 	if (( mysql_errno() )) {
 		echo "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . ".";
@@ -63,33 +69,40 @@ if ( isset($_POST['RID']) ) {
 	}
 	$data = mysql_fetch_assoc($query);
 	$RID = $data['RID'];
+	$FRanks = 0;
 	if (( $_POST['broke'] == 1 )) {
 		for ( $x = 1; $x <= $NumJudges; $x++ ) {
 			if (( ! isset($_POST['J' . $x . 'R']) )) {
 				echo "Error - Ranks for judge " . $x . " in finals are missing.";
 				return 0;
 			}
-			if ( ! isset($_POST['J' . $x . 'Q']) ) {
-				$query = mysql_query("insert into Ballots set RID='" . $RID . "', Judge='" . $x . "', Rank='" . $_POST['J' . $x . 'R'] . "', Qual='" . $_POST['J' . $x . 'Q'] . "';");
-			} else {
-				$query = mysql_query("insert into Ballots set RID='" . $RID . "', Judge='" . $x . "', Rank='" . $_POST['J' . $x . 'R'] . "';");
-			}
+			$FRanks = $FRanks + $_POST['J' . $x . 'R'];
+			$query = mysql_query("insert into Ballots set RID='" . $RID . "', Judge='" . $x . "', Rank='" . $_POST['J' . $x . 'R'] . "', Qual='" . $_POST['J' . $x . 'Q'] . "';");
 			if (( mysql_errno() )) {
 				echo "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . " on Judge " . $x . ".";
 				return 0;
 			}
 		}
 	}
+	$PRanks = 0;
+	$PQuals = 0;
 	for ( $x = 1; $x <= $NumRounds; $x++ ) {
 		if (( ! isset($_POST['R' . $x . 'R']) || ! isset($_POST['R' . $x . 'Q']) )) {
 			echo "Error - Either quals or ranks for round " . $x . " are missing.";
 			return 0;
 		}
+		$PRanks = $PRanks + $_POST['R' . $x . 'R'];
+		$PQuals = $PQuals + $_POST['R' . $x . 'Q'];
 		$query = mysql_query("insert into Ballots set RID='" . $RID . "', Round='" . $x . "', Rank='" . $_POST['R' . $x . 'R'] . "', Qual='" . $_POST['R' . $x . 'Q'] . "';");
 		if (( mysql_errno() )) {
 			echo "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . " on Round " . $x . ".";
 			return 0;
 		}
+	}
+	$query = mysql_query("update Results set PRanks='" . $PRanks . "', PQuals='" . $PQuals . "', FRanks='" . $FRanks . "' where RID='" . $RID . "';");
+	if (( mysql_errno() )) {
+		echo "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . ".";
+		return 0;
 	}
 	$query = mysql_query("select Partner from Events where EID='" . $_POST['Event'] . "';");
 	if (( mysql_errno() )) {
@@ -247,7 +260,7 @@ function MakePage(){
     document.getElementById("Rounds").innerHTML = HTMLString;
     HTMLString = ""
     for ( x = 1; x <= NumJudge; x++ ) {
-        HTMLString = HTMLString + "Judge " + x + ' . "'" . ': <input type="number" id="J' . "'" . ' + x + ' . "'" . 'R"><input type="number" id="J' . "'" . ' + x + ' . "'" . 'Q"><br>' . "'" . ';
+        HTMLString = HTMLString + "Judge " + x + ' . "'" . ': <input type="number" id="J' . "'" . ' + x + ' . "'" . 'R"><br>' . "'" . ';
     }
     HTMLString = HTMLString + ' . "'" . 'Place: <input type="number" id="place"><br>' . "'" . ';
     document.getElementById("Outs").innerHTML = HTMLString;
