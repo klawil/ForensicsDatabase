@@ -1,5 +1,6 @@
 <?php
 include "MySQLAuth.php";
+include "CommonFunctions.php";
 $tbl = "Tournaments";
 if ( isset($_POST['OrderBy']) ) {
 	if ( ! isset($_POST['broke']) ) {
@@ -252,58 +253,30 @@ if ( isset($_POST['OrderBy']) ) {
 	}
 	echo "</tr></table>";
 } elseif ( isset($_POST['Tournaments']) ) {
-	$query = mysql_query("select TName, TID from Tournaments order by Date desc, TName;");
-	$NumRows = mysql_num_rows($query);
-	$CurrentRow = 0;
-	$TournamentString = '<select id="Tournament">';
 	if ( isset($_POST['IncludeAll']) ) {
-		$TournamentString = $TournamentString . "<option value='-1'>All Tournaments</option>";
+		$Result = Tournaments(1);
+	} else {
+		$Result = Tournaments(0);
 	}
-	while ( $CurrentRow < $NumRows ) {
-		$results = mysql_fetch_assoc($query);
-		$TournamentString = $TournamentString . '<option value="' . $results['TID'] . '">' . $results['TName'] . "</option>";
-		$CurrentRow++;
-	}
-	$TournamentString = $TournamentString . "</select>";
-	echo $TournamentString;
+	echo $Result;
 } elseif ( isset($_POST['Students']) ) {
-	$query = mysql_query("select FName, LName, SID from Students order by LName, FName;");
-	$NumRows = mysql_num_rows($query);
-	$CurrentRow = 0;
-	$StudentString = '<select id="Student">';
 	if ( isset($_POST['IncludeAll']) ) {
-		$StudentString = $StudentString . "<option value='-1'>All Students</option>";
+		$Result = Students(1);
+	} else {
+		$Result = Students(0);
 	}
-	while ( $CurrentRow < $NumRows ) {
-		$results = mysql_fetch_assoc($query);
-		$StudentString = $StudentString . '<option value="' . $results['SID'] . '">' . $results['LName'] . ", " . $results['FName'] . "</option>";
-		$CurrentRow++;
-	}
-	$StudentString = $StudentString . "</select>";
-	echo $StudentString;
+	echo $Result;
 } elseif ( isset($_POST['TID']) ) {
 	$query = mysql_query("select NumRounds, NumFinalsJudges from Tournaments where TID=" . $_POST['TID'] . ";");
 	$data = mysql_fetch_assoc($query);
 	echo $data['NumRounds'] . "|" . $data['NumFinalsJudges'];
 } elseif ( isset($_POST['Events']) ) {
-	$query = mysql_query("select * from Events order by EName;");
-	if (( mysql_errno() )) {
-		echo "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . ".";
-		return 0;
-	}
-	$NumRows = mysql_num_rows($query);
-	$CurrentRow = 0;
-	$EventString = '<select id="Event">';
 	if ( isset($_POST['IncludeAll']) ) {
-		$EventString = $EventString . "<option value='-1'>All Events</option>";
+		$Return = Events(1);
+	} else {
+		$Return = Events(0);
 	}
-	while ( $CurrentRow < $NumRows ) {
-		$results = mysql_fetch_assoc($query);
-		$EventString = $EventString . '<option value="' . $results['EID'] . '">' . $results['EName'] . "</option>";
-		$CurrentRow++;
-	}
-	$EventString = $EventString . "</select>";
-	echo $EventString;
+	echo $Return;
 } else {
 	echo '<html>
 <head><title>Display Info</title>
@@ -324,9 +297,9 @@ th {
 <h1><div id="Header" style="width: 100%;">Select Information To Be Returned</div></h1>
 <div style="display: float; float: left;">
 <h3>Select Information From:</h3>
-<b>Tournament:</b> <div id="Tourneys"></div><br>
-<b>Student:</b> <div id="Students"></div><br>
-<b>Event:</b> <div id="Events"></div><br>
+<b>Tournament:</b> <div id="Tourneys">' . Tournaments(1) . '</div><br>
+<b>Student:</b> <div id="Students">' . Students(1) . '</div><br>
+<b>Event:</b> <div id="Events">' . Events(1) . '</div><br>
 <div><b>Order By:</b> <select id="OrderBy"><option value="DateName">Date then Name then Event</option><option value="DateEvent">Date then Event then Name</option><option value="NameDate">Name then Date then Event</option><option value="NameEvent">Name then Event then Date</option><option value="EventDate">Event then Date then Name</option><option value="EventName">Event then Name then Date</option></select></div><br>
 <div><b>Broke:</b> <select id="broke"><option value="2">Both</option><option value="1">Yes</option><option value="0">No</option></select></div><br>
 <div><b>State Qual:</b> <select id="State"><option value="2">Both</option><option value="1">Yes</option><option value="0">No</option></select></div><br>
@@ -425,48 +398,6 @@ function SubmitInfo() {
     response = xmlhttp.responseText;
     document.getElementById("Results").innerHTML = response;
 }
-function Tournaments() {
-    document.getElementById("Tourneys").innerHTML = "Loading...";
-    if ( window.XMLHttpRequest ) {
-        xmlhttp = new XMLHttpRequest();
-    } else {
-        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-    }
-    xmlhttp.open("POST","TournamentInfo.php",false);
-    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    xmlhttp.send("Tournaments=1&IncludeAll=1");
-    response = xmlhttp.responseText;
-    document.getElementById("Tourneys").innerHTML = response;
-}
-function Students() {
-    if ( window.XMLHttpRequest ) {
-        xmlhttp = new XMLHttpRequest();
-    } else {
-        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-    }
-    xmlhttp.open("POST","TournamentInfo.php",false);
-    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    xmlhttp.send("Students=1&IncludeAll=1");
-    response = "";
-    response = xmlhttp.responseText;
-    document.getElementById("Students").innerHTML = response;
-}
-function Events() {
-    if ( window.XMLHttpRequest ) {
-        xmlhttp = new XMLHttpRequest();
-    } else {
-        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-    }
-    xmlhttp.open("POST","TournamentInfo.php",false);
-    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    xmlhttp.send("Events=1&IncludeAll=1");
-    response = "";
-    response = xmlhttp.responseText;
-    document.getElementById("Events").innerHTML = response;
-}
-Tournaments();
-Students();
-Events();
 </script>
 </body>
 </html>';

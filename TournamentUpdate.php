@@ -1,5 +1,6 @@
 <?php
 include "MySQLAuth.php";
+include "CommonFunctions.php";
 if ( isset($_POST['RID']) ) {
 	if ( ! isset($_POST['SID']) ) {
 		echo "Error - No partner selected.";
@@ -129,10 +130,9 @@ input[type="number"] {
 <body>
 <h1><div id="Header">Select a Tournament</div></h1>
 <h3 id="Message"></h3>
-<div id="Tourneys"></div><form id="EntryID" action="TournamentUpdate.php"><div id="TourneyID"></div><br>
-<div id="Students"></div><br>
-<div id="Events"></div><br>
-<div id="Students2" style="display: none;"></div><br>
+<div id="Tourneys">' . Tournaments(0) . '<input type="button" value="Select" onclick="MakePage();"></div><form id="EntryID" action="TournamentUpdate.php"><div id="TourneyID"></div><br>
+<div id="Students" style="display: none;">' . Students(0) . '</div><br><br>
+<div id="Events" style="display: none;">' . Events(0) . '</div><br><br>
 <div id="Rounds"></div>
 <div id="info" style="display: none;">
     <input type="checkbox" value="broke" onchange="OutsHideShow();" id="broke">Broke<br>
@@ -221,46 +221,6 @@ function SubmitInfo() {
         document.getElementById("Message").innerHTML = response;
     }
 }
-function Tournaments() {
-    document.getElementById("Tourneys").innerHTML = "Loading...";
-    if ( window.XMLHttpRequest ) {
-        xmlhttp = new XMLHttpRequest();
-    } else {
-        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-    }
-    xmlhttp.open("POST","TournamentInfo.php",false);
-    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    xmlhttp.send("Tournaments=1");
-    response = xmlhttp.responseText;
-    document.getElementById("Tourneys").innerHTML = response + ' . "'" . '   <input type="button" value="Select" onclick="MakePage();">' . "'" . ';
-}
-function Students() {
-    if ( window.XMLHttpRequest ) {
-        xmlhttp = new XMLHttpRequest();
-    } else {
-        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-    }
-    xmlhttp.open("POST","TournamentInfo.php",false);
-    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    xmlhttp.send("Students=1");
-    response = "";
-    response = xmlhttp.responseText;
-    document.getElementById("Students").innerHTML = response;
-    document.getElementById("Students2").innerHTML = response;
-}
-function Events() {
-    if ( window.XMLHttpRequest ) {
-        xmlhttp = new XMLHttpRequest();
-    } else {
-        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-    }
-    xmlhttp.open("POST","TournamentInfo.php",false);
-    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    xmlhttp.send("Events=1");
-    response = "";
-    response = xmlhttp.responseText;
-    document.getElementById("Events").innerHTML = response;
-}
 function GetInfo(TID){
     if ( window.XMLHttpRequest ) {
         xmlhttp = new XMLHttpRequest();
@@ -276,8 +236,6 @@ function GetInfo(TID){
 }
 function MakePage(){
     document.getElementById("Header").innerHTML = document.getElementById("Tournament").options[document.getElementById("Tournament").selectedIndex].text;
-    Students();
-    Events();
     TInfo = GetInfo(document.getElementById("Tournament").options[document.getElementById("Tournament").selectedIndex].value);
     InfoSplit = TInfo.split("|");
     NumRounds = InfoSplit[0];
@@ -294,6 +252,8 @@ function MakePage(){
     HTMLString = HTMLString + ' . "'" . 'Place: <input type="number" id="place"><br>' . "'" . ';
     document.getElementById("Outs").innerHTML = HTMLString;
     document.getElementById("info").style.display = ' . "'" . 'inline' . "'" . ';
+    document.getElementById("Events").style.display = ' . "'" . 'inline' . "'" . ';
+    document.getElementById("Students").style.display = ' . "'" . 'inline' . "'" . ';
     document.getElementById("submit").style.display = ' . "'" . 'inline' . "'" . ';
     document.getElementById("TourneyID").innerHTML = ' . "'" . '<input type="hidden" id="TID" value="' . "'" . ' + document.getElementById("Tournament").options[document.getElementById("Tournament").selectedIndex].value + ' . "'" . '">' . "'" . ';
 }
@@ -304,7 +264,6 @@ function OutsHideShow() {
         document.getElementById("Outs").style.display = ' . "'" . 'none' . "'" . ';
     }
 }
-Tournaments();
 </script>
 </body>
 </html>';
