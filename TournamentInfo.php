@@ -22,6 +22,8 @@ if ( isset($_POST['OrderBy']) ) {
 		$OString = " order by Date, Name, EName, Judge asc, Round";
 	} elseif ( $_POST['OrderBy'] == "DateEvent" ) {
 		$OString = " order by Date, EName, Name, Judge asc, Round";
+	} elseif ( $_POST['OrderBy'] == "EventPRank" ) {
+		$OString = " order by EName, PScore, Name, Date, Judge asc, Round";
 	} else {
 		echo "Error - No valid sorting parameter given.";
 		return 0;
@@ -79,7 +81,7 @@ if ( isset($_POST['OrderBy']) ) {
 	$Data = mysql_fetch_assoc($NumRoundQuery);
 	$NumRounds = $Data['Rd'];
 	$NumJudges = $Data['Jdg'];
-	$query = mysql_query('select SID2, Results.RID as RID, concat(LName, ", ", FName) as Name, TName, EName, Rank, Qual, Judge, Round, broke, State, place from Students, Events, Tournaments, Results, Ballots' . $WString . $OString . ";");
+	$query = mysql_query('select SID2, Results.RID as RID, concat(LName, ", ", FName) as Name, (PRanks / NumberRounds) as PScore, TName, EName, Rank, Qual, Judge, Round, broke, State, place from Students, Events, Tournaments, Results, Ballots' . $WString . $OString . ";");
 	echo '<table border="1" style="border-collapse: collapse;"><tr>';
 	if ( $_POST['Edit'] == '1' ) {
 		echo '<th></th>';
@@ -188,8 +190,9 @@ if ( isset($_POST['OrderBy']) ) {
 				}
 				$TotalR = $TotalR + $Data['Rank'];
 				$TotalQ = $TotalQ + $Data['Qual'];
-			} elseif ( $x < $NumRounds ) {
-				for ( $x = $x; $x <= $NumRounds; $x++ ) {
+			} elseif ( $Data['Judge'] != NULL ) {
+				$num = $x;
+				for ( $x = $num; $x <= $NumRounds; $x++ ) {
 					echo '<td></td>';
 				}
 			}
@@ -200,9 +203,15 @@ if ( isset($_POST['OrderBy']) ) {
 			if ( $_POST['ToCol'] == '1' ) {
 				$CellsLeft = $CellsLeft + 1;
 			}
-			if ( $x == $NumRounds ) {
+			if ( $x >= $NumRounds ) {
 				$On = "Final";
-				$x = 0;
+				if ( $Data['Judge'] != NULL ) {
+					$x = 1;
+					$DoFinal = 1;
+				} else {
+					$x = 0;
+					$DoFinal = 0;
+				}
 				if ( $_POST['ToCol'] == '1' ) {
 					echo '<td>' . $TotalR . "/" . $TotalQ . '</td>';
 				}
@@ -211,7 +220,6 @@ if ( isset($_POST['OrderBy']) ) {
 				} else {
 					$CellsLeft = 0;
 				}
-				$DoFinal = 0;
 			}
 		}
 		if ( $DoFinal == 1 && $On == "Final" ) {
@@ -222,12 +230,7 @@ if ( isset($_POST['OrderBy']) ) {
 			}
 			if ( $Data['Judge'] == $x ) {
 				if ( $_POST['JCol'] == '1' ) {
-					echo '<td>' . $Data['Rank'];
-					if ( $Data['Qual'] != NULL ) {
-						echo "/" . $Data['Qual'] . "</td>";
-					} else {
-						echo "</td>";
-					}
+					echo '<td>' . $Data['Rank'] . '</td>';
 				}
 				$TotalR = $TotalR + $Data['Rank'];
 				$TotalQ = $TotalQ + $Data['Qual'];
@@ -300,7 +303,7 @@ th {
 <b>Tournament:</b> <div id="Tourneys">' . Tournaments(1) . '</div><br>
 <b>Student:</b> <div id="Students">' . Students(1) . '</div><br>
 <b>Event:</b> <div id="Events">' . Events(1) . '</div><br>
-<div><b>Order By:</b> <select id="OrderBy"><option value="DateName">Date then Name then Event</option><option value="DateEvent">Date then Event then Name</option><option value="NameDate">Name then Date then Event</option><option value="NameEvent">Name then Event then Date</option><option value="EventDate">Event then Date then Name</option><option value="EventName">Event then Name then Date</option></select></div><br>
+<div><b>Order By:</b> <select id="OrderBy"><option value="EventPRank">Test</option><option value="DateName">Date then Name then Event</option><option value="DateEvent">Date then Event then Name</option><option value="NameDate">Name then Date then Event</option><option value="NameEvent">Name then Event then Date</option><option value="EventDate">Event then Date then Name</option><option value="EventName">Event then Name then Date</option></select></div><br>
 <div><b>Broke:</b> <select id="broke"><option value="2">Both</option><option value="1">Yes</option><option value="0">No</option></select></div><br>
 <div><b>State Qual:</b> <select id="State"><option value="2">Both</option><option value="1">Yes</option><option value="0">No</option></select></div><br>
 <div><input type="submit" onclick="SubmitInfo();" value="Show Results"></div>
