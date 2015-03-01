@@ -73,14 +73,15 @@ if ( isset($_POST['RID']) ) {
 	if (( $_POST['broke'] == 1 )) {
 		for ( $x = 1; $x <= $NumJudges; $x++ ) {
 			if (( ! isset($_POST['J' . $x . 'R']) )) {
-				echo "Error - Ranks for judge " . $x . " in finals are missing.";
-				return 0;
-			}
-			$FRanks = $FRanks + $_POST['J' . $x . 'R'];
-			$query = mysql_query("insert into Ballots set RID='" . $RID . "', Judge='" . $x . "', Rank='" . $_POST['J' . $x . 'R'] . "', Qual='" . $_POST['J' . $x . 'Q'] . "';");
-			if (( mysql_errno() )) {
-				echo "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . " on Judge " . $x . ".";
-				return 0;
+				echo "Warning - Ranks for judge " . $x . " in finals are missing.<br>";
+				//return 0;
+			} else {
+				$FRanks = $FRanks + $_POST['J' . $x . 'R'];
+				$query = mysql_query("insert into Ballots set RID='" . $RID . "', Judge='" . $x . "', Rank='" . $_POST['J' . $x . 'R'] . "', Qual='" . $_POST['J' . $x . 'Q'] . "';");
+				if (( mysql_errno() )) {
+					echo "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . " on Judge " . $x . ".";
+					return 0;
+				}
 			}
 		}
 	}
@@ -131,8 +132,10 @@ if ( isset($_POST['RID']) ) {
 	} else {
 		echo "true";
 	}
-} else {
-	echo '<html>
+	return 0;
+}
+?>
+<html>
 <head><title>Enter Tournament Information</title>
 <style>
 input[type="number"] {
@@ -143,9 +146,9 @@ input[type="number"] {
 <body>
 <h1><div id="Header">Select a Tournament</div></h1>
 <h3 id="Message"></h3>
-<div id="Tourneys">' . Tournaments(0) . '<input type="button" value="Select" onclick="MakePage();"></div><form id="EntryID" action="TournamentUpdate.php"><div id="TourneyID"></div><br>
-<div id="Students" style="display: none;">' . Students(0) . '</div><br><br>
-<div id="Events" style="display: none;">' . Events(0) . '</div><br><br>
+<div id="Tourneys"><?php echo Tournaments(0); ?> <input type="button" value="Select" onclick="MakePage();"></div><form id="EntryID" action="TournamentUpdate.php"><div id="TourneyID"></div><br>
+<div id="Students" style="display: none;"><?php echo Students(0); ?></div><br><br>
+<div id="Events" style="display: none;"><?php echo Events(0); ?></div><br><br>
 <div id="Rounds"></div>
 <div id="info" style="display: none;">
     <input type="checkbox" value="broke" onchange="OutsHideShow();" id="broke">Broke<br>
@@ -198,12 +201,8 @@ function SubmitInfo() {
         IString = IString + "broke=1&";
         z = y + 3;
         for ( x = z; x < document.getElementById("EntryID").elements.length - 1; x++ ) {
-            BString = BString + document.getElementById("EntryID").elements[x].id + "=" + document.getElementById("EntryID").elements[x].value + "&";
-            IDQ = document.getElementById("EntryID").elements[x].id;
-            Character = IDQ.charAt(2);
-            if ( Character != "Q" && document.getElementById("EntryID").elements[x].value == "" ) {
-                document.getElementById("Message").innerHTML = "Enter value for " + document.getElementById("EntryID").elements[x].id;
-                return;
+            if ( document.getElementById("EntryID").elements[x].value != "" ) {
+            	BString = BString + document.getElementById("EntryID").elements[x].id + "=" + document.getElementById("EntryID").elements[x].value + "&";
             }
         }
     } else {
@@ -255,30 +254,28 @@ function MakePage(){
     NumJudge = InfoSplit[1];
     HTMLString = ""
     for ( x = 1; x <= NumRounds; x++ ) {
-        HTMLString = HTMLString + "Round " + x + ' . "'" . ': <input type="number" id="R' . "'" . ' + x + ' . "'" . 'R"><input type="number" id="R' . "'" . ' + x + ' . "'" . 'Q"><br>' . "'" . ';
+        HTMLString = HTMLString + "Round " + x + ': <input type="number" id="R' + x + 'R"><input type="number" id="R' + x + 'Q"><br>';
     }
     document.getElementById("Rounds").innerHTML = HTMLString;
     HTMLString = ""
     for ( x = 1; x <= NumJudge; x++ ) {
-        HTMLString = HTMLString + "Judge " + x + ' . "'" . ': <input type="number" id="J' . "'" . ' + x + ' . "'" . 'R"><br>' . "'" . ';
+        HTMLString = HTMLString + "Judge " + x + ': <input type="number" id="J' + x + 'R"><br>';
     }
-    HTMLString = HTMLString + ' . "'" . 'Place: <input type="number" id="place"><br>' . "'" . ';
+    HTMLString = HTMLString + 'Place: <input type="number" id="place"><br>';
     document.getElementById("Outs").innerHTML = HTMLString;
-    document.getElementById("info").style.display = ' . "'" . 'inline' . "'" . ';
-    document.getElementById("Events").style.display = ' . "'" . 'inline' . "'" . ';
-    document.getElementById("Students").style.display = ' . "'" . 'inline' . "'" . ';
-    document.getElementById("submit").style.display = ' . "'" . 'inline' . "'" . ';
-    document.getElementById("TourneyID").innerHTML = ' . "'" . '<input type="hidden" id="TID" value="' . "'" . ' + document.getElementById("Tournament").options[document.getElementById("Tournament").selectedIndex].value + ' . "'" . '">' . "'" . ';
+    document.getElementById("info").style.display = 'inline';
+    document.getElementById("Events").style.display = 'inline';
+    document.getElementById("Students").style.display = 'inline';
+    document.getElementById("submit").style.display = 'inline';
+    document.getElementById("TourneyID").innerHTML = '<input type="hidden" id="TID" value="' + document.getElementById("Tournament").options[document.getElementById("Tournament").selectedIndex].value + '">';
 }
 function OutsHideShow() {
     if ( document.getElementById("broke").checked ) {
-        document.getElementById("Outs").style.display = ' . "'" . 'inline' . "'" . ';
+        document.getElementById("Outs").style.display = 'inline';
     } else {
-        document.getElementById("Outs").style.display = ' . "'" . 'none' . "'" . ';
+        document.getElementById("Outs").style.display = 'none';
     }
 }
 </script>
 </body>
-</html>';
-}
-?>
+</html>
