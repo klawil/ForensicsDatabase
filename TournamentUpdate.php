@@ -181,6 +181,7 @@ function SubmitPartner() {
 }
 function SubmitInfo() {
     event.preventDefault();
+    document.getElementById("Message").innerHTML = "Submitting...";
     x = 3;
     RString = "";
     while (document.getElementById("EntryID").elements[x].value != "broke") {
@@ -225,8 +226,10 @@ function SubmitInfo() {
     xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
     xmlhttp.send(RString + BString + IString);
     response = xmlhttp.responseText;
-    if ( response == "true" ) {
-        document.getElementById("Message").innerHTML = document.getElementById("Student").options[document.getElementById("Student").selectedIndex].text + " entry in " + document.getElementById("Event").options[document.getElementById("Event").selectedIndex].text + " submitted successfully.";
+    if ( response.indexOf("true") > -1 ) {
+    	string = response;
+    	string = string.replace("true",document.getElementById("Student").options[document.getElementById("Student").selectedIndex].text + " entry in " + document.getElementById("Event").options[document.getElementById("Event").selectedIndex].text + " submitted successfully.");
+        document.getElementById("Message").innerHTML = string;
         document.getElementById("EntryID").reset();
         OutsHideShow();
     } else {
