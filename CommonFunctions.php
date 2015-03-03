@@ -1,6 +1,9 @@
 <?php
 function Tournaments($IncludeAll) {
 	$query = mysql_query("select TName, TID from Tournaments order by Date desc, TName;");
+	if (( mysql_errno() )) {
+		return "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . ".";
+	}
 	$NumRows = mysql_num_rows($query);
 	$CurrentRow = 0;
 	$TournamentString = '<select id="Tournament">';
@@ -15,11 +18,18 @@ function Tournaments($IncludeAll) {
 	$TournamentString = $TournamentString . "</select>";
 	return $TournamentString;
 }
-function Students($IncludeAll) {
+function Students($IncludeAll, $FormName = NULL) {
 	$query = mysql_query("select FName, LName, SID from Students order by LName, FName;");
+	if (( mysql_errno() )) {
+		return "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . ".";
+	}
 	$NumRows = mysql_num_rows($query);
 	$CurrentRow = 0;
-	$StudentString = '<select id="Student">';
+	if ( $FormName == NULL ) {
+		$StudentString = '<select id="Student">';
+	} else {
+		$StudentString = '<select id="Student" name="SID" form="' . $FormName . '">';
+	}
 	if ( $IncludeAll == 1 ) {
 		$StudentString = $StudentString . "<option value='-1'>All Students</option>";
 	}
@@ -34,8 +44,7 @@ function Students($IncludeAll) {
 function Events($IncludeAll) {
 	$query = mysql_query("select * from Events order by EName;");
 	if (( mysql_errno() )) {
-		echo "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . ".";
-		return 0;
+		return "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . ".";
 	}
 	$NumRows = mysql_num_rows($query);
 	$CurrentRow = 0;
