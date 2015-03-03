@@ -23,7 +23,7 @@ if ( isset($_POST['OrderBy']) ) {
 	} elseif ( $_POST['OrderBy'] == "DateEvent" ) {
 		$OString = " order by Date, EName, Name, Judge asc, Round";
 	} elseif ( $_POST['OrderBy'] == "EventPRank" ) {
-		$OString = " order by EName, PScore, Name, Date, Judge asc, Round";
+		$OString = " order by EName, PScore, PQual desc, FScore, Name, Date, Judge asc, Round";
 	} else {
 		echo "Error - No valid sorting parameter given.";
 		return 0;
@@ -81,8 +81,11 @@ if ( isset($_POST['OrderBy']) ) {
 	$Data = mysql_fetch_assoc($NumRoundQuery);
 	$NumRounds = $Data['Rd'];
 	$NumJudges = $Data['Jdg'];
-	//echo 'select SID2, Results.RID as RID, concat(LName, ", ", FName) as Name, PRanks / NumberRounds as PScore, TName, EName, Rank, Qual, Judge, Round, broke, State, place from Students, Events, Tournaments, Results, Ballots' . $WString . $OString . ";";
-	$query = mysql_query('select SID2, Results.RID as RID, concat(LName, ", ", FName) as Name, PRanks / NumberRounds as PScore, TName, EName, Rank, Qual, Judge, Round, broke, State, place from Students, Events, Tournaments, Results, Ballots' . $WString . $OString . ";");
+	$query = mysql_query('select SID2, Results.RID as RID, concat(LName, ", ", FName) as Name, PRanks / NumberRounds as PScore, PQuals/ NumberRounds as PQual, FRanks / NumberJudges as FScore, TName, EName, Rank, Qual, Judge, Round, broke, State, place from Students, Events, Tournaments, Results, Ballots' . $WString . $OString . ";");
+	if (( mysql_errno() )) {
+		echo "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . ".";
+		return 0;
+	}
 	echo '<table border="1" style="border-collapse: collapse;"><tr>';
 	if ( $_POST['Edit'] == '1' ) {
 		echo '<th></th>';
@@ -139,7 +142,7 @@ if ( isset($_POST['OrderBy']) ) {
 					if ( $_POST['ToCol'] == '1' ) {
 						echo '<td>' . $TotalR . "/" . $TotalQ . '</td>';
 					}
-					$CellsLeft = $CellsLeft - $NumJudges - 1;
+					$CellsLeft = $NumJudges;
 				}
 				for ( $y = 1; $y <= $CellsLeft; $y++ ){
 					echo '<td></td>';
@@ -203,7 +206,7 @@ if ( isset($_POST['OrderBy']) ) {
 			} elseif ( $Data['Judge'] != NULL ) {
 				$num = $x;
 				for ( $x = $num; $x <= $NumRounds; $x++ ) {
-					echo '<td>Test</td>';
+					echo '<td></td>';
 				}
 			}
 			$CellsLeft = ($NumRounds - $x);
@@ -223,7 +226,7 @@ if ( isset($_POST['OrderBy']) ) {
 					$DoFinal = 0;
 				}
 				if ( $_POST['ToCol'] == '1' ) {
-					echo '<td>' . $TotalR . "/" . $TotalQ . ':' . $Data['PScore'] . '</td>';
+					echo '<td>' . $TotalR . "/" . $TotalQ . '</td>';
 				}
 				if ( $_POST['JCol'] == '1' ) {
 					$CellsLeft = $NumJudges;
@@ -265,6 +268,7 @@ if ( isset($_POST['OrderBy']) ) {
 		echo '<td>' . $TotalR . "/" . $TotalQ . '</td>';
 	}
 	echo "</tr></table>";
+	return 0;
 } elseif ( isset($_POST['Tournaments']) ) {
 	if ( isset($_POST['IncludeAll']) ) {
 		$Result = Tournaments(1);
@@ -272,6 +276,7 @@ if ( isset($_POST['OrderBy']) ) {
 		$Result = Tournaments(0);
 	}
 	echo $Result;
+	return 0;
 } elseif ( isset($_POST['Students']) ) {
 	if ( isset($_POST['IncludeAll']) ) {
 		$Result = Students(1);
@@ -279,10 +284,12 @@ if ( isset($_POST['OrderBy']) ) {
 		$Result = Students(0);
 	}
 	echo $Result;
+	return 0;
 } elseif ( isset($_POST['TID']) ) {
 	$query = mysql_query("select NumRounds, NumFinalsJudges from Tournaments where TID=" . $_POST['TID'] . ";");
 	$data = mysql_fetch_assoc($query);
 	echo $data['NumRounds'] . "|" . $data['NumFinalsJudges'];
+	return 0;
 } elseif ( isset($_POST['Events']) ) {
 	if ( isset($_POST['IncludeAll']) ) {
 		$Return = Events(1);
@@ -290,8 +297,10 @@ if ( isset($_POST['OrderBy']) ) {
 		$Return = Events(0);
 	}
 	echo $Return;
-} else {
-	echo '<html>
+	return 0;
+}
+?>
+<html>
 <head><title>Display Info</title>
 <style>
 td {
@@ -310,9 +319,9 @@ th {
 <h1><div id="Header" style="width: 100%;">Select Information To Be Returned</div></h1>
 <div style="display: float; float: left;">
 <h3>Select Information From:</h3>
-<b>Tournament:</b> <div id="Tourneys">' . Tournaments(1) . '</div><br>
-<b>Student:</b> <div id="Students">' . Students(1) . '</div><br>
-<b>Event:</b> <div id="Events">' . Events(1) . '</div><br>
+<b>Tournament:</b> <div id="Tourneys"><?php echo Tournaments(1); ?></div><br>
+<b>Student:</b> <div id="Students"><?php echo Students(1); ?></div><br>
+<b>Event:</b> <div id="Events"><?php echo Events(1); ?></div><br>
 <div><b>Order By:</b> <select id="OrderBy"><option value="EventPRank">Event then Average Ranks then Name</option><option value="DateName">Date then Name then Event</option><option value="DateEvent">Date then Event then Name</option><option value="NameDate">Name then Date then Event</option><option value="NameEvent">Name then Event then Date</option><option value="EventDate">Event then Date then Name</option><option value="EventName">Event then Name then Date</option></select></div><br>
 <div><b>Broke:</b> <select id="broke"><option value="2">Both</option><option value="1">Yes</option><option value="0">No</option></select></div><br>
 <div><b>State Qual:</b> <select id="State"><option value="2">Both</option><option value="1">Yes</option><option value="0">No</option></select></div><br>
@@ -413,6 +422,4 @@ function SubmitInfo() {
 }
 </script>
 </body>
-</html>';
-}
-?>
+</html>
