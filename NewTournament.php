@@ -17,7 +17,7 @@ if ( isset($_POST['TName']) ) {
 		$query = mysql_query("INSERT INTO Tournaments SET TName='" . $_POST['TName'] . "', Date='" . $_POST['Date'] . "', NumRounds='" . $_POST['NumRounds'] . "', NumFinalsJudges='" . $_POST['NumFinalsJudges'] . "';");
 		if (( mysql_errno() )) {
 			echo "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . ".";
-			return 0;
+			break;
 		}
 		echo $_POST['TName'] . " added succesfully.";
 	}

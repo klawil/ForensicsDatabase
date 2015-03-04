@@ -20,6 +20,10 @@ if ( isset($_POST['RID']) ) {
 		return 0;
 	}
 	$query = mysql_query("SELECT NumRounds, NumFinalsJudges from Tournaments where TID='" . $_POST['TID'] . "';");
+	if (( mysql_errno() )) {
+		echo "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . ".";
+		break;
+	}
 	$NumRows = mysql_num_rows($query);
 	if ( $NumRows == 0 ) {
 		echo "Error - No tournament with that ID";
@@ -113,6 +117,10 @@ if ( isset($_POST['RID']) ) {
 	$Data = mysql_fetch_assoc($query);
 	if ( $Data['Partner'] == "1" ) {
 		$query = mysql_query("select FName, LName, SID from Students order by LName, FName;");
+		if (( mysql_errno() )) {
+			echo "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . ".";
+			return 0;
+		}
 		$NumRows = mysql_num_rows($query);
 		$CurrentRow = 0;
 		$StudentString = '<select name="SID" form="SIDSelect" id="SID">';

@@ -15,9 +15,9 @@ if (( isset($_POST['FName']) )) {
 ';
 	} else {
 		$query = mysql_query("INSERT INTO Students SET FName='" . $_POST['FName'] . "', LName='" . $_POST['LName'] . "', Year=" . $_POST['Year'] . ";");
-		if ( $query = "" ) {
-			echo 'Error processing entry.
-';
+		if (( mysql_errno() )) {
+			echo "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . ".";
+			break;
 		} else {
 		echo $_POST['FName'] . " " . $_POST['LName'] . " added.
 ";

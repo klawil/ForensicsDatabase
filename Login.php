@@ -1,7 +1,11 @@
 <?php
+include "MySQLAuth.php";
 if ( isset($_POST['UName']) ) {
-	include "MySQLAuth.php";
 	$query = mysql_query("select password from users where UName='" . $_POST['UName'] . "';");
+	if (( mysql_errno() )) {
+		echo "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . ".";
+		return 0;
+	}
 	if ( mysql_num_rows($query) == 0 ) {
 		echo "No user with that username found.";
 		return 0;
@@ -15,8 +19,10 @@ if ( isset($_POST['UName']) ) {
 	} else {
 		echo "False";
 	}
-} else { 
-	echo '<html>
+	return 0;
+}
+?>
+<html>
 <head><title>Login</title></head>
 <body>
 <form id="Login" action="Login.php" method="post">
@@ -25,6 +31,4 @@ if ( isset($_POST['UName']) ) {
 <input type="submit" value="Submit"><br>
 </form>
 </body>
-</html>';
-}
-?>
+</html>

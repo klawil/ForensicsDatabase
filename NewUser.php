@@ -1,8 +1,8 @@
-<?php
-echo '<html>
+<html>
 <head><title>User Creation</title></head>
 <body>
-<h1>New User Creation</h1>';
+<h1>New User Creation</h1>
+<?php
 if ( isset($_POST['UName']) ) {
 	$iswrong = 0;
 	$UName = $_POST['UName'];
@@ -55,9 +55,7 @@ Password: <input type="password" name="PWord"><br>
 		return 0;
 	}
 	echo 'User ' . $_POST['FName'] . ' ' . $_POST['LName'] . ' (' . $_POST['UName'] . ') has been added.
-<a href="/">Return to Main Page</a>
-</body>
-</html>';
+<a href="/">Return to Main Page</a>';
 } else {
 	echo '<form id="UserForm" action="NewUser.php" method="post"><br>
 First Name: <input type="text" name="FName"><br>
@@ -66,7 +64,8 @@ Email: <input type="text" name="Email"><br>
 Username: <input type="text" name="UName"><br>
 Password: <input type="password" name="PWord"><br>
 <input type="submit" value="Submit">
-</form>
-</body>
-</html>';
+</form>';
 }
+?>
+</body>
+</html>

@@ -36,6 +36,10 @@ if (( mysql_errno() )) {
 		$Name = $Data['Name'];
 		if ( $Data['SID2'] != NULL ) {
 			$NameQuery = mysql_query("select concat(LName, ', ', FName) as Name from Students where SID='" . $Data['SID2'] . "';");
+			if (( mysql_errno() )) {
+				echo "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . ".";
+				break;
+			}
 			$NameData = mysql_fetch_assoc($NameQuery);
 			$Name = $Name . " and " . $NameData['Name'];
 		}
