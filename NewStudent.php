@@ -1,10 +1,9 @@
-<?php
-echo '<html>
+<html>
 <head>
 <title>New Student</title>
 </head>
 <body>
-';
+<?php
 if (( isset($_POST['FName']) )) {
 	include "MySQLAuth.php";
 	$tbl = "Students";
@@ -25,7 +24,8 @@ if (( isset($_POST['FName']) )) {
 		}
 	}
 }
-echo '<form id="NewStudent" action="NewStudent.php" method="post">
+?>
+<form id="NewStudent" action="NewStudent.php" method="post">
 <table>
     <tr><td>First Name</td><td><input type="text" name="FName" onblur="CheckFName();"></td><td id="FNameWarn"></td></tr>
     <tr><td>Last Name</td><td><input type="text" name="LName" onblur="CheckLName();"></td><td id="LNameWarn"></td></tr>
@@ -52,5 +52,4 @@ function CheckLName(){
 }
 </script>
 </body>
-</html>';
-?>
+</html>

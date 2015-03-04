@@ -1,18 +1,6 @@
 <?php
 include "MySQLAuth.php";
-$query = mysql_query("select TName, TID from Tournaments order by Date desc, TName;");
-$NumRows = mysql_num_rows($query);
-$CurrentRow = 0;
-$TournamentString = '<select name="TID" form="TournamentInfo">';
-if ( isset($_POST['IncludeAll']) ) {
-	$TournamentString = $TournamentString . "<option value='-1'>All Tournaments</option>";
-}
-while ( $CurrentRow < $NumRows ) {
-	$results = mysql_fetch_assoc($query);
-	$TournamentString = $TournamentString . '<option value="' . $results['TID'] . '">' . $results['TName'] . "</option>";
-	$CurrentRow++;
-}
-$TournamentString = $TournamentString . "</select>";
+include "CommonFunctions.php";
 if ( isset($_POST['TID']) ) {
 	$query = mysql_query("select TName, Date from Tournaments where TID='" . $_POST['TID'] . "';");
 	if ( mysql_num_rows($query) != 1 ) {
@@ -23,7 +11,7 @@ if ( isset($_POST['TID']) ) {
 <h3>Error - That tournament is invalid.</h3>
 <h3>This page will return ranking contestants from that tournament.</h3>
 <form id="TournamentInfo" action="TournamentSummary.php" method="post">
-' . $TournamentString . '<br>
+' . Tournaments(0) . '<br>
 <input type="submit" value="Select">
 </form>
 </body>
@@ -87,17 +75,17 @@ if ( isset($_POST['TID']) ) {
 	}
 	echo '</body>
 </html>';
-} else {
-	echo '<html>
+	return 0;
+}
+?>
+<html>
 <head><title>Tournament Information</title></head>
 <body>
 <h1>Choose a Tournament</h1>
 <h3>This page will return ranking contestants from that tournament.</h3>
 <form id="TournamentInfo" action="TournamentSummary.php" method="post">
-' . $TournamentString . '<br>
+<?php echo Tournaments(0); ?><br>
 <input type="submit" value="Select">
 </form>
 </body>
-</html>';
-}
-?>
+</html>
