@@ -6,7 +6,7 @@ function Tournaments($IncludeAll) {
 	}
 	$NumRows = mysql_num_rows($query);
 	$CurrentRow = 0;
-	$TournamentString = '<select id="Tournament">';
+	$TournamentString = '<select id="Tournament" name="TID">';
 	if ( $IncludeAll == 1 ) {
 		$TournamentString = $TournamentString . "<option value='-1'>All Tournaments</option>";
 	}
@@ -26,7 +26,7 @@ function Students($IncludeAll, $FormName = NULL) {
 	$NumRows = mysql_num_rows($query);
 	$CurrentRow = 0;
 	if ( $FormName == NULL ) {
-		$StudentString = '<select id="Student">';
+		$StudentString = '<select id="Student" name="SID">';
 	} else {
 		$StudentString = '<select id="Student" name="SID" form="' . $FormName . '">';
 	}
@@ -48,7 +48,7 @@ function Events($IncludeAll) {
 	}
 	$NumRows = mysql_num_rows($query);
 	$CurrentRow = 0;
-	$EventString = '<select id="Event">';
+	$EventString = '<select id="Event" name="EID">';
 	if ( $IncludeAll == 1 ) {
 		$EventString = $EventString . "<option value='-1'>All Events</option>";
 	}
