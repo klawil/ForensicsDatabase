@@ -81,7 +81,8 @@ if ( isset($_POST['TID']) ) {
 <html>
 <head><title>Tournament Information</title></head>
 <body>
-<h1>Choose a Tournament</h1>
+<h1>Tournament Summary</h1>
+<?php MakeHeader(); ?>
 <h3>This page will return ranking contestants from that tournament.</h3>
 <form id="TournamentInfo" action="TournamentSummary.php" method="post">
 <?php echo Tournaments(0); ?><br>

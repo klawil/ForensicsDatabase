@@ -17,6 +17,7 @@ include "CommonFunctions.php";
 </head>
 <body>
 <h1>Team Summary</h1>
+<?php MakeHeader(); ?>
 <h3>State Qualifiers</h3>
 <?php
 $query = mysql_query('select distinct SID2, concat(LName, ", ", FName) as Name, EName from Students, Events, Results, Tournaments where Results.TID = Tournaments.TID and Results.EID = Events.EID and Results.State = 1 and Results.SID = Students.SID order by EName, Date;');

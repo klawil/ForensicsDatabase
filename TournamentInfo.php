@@ -317,6 +317,7 @@ th {
 <body>
 <form id="display">
 <h1><div id="Header" style="width: 100%;">Select Information To Be Returned</div></h1>
+<?php MakeHeader(); ?>
 <div style="display: float; float: left;">
 <h3>Select Information From:</h3>
 <b>Tournament:</b> <div id="Tourneys"><?php echo Tournaments(1); ?></div><br>

@@ -1,8 +1,10 @@
 <html>
 <head><title>User Creation</title></head>
 <body>
-<h1>New User Creation</h1>
+<h1>New User</h1>
 <?php
+include 'CommonFunctions.php';
+MakeHeader();
 if ( isset($_POST['UName']) ) {
 	$iswrong = 0;
 	$UName = $_POST['UName'];

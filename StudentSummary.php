@@ -47,6 +47,7 @@ if ( isset($_POST['SID']) && $ErrorString == "" ) {
 } else {
 	echo '<h1 id="Title">Student Summary Page</h1>';
 }
+MakeHeader();
 ?>
 <form id="StudentSelect" action="StudentSummary.php" method="post">
 Select another student: <?php echo Students(0,"StudentSelect"); ?>

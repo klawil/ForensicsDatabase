@@ -152,7 +152,9 @@ input[type="number"] {
 </style>
 </head>
 <body>
-<h1><div id="Header">Select a Tournament</div></h1>
+<h1>Tournament Update</h1>
+<?php MakeHeader(); ?>
+<h1><div id="Header"></div></h1>
 <h3 id="Message"></h3>
 <div id="Tourneys"><?php echo Tournaments(0); ?> <input type="button" value="Select" onclick="MakePage();"></div><form id="EntryID" action="TournamentUpdate.php"><div id="TourneyID"></div><br>
 <div id="Students" style="display: none;"><?php echo Students(0); ?></div><br><br>

@@ -3,7 +3,10 @@
 <title>New Tournament</title>
 </head>
 <body>
+<h1>New Tournament</h1>
 <?php
+include 'CommonFunctions.php';
+MakeHeader();
 if ( isset($_POST['TName']) ) {
 	include "MySQLAuth.php";
 	$tbl = "Tournaments";
