@@ -84,6 +84,10 @@ li ul {
 li #loginwin {
 	right: 0;
 }
+#loginwin li {
+	padding-right: 5;
+	padding-left: 5;
+}
 #loginwin {
 	display: none;
 }
