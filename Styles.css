@@ -81,7 +81,12 @@ li ul {
 	position: absolute;
 	top: 28px;
 }
+li #loginwin {
+	right: 0;
+}
+#loginwin {
+	display: none;
+}
 li:hover ul {
 	display: block;
-	position: absolute;
 }
