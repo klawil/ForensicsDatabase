@@ -52,6 +52,7 @@ nav ul li ul {
 	padding-bottom: 0px;
 	border-radius: 0px;
 	width: auto;
+	z-index: 10;
 }
 nav ul li a {
 	color: #FFFFFF;
@@ -69,6 +70,7 @@ nav ul li ul li {
 	float: none;
 	padding: 5px;
 	padding-right: 30px;
+	z-index: 10;
 }
 li ul {
 	display: none;
