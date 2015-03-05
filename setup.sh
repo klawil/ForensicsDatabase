@@ -35,7 +35,7 @@ if [ "$?" != "0" ]; then
 	echo "Error creating table Tournaments"
 	exit
 fi
-$mysqlc -D $mysqldbname -e "create table users ( UName varchar(20) not null, FName varchar(30) not null, LName varchar(30) not null, password varchar(255) not null, Email varchar(255), primary key (UName) );"
+$mysqlc -D $mysqldbname -e "create table users ( UName varchar(20) not null, FName varchar(30) not null, LName varchar(30) not null, password varchar(255) not null, Email varchar(255), cookie varchar(255), primary key (UName) );"
 if [ "$?" != "0" ]; then
 	echo "Error creating table users"
 	exit
