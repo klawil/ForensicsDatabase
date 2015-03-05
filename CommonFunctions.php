@@ -63,23 +63,27 @@ function Events($IncludeAll) {
 function MakeHeader() {
 	echo '<nav>
 	<ul>
-	<li><a href="TournamentInfo.php">Results</a></li>
-	<li><a href="#">Summary</a>
+	<a href="TournamentInfo.php"><li>Results</li></a>
+	<li>Summary
 		<ul>
-		<li><a href="StudentSummary.php">Student</a></li>
-		<li><a href="TournamentSummary.php">Tournament</a></li>
-		<li><a href="TeamSummary.php">Team</a></li>
+		<a href="StudentSummary.php"><li>Student</li></a>
+		<a href="TournamentSummary.php"><li>Tournament</li></a>
+		<a href="TeamSummary.php"><li>Team</li></a>
 		</ul>
 	</li>
-	<li><a href="#">Management</a>
+	<li>Management
 		<ul>
-		<li><a href="NewStudent.php">New Student</a></li>
-		<li><a href="NewTournament.php">New Tournament</a></li>
-		<li><a href="TournamentUpdate.php">Insert Data</a></li>
+		<a href="NewStudent.php"><li>New Student</li></a>
+		<a href="NewTournament.php"><li>New Tournament</li></a>
+		<a href="TournamentUpdate.php"><li>Insert Data</li></a>
 		</ul>
 	</li>
 	<li id="login"><a href="Login.php"><b>Login</b></a></li>
 	</ul>
 </nav>';
+}
+function Authorize() {
+	$CookieName = 'forensics_db_auth_token';
+	
 }
 ?>

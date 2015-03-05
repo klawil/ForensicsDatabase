@@ -41,6 +41,10 @@ nav ul {
 	display: inline-table;
 	width: calc(100% - 40px);
 	z-index: 10;
+	color: #FFFFFF;
+}
+nav ul a {
+	color: #FFFFFF;
 }
 nav ul #login {
 	float: right;
