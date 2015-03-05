@@ -4,6 +4,12 @@ h1 {
 	padding-left: 10;
 	color: #0000FF;
 }
+h2, h3, h4, h5 {
+	margin: 0;
+	line-height: 1;
+	padding-left: 10;
+	padding-bottom: 2;
+}
 #tab {
 	padding-left:1em;
 }
