@@ -14,7 +14,7 @@ include "CommonFunctions.php";
 <body>
 <h1>Team Summary</h1>
 <?php MakeHeader(); ?>
-<div style="width: 15%; display: float; float: left;">
+<div style="display: float; float: right;">
 <h3>State Qualifiers</h3>
 <?php
 $query = mysql_query('select distinct SID2, concat(LName, ", ", FName) as Name, EName from Students, Events, Results, Tournaments where Results.TID = Tournaments.TID and Results.EID = Events.EID and Results.State = 1 and Results.SID = Students.SID order by EName, Date;');
@@ -60,7 +60,7 @@ if (( mysql_errno() )) {
 	}
 }
 echo "</div>
-<div id='visualization' style='width: 84%; height: 90%; display: float; float: right;'></div>
+<div id='visualization' style='width: 84%; height: 92%; display: float; float: left; margin-top: -50; margin-left: -50; margin-right: -50;'></div>
 <script>
 function MakeGraph() {
 	var data = new google.visualization.DataTable();
