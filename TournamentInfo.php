@@ -86,7 +86,7 @@ if ( isset($_POST['OrderBy']) ) {
 		echo "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . ".";
 		return 0;
 	}
-	echo '<table border="1" style="border-collapse: collapse;"><tr>';
+	echo '<table id="Results-Table" border="1" style="border-collapse: collapse;"><tr>';
 	if ( $_POST['Edit'] == '1' ) {
 		echo '<th></th>';
 	}
