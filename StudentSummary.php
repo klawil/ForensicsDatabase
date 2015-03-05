@@ -134,7 +134,7 @@ function MakeGraph() {
 		$CurrentRow++;
 	}
 	echo "var chart = new google.visualization.LineChart(document.getElementById('visualization'));
-	chart.draw(data, {height: 500, vAxis: { direction: -1, gridlines: {count: 10}, viewWindowMode:'explicit', viewWindow: {max: 0, min: 9}}, interpolateNulls: true});
+	chart.draw(data, {title: '" . $NameFL . " Summary', height: 500, hAxis: { title: 'Tournament' }, vAxis: { title: 'Average Ranks', direction: -1, gridlines: {count: 10}, viewWindowMode:'explicit', viewWindow: {max: 0, min: 9}}, interpolateNulls: true});
 	}
 	google.setOnLoadCallback(MakeGraph);
 </script>";

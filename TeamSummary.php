@@ -14,6 +14,7 @@ include "CommonFunctions.php";
 <body>
 <h1>Team Summary</h1>
 <?php MakeHeader(); ?>
+<div style="width: 15%; display: float; float: left;">
 <h3>State Qualifiers</h3>
 <?php
 $query = mysql_query('select distinct SID2, concat(LName, ", ", FName) as Name, EName from Students, Events, Results, Tournaments where Results.TID = Tournaments.TID and Results.EID = Events.EID and Results.State = 1 and Results.SID = Students.SID order by EName, Date;');
@@ -58,7 +59,8 @@ if (( mysql_errno() )) {
 		$CurrentRow++;
 	}
 }
-echo "<div id='visualization' style='width: 99%; height: 100%;'></div>
+echo "</div>
+<div id='visualization' style='width: 84%; height: 90%; display: float; float: right;'></div>
 <script>
 function MakeGraph() {
 	var data = new google.visualization.DataTable();
@@ -105,7 +107,7 @@ if (( mysql_errno() )) {
 	}
 }
 echo "var chart = new google.visualization.LineChart(document.getElementById('visualization'));
-	chart.draw(data, {vAxis: { direction: -1, gridlines: {count: 7}, viewWindowMode:'explicit', viewWindow: {max: 0, min: 6}}, interpolateNulls: true});
+	chart.draw(data, {title: 'Team Summary', vAxis: { title: 'Average Ranks', direction: -1, gridlines: {count: 7}, viewWindowMode:'explicit', viewWindow: {max: 0, min: 6}}, interpolateNulls: true});
 }
 google.setOnLoadCallback(MakeGraph);
 </script>
