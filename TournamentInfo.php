@@ -1,6 +1,7 @@
 <?php
 include "MySQLAuth.php";
 include "CommonFunctions.php";
+Authorize();
 $tbl = "Tournaments";
 if ( isset($_POST['OrderBy']) ) {
 	if ( ! isset($_POST['broke']) ) {
