@@ -313,7 +313,7 @@ if ( isset($_POST['OrderBy']) ) {
 <b>Tournament:</b> <div id="Tourneys"><?php echo Tournaments(1); ?></div><br>
 <b>Student:</b> <div id="Students"><?php echo Students(1); ?></div><br>
 <b>Event:</b> <div id="Events"><?php echo Events(1); ?></div><br>
-<div><b>Order By:</b> <select id="OrderBy"><option value="EventPRank">Event then Average Ranks then Name</option><option value="DateName">Date then Name then Event</option><option value="DateEvent">Date then Event then Name</option><option value="NameDate">Name then Date then Event</option><option value="NameEvent">Name then Event then Date</option><option value="EventDate">Event then Date then Name</option><option value="EventName">Event then Name then Date</option></select></div><br>
+<div><b>Order By:</b> <select id="OrderBy"><option value="DateName">Date then Name then Event</option><option value="DateEvent">Date then Event then Name</option><option value="NameDate">Name then Date then Event</option><option value="NameEvent">Name then Event then Date</option><option value="EventDate">Event then Date then Name</option><option value="EventName">Event then Name then Date</option><option value="EventPRank">Event then Average Ranks then Name</option></select></div><br>
 <div><b>Broke:</b> <select id="broke"><option value="2">Both</option><option value="1">Yes</option><option value="0">No</option></select></div><br>
 <div><b>State Qual:</b> <select id="State"><option value="2">Both</option><option value="1">Yes</option><option value="0">No</option></select></div><br>
 <div><input type="submit" onclick="SubmitInfo();" value="Show Results"></div>
