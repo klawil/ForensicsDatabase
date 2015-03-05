@@ -61,55 +61,7 @@ function Events($IncludeAll) {
 	return $EventString;
 }
 function MakeHeader() {
-	echo '<style>
-nav ul {
-	background: #0000ff;
-	padding: 0 20px;
-	border-radius: 10px;
-	list-style: none;
-	position: relative;
-	display: inline-table;
-	width: calc(100% - 40px);
-}
-nav ul #login {
-	float: right;
-}
-nav ul li ul {
-	padding-top: 0px;
-	padding-left: 0px;
-	padding-right: 0px;
-	padding-bottom: 0px;
-	border-radius: 0px;
-	width: auto;
-}
-nav ul li a {
-	color: #FFFFFF;
-	text-decoration: none;
-}
-nav ul li:hover {
-	background: #000000;
-}
-nav ul li {
-	float: left;
-	padding: 5px;
-	padding-right: 30px;
-}
-nav ul li ul li {
-	float: none;
-	padding: 5px;
-	padding-right: 30px;
-}
-li ul {
-	display: none;
-	position: absolute;
-	top: 28px;
-}
-li:hover ul {
-	display: block;
-	position: absolute;
-}
-</style>
-<nav>
+	echo '<nav>
 	<ul>
 	<li><a href="TournamentInfo.php">Results</a></li>
 	<li><a href="#">Summary</a>

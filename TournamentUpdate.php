@@ -145,11 +145,7 @@ if ( isset($_POST['RID']) ) {
 ?>
 <html>
 <head><title>Enter Tournament Information</title>
-<style>
-input[type="number"] {
-   width:40px;
-}
-</style>
+<link rel="stylesheet" type="text/css" href="Styles.css">
 </head>
 <body>
 <h1>Tournament Update</h1>

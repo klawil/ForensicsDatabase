@@ -34,6 +34,7 @@ if ( isset($_POST['SID']) ) {
 <script type="text/javascript">
 	google.load('visualization', '1.1', {packages: ['corechart', 'imagelinechart']});
 </script>
+<link rel="stylesheet" type="text/css" href="Styles.css">
 </head>
 <body>
 <?php

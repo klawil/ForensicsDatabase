@@ -1,6 +1,7 @@
 <html>
 <head>
 <title>New Student</title>
+<link rel="stylesheet" type="text/css" href="Styles.css">
 </head>
 <body>
 <h1>New Student</h1>

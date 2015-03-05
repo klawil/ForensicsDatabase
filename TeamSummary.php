@@ -5,11 +5,7 @@ include "CommonFunctions.php";
 <html>
 <head>
 <title>Team Summary</title>
-<style>
-#tab {
-	padding-left:1em;
-}
-</style>
+<link rel="stylesheet" type="text/css" href="Styles.css">
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
 	google.load('visualization', '1.1', {packages: ['corechart', 'imagelinechart']});

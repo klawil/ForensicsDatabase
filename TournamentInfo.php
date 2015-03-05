@@ -302,17 +302,7 @@ if ( isset($_POST['OrderBy']) ) {
 ?>
 <html>
 <head><title>Display Info</title>
-<style>
-td {
-    padding-right: 10;
-    padding-left: 3;
-}
-th {
-    padding-right: 10;
-    padding-left: 10;
-    text-align: center;
-}
-</style>
+<link rel="stylesheet" type="text/css" href="Styles.css">
 </head>
 <body>
 <form id="display">

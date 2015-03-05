@@ -79,7 +79,9 @@ if ( isset($_POST['TID']) ) {
 }
 ?>
 <html>
-<head><title>Tournament Information</title></head>
+<head><title>Tournament Information</title>
+<link rel="stylesheet" type="text/css" href="Styles.css">
+</head>
 <body>
 <h1>Tournament Summary</h1>
 <?php MakeHeader(); ?>
