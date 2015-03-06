@@ -1,5 +1,6 @@
 <html>
 <head><title>User Creation</title></head>
+<link rel="stylesheet" type="text/css" href="Styles.css">
 <body>
 <h1>New User</h1>
 <?php
