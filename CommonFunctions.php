@@ -87,11 +87,43 @@ function MakeHeader() {
 	';
 	}
 	if ( $GLOBALS['UserName'] != "" ) {
-		echo '<li id="login" onclick="ShowLogin();"><b>' . $GLOBALS['UserName'] . '</b>
+		echo '<li id="login"><b onclick="ShowLogin();">' . $GLOBALS['UserName'] . '</b>
 		<ul id="loginwin">
-		<li style="text-align: center;"><input type="button" value="Log Out"></li>
+		<li id="login_message" style="display: none;"></li>
+		<li style="text-align: center;"><input type="button" value="Log Out" onclick="UserLogout();"></li>
 		</ul>
-	</li>';
+	</li>
+	</ul>
+</nav>
+<script>
+function ShowLogin() {
+	if ( document.getElementById("loginwin").style.display != "block" ) {
+		document.getElementById("loginwin").style.display = "block";
+	} else {
+		document.getElementById("loginwin").style.display = "none";
+	}
+}
+function UserLogout() {
+	PString = "Logout=1";
+	if ( window.XMLHttpRequest ) {
+		xmlhttp = new XMLHttpRequest();
+	} else {
+		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.open("POST","Login.php",false);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send(PString);
+	response = xmlhttp.responseText;
+	if ( response == "true" ) {
+		location.reload();
+	} else {
+		document.getElementById("login_message").style.display = "block";
+		document.getElementById("LoginForm").reset();
+		document.getElementById("login_message").innerHTML = response;
+	}
+}
+</script>
+';
 	} else {
 		echo '<li id="login"><b onclick="ShowLogin();">Login</b>
 		<ul id="loginwin">
@@ -102,9 +134,8 @@ function MakeHeader() {
 		<li style="text-align: center;"><input type="button" value="Log In" onclick="LoginUser();"> <a href="NewUser.php"><input type="button" value="New User"></a></li>
 		</form>
 		</ul>
-	</li>';
-	}
-	echo '</ul>
+	</li>
+	</ul>
 </nav>
 <script>
 function ShowLogin() {
@@ -135,6 +166,7 @@ function LoginUser() {
 }
 </script>
 ';
+	}
 }
 function Authorize() {
 	if ( isset($_COOKIE[$GLOBALS['CookieName']]) ) {

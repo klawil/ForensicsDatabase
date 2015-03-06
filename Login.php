@@ -23,4 +23,9 @@ if ( isset($_POST['UName']) ) {
 	}
 	return 0;
 }
+if ( isset($_POST['Logout']) ) {
+	unset($_COOKIE[$GLOBALS['CookieName']]);
+	setcookie($GLOBALS['CookieName'], NULL, 0, "/");
+	echo "true";
+}
 ?>
