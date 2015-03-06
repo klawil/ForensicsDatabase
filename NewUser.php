@@ -59,6 +59,7 @@ Password: <input type="password" name="PWord"><br>
 	}
 	echo 'User ' . $_POST['FName'] . ' ' . $_POST['LName'] . ' (' . $_POST['UName'] . ') has been added.
 <a href="/">Return to Main Page</a>';
+	SetAuthCookie($_POST['UName'])
 } else {
 	echo '<form id="UserForm" action="NewUser.php" method="post"><br>
 First Name: <input type="text" name="FName"><br>
