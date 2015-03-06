@@ -26,6 +26,12 @@ if ( isset($_POST['TName']) ) {
 		echo $_POST['TName'] . " added succesfully.";
 	}
 }
+if ( $GLOBALS['CanUserEdit'] != 1 ) {
+	echo '<h2>Authentication Error: You do not have the permission to access this page</h2>
+</body>
+</html>';
+	return 0;
+}
 ?>
 <form id="NewTournament" action="NewTournament.php" method="post">
 <table>

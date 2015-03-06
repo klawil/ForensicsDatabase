@@ -149,7 +149,15 @@ if ( isset($_POST['RID']) ) {
 </head>
 <body>
 <h1>Tournament Update</h1>
-<?php MakeHeader(); ?>
+<?php
+MakeHeader();
+if ( $GLOBALS['CanUserEdit'] != 1 ) {
+	echo '<h2>Authentication Error: You do not have the permission to access this page</h2>
+</body>
+</html>';
+	return 0;
+}
+?>
 <h1><div id="Header"></div></h1>
 <h3 id="Message"></h3>
 <div id="Tourneys"><?php echo Tournaments(0); ?> <input type="button" value="Select" onclick="MakePage();"></div><form id="EntryID" action="TournamentUpdate.php"><div id="TourneyID"></div><br>
