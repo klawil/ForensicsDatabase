@@ -1,4 +1,8 @@
 <?php
+$GLOBALS['CookieName'] = "forensics_db_auth_token";
+$GLOBALS['SecretWord'] = "ForensicsSECRET";
+$GLOBALS['UserName'] = "";
+$GLOBALS['CanUserEdit'] = 0;
 function Tournaments($IncludeAll) {
 	$query = mysql_query("select TName, TID from Tournaments order by Date desc, TName;");
 	if (( mysql_errno() )) {
@@ -72,7 +76,7 @@ function MakeHeader() {
 		</ul>
 	</li>
 	';
-	if ( $CanUserEdit == 1 ) {
+	if ( $GLOBALS['CanUserEdit'] == 1 ) {
 		echo '<li>Management
 		<ul>
 		<a href="NewStudent.php"><li>New Student</li></a>
@@ -82,8 +86,8 @@ function MakeHeader() {
 	</li>
 	';
 	}
-	if ( $UserName != "" ) {
-		echo '<li id="login" onclick="ShowLogin();"><b>' . $UserName . '</b>
+	if ( $GLOBALS['UserName'] != "" ) {
+		echo '<li id="login" onclick="ShowLogin();"><b>' . $GLOBALS['UserName'] . '</b>
 		<ul id="loginwin">
 		<li style="text-align: center;"><input type="button" value="Log Out"></li>
 		</ul>
@@ -91,10 +95,12 @@ function MakeHeader() {
 	} else {
 		echo '<li id="login"><b onclick="ShowLogin();">Login</b>
 		<ul id="loginwin">
-		<li id="login_message"></li>
-		<li style="text-align: right;">User: <input type="text" name="UName"></li>
-		<li style="text-align: right;">Password: <input type="password" name="PWord"></li>
+		<li id="login_message" style="display: none;"></li>
+		<form id="LoginForm">
+		<li style="text-align: right;">User: <input type="text" name="UName" id="UName"></li>
+		<li style="text-align: right;">Password: <input type="password" name="PWord" id="PWord"></li>
 		<li style="text-align: center;"><input type="button" value="Log In" onclick="LoginUser();"> <a href="NewUser.php"><input type="button" value="New User"></a></li>
+		</form>
 		</ul>
 	</li>';
 	}
@@ -109,13 +115,60 @@ function ShowLogin() {
 	}
 }
 function LoginUser() {
-	document.getElementById("login_message").innerHTML = "Logged In";
+	PString = "UName=" + document.getElementById("UName").value + "&PWord=" + document.getElementById("PWord").value;
+	if ( window.XMLHttpRequest ) {
+		xmlhttp = new XMLHttpRequest();
+	} else {
+		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.open("POST","Login.php",false);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send(PString);
+	response = xmlhttp.responseText;
+	if ( response == "true" ) {
+		location.reload();
+	} else {
+		document.getElementById("login_message").style.display = "block";
+		document.getElementById("LoginForm").reset();
+		document.getElementById("login_message").innerHTML = response;
+	}
 }
 </script>
 ';
 }
 function Authorize() {
-	$CookieName = 'forensics_db_auth_token';
-	
+	if ( isset($_COOKIE[$GLOBALS['CookieName']]) ) {
+		$Array = explode(',',$_COOKIE[$GLOBALS['CookieName']],2);
+		$GLOBALS['UserName'] = $Array[0];
+		$Cookie = $Array[1];
+		$query = mysql_query("select cookie, cookieExp, CanMod from users where UName='" . $GLOBALS['UserName'] . "';");
+		if (( mysql_errno() )) {
+			return 0;
+		}
+		$Data = mysql_fetch_assoc($query);
+		if ( $Cookie != $Data['cookie'] ) {
+			setcookie($GLOBALS['CookieName'], "", time() - 3600);
+			$GLOBALS['UserName'] = "";
+			return 0;
+		} elseif ( time() > $Data['cookieExp'] ) {
+			setcookie($GLOBALS['CookieName'], "", time() - 3600);
+			$GLOBALS['UserName'] = "";
+			return 0;
+		}
+		$GLOBALS['CanUserEdit'] = $Data['CanMod'];
+	}
 }
+function SetAuthCookie($UN) {
+	$ExpDate = time() + (86400 * 7);
+	$MD5 = md5($UN . $GLOBALS['SecretWord'] . $ExpDate);
+	$Cookie = $UN . "," . $MD5;
+	mysql_query("update users set cookie='" . $MD5 . "', cookieExp='" . $ExpDate . "' where UName='" . $UN . "';");
+	if (( mysql_errno() )) {
+		echo "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . ".";
+		return 0;
+	}
+	setcookie($GLOBALS['CookieName'], $Cookie, $ExpDate, "/");
+	return 1;
+}
+Authorize();
 ?>
