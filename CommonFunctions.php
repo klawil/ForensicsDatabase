@@ -1,4 +1,5 @@
 <?php
+include 'MySQLAuth.php';
 $GLOBALS['CookieName'] = "forensics_db_auth_token";
 $GLOBALS['SecretWord'] = "ForensicsSECRET";
 $GLOBALS['UserName'] = "";

@@ -9,7 +9,6 @@
 include 'CommonFunctions.php';
 MakeHeader();
 if ( isset($_POST['TName']) ) {
-	include "MySQLAuth.php";
 	$tbl = "Tournaments";
 	if ( strlen($_POST['TName']) > 30 ) {
 		echo 'Name is too long. Must be 30 characters or less.

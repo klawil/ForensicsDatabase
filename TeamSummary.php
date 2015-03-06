@@ -1,5 +1,4 @@
 <?php
-include "MySQLAuth.php";
 include "CommonFunctions.php";
 ?>
 <html>

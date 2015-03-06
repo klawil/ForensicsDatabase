@@ -1,5 +1,4 @@
 <?php
-include "MySQLAuth.php";
 include "CommonFunctions.php";
 if ( isset($_POST['UName']) ) {
 	$query = mysql_query("select password from users where UName='" . $_POST['UName'] . "';");

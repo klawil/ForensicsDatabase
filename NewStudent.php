@@ -9,7 +9,6 @@
 include 'CommonFunctions.php';
 MakeHeader();
 if (( isset($_POST['FName']) )) {
-	include "MySQLAuth.php";
 	$tbl = "Students";
 	if ( strlen($_POST['FName']) > 20 ) {
 		echo 'First Name is too long

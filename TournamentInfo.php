@@ -1,5 +1,4 @@
 <?php
-include "MySQLAuth.php";
 include "CommonFunctions.php";
 $tbl = "Tournaments";
 if ( isset($_POST['OrderBy']) ) {
