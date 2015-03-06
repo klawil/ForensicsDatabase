@@ -84,6 +84,17 @@ li ul {
 li #loginwin {
 	right: 0;
 }
+#logoutwin {
+	display: none;
+}
+#logoutwin li {
+	padding-right: 5;
+	padding-left: 5;
+}
+#loginwin li {
+	padding-right: 5;
+	padding-left: 5;
+}
 #loginwin {
 	display: none;
 }

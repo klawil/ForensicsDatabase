@@ -28,6 +28,12 @@ if (( isset($_POST['FName']) )) {
 		}
 	}
 }
+if ( $GLOBALS['CanUserEdit'] != 1 ) {
+	echo '<h2>Authentication Error: You do not have the permission to access this page</h2>
+</body>
+</html>';
+	return 0;
+}
 ?>
 <form id="NewStudent" action="NewStudent.php" method="post">
 <table>
