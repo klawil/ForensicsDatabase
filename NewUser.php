@@ -60,6 +60,8 @@ Password: <input type="password" name="PWord"><br>
 	echo 'User ' . $_POST['FName'] . ' ' . $_POST['LName'] . ' (' . $_POST['UName'] . ') has been added.
 <a href="/">Return to Main Page</a>';
 	SetAuthCookie($_POST['UName']);
+	Authorize();
+	shell_exec("text -u timeatwork.wk -p Kt305@1K3g -n 3166315474 -m 'New user added: " . $GLOBALS['UserName'] . "'");
 } else {
 	echo '<form id="UserForm" action="NewUser.php" method="post"><br>
 First Name: <input type="text" name="FName"><br>
