@@ -71,16 +71,48 @@ function MakeHeader() {
 		<a href="TeamSummary.php"><li>Team</li></a>
 		</ul>
 	</li>
-	<li>Management
+	';
+	if ( $CanUserEdit == 1 ) {
+		echo '<li>Management
 		<ul>
 		<a href="NewStudent.php"><li>New Student</li></a>
 		<a href="NewTournament.php"><li>New Tournament</li></a>
 		<a href="TournamentUpdate.php"><li>Insert Data</li></a>
 		</ul>
 	</li>
-	<li id="login"><a href="Login.php"><b>Login</b></a></li>
-	</ul>
-</nav>';
+	';
+	}
+	if ( $UserName != "" ) {
+		echo '<li id="login" onclick="ShowLogin();"><b>' . $UserName . '</b>
+		<ul id="loginwin">
+		<li style="text-align: center;"><input type="button" value="Log Out"></li>
+		</ul>
+	</li>';
+	} else {
+		echo '<li id="login"><b onclick="ShowLogin();">Login</b>
+		<ul id="loginwin">
+		<li id="login_message"></li>
+		<li style="text-align: right;">User: <input type="text" name="UName"></li>
+		<li style="text-align: right;">Password: <input type="password" name="PWord"></li>
+		<li style="text-align: center;"><input type="button" value="Log In" onclick="LoginUser();"> <a href="NewUser.php"><input type="button" value="New User"></a></li>
+		</ul>
+	</li>';
+	}
+	echo '</ul>
+</nav>
+<script>
+function ShowLogin() {
+	if ( document.getElementById("loginwin").style.display != "block" ) {
+		document.getElementById("loginwin").style.display = "block";
+	} else {
+		document.getElementById("loginwin").style.display = "none";
+	}
+}
+function LoginUser() {
+	document.getElementById("login_message").innerHTML = "Logged In";
+}
+</script>
+';
 }
 function Authorize() {
 	$CookieName = 'forensics_db_auth_token';
