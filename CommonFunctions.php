@@ -173,7 +173,7 @@ function Authorize() {
 		$Array = explode(',',$_COOKIE[$GLOBALS['CookieName']],2);
 		$GLOBALS['UserName'] = $Array[0];
 		$Cookie = $Array[1];
-		$query = mysql_query("select cookie, cookieExp, CanMod from users where UName='" . $GLOBALS['UserName'] . "';");
+		$query = mysql_query("select cookie, cookieExp, CanMod, concat(LName, ', ', FName) as Name from users where UName='" . $GLOBALS['UserName'] . "';");
 		if (( mysql_errno() )) {
 			return 0;
 		}
@@ -187,6 +187,7 @@ function Authorize() {
 			$GLOBALS['UserName'] = "";
 			return 0;
 		}
+		$GLOBALS['UserName'] = $Data['Name'];
 		$GLOBALS['CanUserEdit'] = $Data['CanMod'];
 	}
 }
