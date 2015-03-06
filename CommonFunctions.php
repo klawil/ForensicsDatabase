@@ -88,7 +88,7 @@ function MakeHeader() {
 	}
 	if ( $GLOBALS['UserName'] != "" ) {
 		echo '<li id="login"><b onclick="ShowLogin();">' . $GLOBALS['UserName'] . '</b>
-		<ul id="loginwin">
+		<ul id="logoutwin">
 		<li id="login_message" style="display: none;"></li>
 		<li style="text-align: center;"><input type="button" value="Log Out" onclick="UserLogout();"></li>
 		</ul>
@@ -97,10 +97,10 @@ function MakeHeader() {
 </nav>
 <script>
 function ShowLogin() {
-	if ( document.getElementById("loginwin").style.display != "block" ) {
-		document.getElementById("loginwin").style.display = "block";
+	if ( document.getElementById("logoutwin").style.display != "block" ) {
+		document.getElementById("logoutwin").style.display = "block";
 	} else {
-		document.getElementById("loginwin").style.display = "none";
+		document.getElementById("logoutwin").style.display = "none";
 	}
 }
 function UserLogout() {
