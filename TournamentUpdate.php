@@ -160,6 +160,7 @@ if ( $GLOBALS['CanUserEdit'] != 1 ) {
 ?>
 <h1><div id="Header"></div></h1>
 <h3 id="Message"></h3>
+Select Tournament
 <div id="Tourneys"><?php echo Tournaments(0); ?> <input type="button" value="Select" onclick="MakePage();"></div><form id="EntryID" action="TournamentUpdate.php"><div id="TourneyID"></div><br>
 <div id="Students" style="display: none;"><?php echo Students(0); ?></div><br><br>
 <div id="Events" style="display: none;"><?php echo Events(0); ?></div><br><br>
