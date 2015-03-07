@@ -2,26 +2,25 @@
 include "CommonFunctions.php";
 if ( isset($_POST['SID']) ) {
 	$ErrorString = "";
-	$query = mysql_query("select concat(LName, ', ', FName) as NameLF, concat(FName, ' ', LName) as NameFL, Year from Students where SID='" . $_POST['SID'] . "';");
-	if (( mysql_errno() )) {
-		$ErrorString =  "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . ".";
+	$query = mysqli_query($DBConn, "select concat(LName, ', ', FName) as NameLF, concat(FName, ' ', LName) as NameFL, Year from Students where SID='" . $_POST['SID'] . "';");
+	if ( !$query ) {
+		$ErrorString =  "Error - MySQL error: " . mysqli_error() . ".";
 		break;
 	}
-	$Data = mysql_fetch_assoc($query);
+	$Data = mysqli_fetch_assoc($query);
 	$NameLF = $Data['NameLF'];
 	$NameFL = $Data['NameFL'];
 	$Year = $Data['Year'];
-
-	$query = mysql_query("select EName from Results, Events where (SID='" . $_POST['SID'] . "' or SID2='" . $_POST['SID'] . "') and Results.EID = Events.EID group by EName order by EName;");
-	if (( mysql_errno() )) {
-		$ErrorString =  "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . ".";
+	$query = mysqli_query($DBConn, "select EName from Results, Events where (SID='" . $_POST['SID'] . "' or SID2='" . $_POST['SID'] . "') and Results.EID = Events.EID group by EName order by EName;");
+	if ( !$query ) {
+		$ErrorString =  "Error - MySQL error: " . mysqli_error() . ".";
 		break;
 	}
-	$NumRows = mysql_num_rows($query);
+	$NumRows = mysqli_num_rows($query);
 	$CurrentRow = 1;
 	$Events = array();
 	while ( $CurrentRow <= $NumRows ) {
-		$Data = mysql_fetch_assoc($query);
+		$Data = mysqli_fetch_assoc($query);
 		$Events[$Data['EName']] = $CurrentRow;
 		$CurrentRow++;
 	}
@@ -63,18 +62,18 @@ if ( isset($_POST['SID']) && $ErrorString == "" ) {
 		echo $key . "<br>
 ";
 	}
-	$query = mysql_query("select distinct EName from Events, Results where Results.EID = Events.EID and (Results.SID='" . $_POST['SID'] . "' or Results.SID2='" . $_POST['SID'] . "') and Results.State = 1 order by EName;");
+	$query = mysqli_query($DBConn, "select distinct EName from Events, Results where Results.EID = Events.EID and (Results.SID='" . $_POST['SID'] . "' or Results.SID2='" . $_POST['SID'] . "') and Results.State = 1 order by EName;");
 	echo '<h3>State Qualifications</h3>
 ';
-	if (( mysql_errno() )) {
-		$ErrorString =  "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . ".";
+	if ( !$query ) {
+		$ErrorString =  "Error - MySQL error: " . mysqli_error() . ".";
 		break;
 	}
-	if ( $ErrorString == "" && mysql_num_rows($query) > 0 ) {
-		$NumRows = mysql_num_rows($query);
+	if ( $ErrorString == "" && mysqli_num_rows($query) > 0 ) {
+		$NumRows = mysqli_num_rows($query);
 		$CurrentRow = 0;
 		while ( $CurrentRow < $NumRows ) {
-			$Data = mysql_fetch_assoc($query);
+			$Data = mysqli_fetch_assoc($query);
 			echo $Data['EName'] . "<br>
 ";
 			$CurrentRow++;
@@ -96,34 +95,34 @@ function MakeGraph() {
 		echo "data.addColumn('number', '" . $key . "');
 ";
 	}
-	$query = mysql_query("select TName from Results, Tournaments where (SID='" . $_POST['SID'] . "' or SID2='" . $_POST['SID'] . "') and Results.TID = Tournaments.TID group by Date order by Date;");
-	if (( mysql_errno() )) {
-		$ErrorString = "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . ".";
+	$query = mysqli_query("select TName from Results, Tournaments where (SID='" . $_POST['SID'] . "' or SID2='" . $_POST['SID'] . "') and Results.TID = Tournaments.TID group by Date order by Date;");
+	if ( !$query ) {
+		$ErrorString = "Error - MySQL error: " . mysqli_error() . ".";
 		echo $ErrorString;
 		break;
 	}
-	$NumRows = mysql_num_rows($query);
+	$NumRows = mysqli_num_rows($query);
 	$CurrentRow = 0;
 	echo "data.addRows(" . $NumRows . ");
 ";
 	while ( $CurrentRow < $NumRows ) {
-		$Data = mysql_fetch_assoc($query);
+		$Data = mysqli_fetch_assoc($query);
 		echo "data.setValue(" . $CurrentRow . ",0,'" . $Data['TName'] . "');
 ";
 		$CurrentRow++;
 	}
-	$query = mysql_query("select EName, Date, avg(PRanks/NumberRounds) as Ranks from Results, Tournaments, Events where Results.TID = Tournaments.TID and Results.EID = Events.EID and (Results.SID='" . $_POST['SID'] . "' or Results.SID2='" . $_POST['SID'] . "') group by Date, EName order by Date, EName;");
-	if (( mysql_errno() )) {
-		$ErrorString = "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . ".";
+	$query = mysqli_query($DBConn, "select EName, Date, avg(PRanks/NumberRounds) as Ranks from Results, Tournaments, Events where Results.TID = Tournaments.TID and Results.EID = Events.EID and (Results.SID='" . $_POST['SID'] . "' or Results.SID2='" . $_POST['SID'] . "') group by Date, EName order by Date, EName;");
+	if ( !$query ) {
+		$ErrorString = "Error - MySQL error: " . mysqli_error() . ".";
 		echo $ErrorString;
 		break;
 	}
-	$NumRows = mysql_num_rows($query);
+	$NumRows = mysqli_num_rows($query);
 	$CurrentRow = 0;
 	$Row = -1;
 	$Date1 = "";
 	while ( $NumRows > $CurrentRow ) {
-		$Data = mysql_fetch_assoc($query);
+		$Data = mysqli_fetch_assoc($query);
 		if ( $Data['Date'] != $Date1 ) {
 			$Date1 = $Data['Date'];
 			$Row++;

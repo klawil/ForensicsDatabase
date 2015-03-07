@@ -4,26 +4,26 @@ $ErrorString = "";
 $TName = "";
 $ResultsString = "";
 if ( isset($_POST['TID']) ) {
-	$query = mysql_query("select TName, Date from Tournaments where TID='" . $_POST['TID'] . "';");
-	if (( mysql_errno() )) {
-		$ErrorString = "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . ".";
+	$query = mysqli_query($DBConn, "select TName, Date from Tournaments where TID='" . $_POST['TID'] . "';");
+	if ( !$query ) {
+		$ErrorString = "Error - MySQL error: " . mysqli_error() . ".";
 		break;
 	}
-	if ( mysql_num_rows($query) != 1 ) {
+	if ( mysqli_num_rows($query) != 1 ) {
 		$ErrorString = "That tournament is invalid. TID is " . $_POST['TID'];
 		break;
 	}
-	$Data = mysql_fetch_assoc($query);
+	$Data = mysqli_fetch_assoc($query);
 	$TName = $Data['TName'];
 	$TDate = $Data['Date'];
-	$query = mysql_query('select SID2, concat(LName, ", ", FName) as Name, place, EName, State from Events, Students, Results where TID="' . $_POST['TID'] . '" and Events.EID = Results.EID and Students.SID = Results.SID and place is not null order by place, Name;');
-	$NumRows = mysql_num_rows($query);
+	$query = mysqli_query($DBConn, 'select SID2, concat(LName, ", ", FName) as Name, place, EName, State from Events, Students, Results where TID="' . $_POST['TID'] . '" and Events.EID = Results.EID and Students.SID = Results.SID and place is not null order by place, Name;');
+	$NumRows = mysqli_num_rows($query);
 	$CurrentRow = 0;
 	$OldPlace = 0;
 	$ResultsString = '<i>Those marked with an asterisk (*) qualified for state</i><br>
 ';
 	while ( $CurrentRow < $NumRows ) {
-		$Data = mysql_fetch_assoc($query);
+		$Data = mysqli_fetch_assoc($query);
 		if ( $Data['place'] > $OldPlace ) {
 			$OldPlace = $Data['place'];
 			if ( $OldPlace > 3 ) {
@@ -42,8 +42,8 @@ if ( isset($_POST['TID']) ) {
 		}
 		$Name = $Data['Name'];
 		if ( $Data['SID2'] != NULL ) {
-			$NameQuery = mysql_query("select concat(LName, ', ', FName) as Name from Students where SID='" . $Data['SID2'] . "';");
-			$NameData = mysql_fetch_assoc($NameQuery);
+			$NameQuery = mysqli_query($DBConn, "select concat(LName, ', ', FName) as Name from Students where SID='" . $Data['SID2'] . "';");
+			$NameData = mysqli_fetch_assoc($NameQuery);
 			$Name = $Name . " and " . $NameData['Name'];
 		}
 		if ( $Data['State'] == "1" ) {

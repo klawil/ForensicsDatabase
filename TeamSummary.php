@@ -16,15 +16,15 @@ include "CommonFunctions.php";
 <div style="display: float; float: right;">
 <h3>State Qualifiers</h3>
 <?php
-$query = mysql_query('select distinct SID2, concat(LName, ", ", FName) as Name, EName from Students, Events, Results, Tournaments where Results.TID = Tournaments.TID and Results.EID = Events.EID and Results.State = 1 and Results.SID = Students.SID order by EName, Date;');
-if (( mysql_errno() )) {
-	echo "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . ".";
+$query = mysqli_query($DBConn, 'select distinct SID2, concat(LName, ", ", FName) as Name, EName from Students, Events, Results, Tournaments where Results.TID = Tournaments.TID and Results.EID = Events.EID and Results.State = 1 and Results.SID = Students.SID order by EName, Date;');
+if ( !$query ) {
+	echo "Error - MySQL error: " . mysqli_error() . ".";
 } else {
-	$NumRows = mysql_num_rows($query);
+	$NumRows = mysqli_num_rows($query);
 	$CurrentRow = 0;
 	$Event = "";
 	while ( $CurrentRow < $NumRows ) {
-		$Data = mysql_fetch_assoc($query);
+		$Data = mysqli_fetch_assoc($query);
 		if ( $Data['EName'] != $Event ) {
 			$Event = $Data['EName'];
 			echo "<b><u>" . $Event . "</b></u><br>
@@ -32,12 +32,12 @@ if (( mysql_errno() )) {
 		}
 		$Name = $Data['Name'];
 		if ( $Data['SID2'] != NULL ) {
-			$NameQuery = mysql_query("select concat(LName, ', ', FName) as Name from Students where SID='" . $Data['SID2'] . "';");
-			if (( mysql_errno() )) {
-				echo "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . ".";
+			$NameQuery = mysqli_query($DBConn, "select concat(LName, ', ', FName) as Name from Students where SID='" . $Data['SID2'] . "';");
+			if ( !$query ) {
+				echo "Error - MySQL error: " . mysqli_error() . ".";
 				break;
 			}
-			$NameData = mysql_fetch_assoc($NameQuery);
+			$NameData = mysqli_fetch_assoc($NameQuery);
 			$Name = $Name . " and " . $NameData['Name'];
 		}
 		echo '<span id="tab"></span>' . $Name . '<br>
@@ -45,15 +45,15 @@ if (( mysql_errno() )) {
 		$CurrentRow++;
 	}
 }
-$query = mysql_query('select EName from Results, Events where Results.EID = Events.EID group by EName order by EName;');
-if (( mysql_errno() )) {
-	echo "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . ".";
+$query = mysqli_query($DBConn, 'select EName from Results, Events where Results.EID = Events.EID group by EName order by EName;');
+if ( !$query ) {
+	echo "Error - MySQL error: " . mysqli_error() . ".";
 } else {
-	$NumRows = mysql_num_rows($query);
+	$NumRows = mysqli_num_rows($query);
 	$CurrentRow = 1;
 	$Events = array();
 	while ( $CurrentRow <= $NumRows ) {
-		$Data = mysql_fetch_assoc($query);
+		$Data = mysqli_fetch_assoc($query);
 		$Events[$Data['EName']] = $CurrentRow;
 		$CurrentRow++;
 	}
@@ -69,33 +69,33 @@ foreach ( $Events as $key => $value ) {
 	echo "data.addColumn('number','" . $key . "');
 	";
 }
-$query = mysql_query("select TName, Date from Results, Tournaments where Results.TID = Tournaments.TID group by Date order by Date;");
-if (( mysql_errno() )) {
-	echo "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . ".";
+$query = mysqli_query($DBConn, "select TName, Date from Results, Tournaments where Results.TID = Tournaments.TID group by Date order by Date;");
+if ( !$query ) {
+	echo "Error - MySQL error: " . mysqli_error() . ".";
 } else {
 	$CurrentRow = 1;
-	$NumRows = mysql_num_rows($query);
+	$NumRows = mysqli_num_rows($query);
 	$Tournaments = array();
 	echo "data.addRows(" . $NumRows . ");
 	";
 	while ( $CurrentRow <= $NumRows ) {
-		$Data = mysql_fetch_assoc($query);
+		$Data = mysqli_fetch_assoc($query);
 		echo "data.setValue(" . ($CurrentRow - 1) . ",0,'" . $Data['TName'] . "');
 	";
 		$Tournaments[$Data['Date']] = ($CurrentRow - 1);
 		$CurrentRow++;
 	}
 }
-$query = mysql_query("select EName, Date, avg(PRanks/NumberRounds) as Ranks from Results, Tournaments, Events where Results.TID = Tournaments.TID and Results.EID = Events.EID group by Date, EName order by Date, EName;");
-if (( mysql_errno() )) {
-	echo "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . ".";
+$query = mysqli_query($DBConn, "select EName, Date, avg(PRanks/NumberRounds) as Ranks from Results, Tournaments, Events where Results.TID = Tournaments.TID and Results.EID = Events.EID group by Date, EName order by Date, EName;");
+if ( !$query ) {
+	echo "Error - MySQL error: " . mysqli_error() . ".";
 } else {
 	$Row = -1;
 	$Date1 = "";
 	$CurrentRow = 0;
-	$NumRows = mysql_num_rows($query);
+	$NumRows = mysqli_num_rows($query);
 	while ( $CurrentRow < $NumRows ) {
-		$Data = mysql_fetch_assoc($query);
+		$Data = mysqli_fetch_assoc($query);
 		if ( $Data['Date'] != $Date1 ) {
 			$Date1 = $Data['Date'];
 			$Row++;
