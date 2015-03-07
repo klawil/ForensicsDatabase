@@ -82,9 +82,6 @@ if ( isset($_POST['OrderBy']) ) {
 		return 0;
 	}
 	echo '<table id="Results-Table" border="1" style="border-collapse: collapse;"><tr>';
-	if ( $_POST['Edit'] == '1' ) {
-		echo '<th></th>';
-	}
 	if ( $_POST['NCol'] == '1' ) {
 		echo '<th>Name</th>';
 	}
@@ -149,9 +146,6 @@ if ( isset($_POST['OrderBy']) ) {
 			$First = 0;
 			echo '</tr>
 <tr>';
-			if ( $_POST['Edit'] == '1' ) {
-				echo '<td><input type="button" value="Select" onclick="edit_RID(' . $Data['RID'] . ')"></td>';
-			}
 			if ( $_POST['NCol'] == '1' ) {
 				if ( $Data['SID2'] != NULL ) {
 					$NameQuery = mysqli_query($DBConn, "select concat(LName, ', ', FName) as Name from Students where SID='" . $Data['SID2'] . "';");
