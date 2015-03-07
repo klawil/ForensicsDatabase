@@ -79,7 +79,7 @@ if ( isset($_POST['RID']) ) {
 				echo "Warning - Ranks for judge " . $x . " in finals are missing.<br>";
 			} else {
 				$FRanks = $FRanks + $_POST['J' . $x . 'R'];
-				$query = mysqli_query($DBConn, "insert into Ballots set RID='" . $RID . "', Judge='" . $x . "', Rank='" . $_POST['J' . $x . 'R'] . "', Qual='" . $_POST['J' . $x . 'Q'] . "';");
+				$query = mysqli_query($DBConn, "insert into Ballots set RID='" . $RID . "', Judge='" . $x . "', Rank='" . $_POST['J' . $x . 'R'] . "';");
 				if ( !$query ) {
 					echo "Error - MySQL error: " . mysqli_error($DBConn) . " on Judge " . $x . ".";
 					return 0;
@@ -262,34 +262,33 @@ function GetInfo(TID){
     xmlhttp.open("POST","TournamentInfo.php",true);
     xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
     xmlhttp.send("TID=" + TID);
-    xmlhttp.onreadystatechange=function() {
-    	response = "";
-    	response = xmlhttp.responseText;
-    	return response;
-	}
+	return xmlhttp;
 }
 function MakePage(){
     document.getElementById("Header").innerHTML = document.getElementById("Tournament").options[document.getElementById("Tournament").selectedIndex].text;
-    TInfo = GetInfo(document.getElementById("Tournament").options[document.getElementById("Tournament").selectedIndex].value);
-    InfoSplit = TInfo.split("|");
-    NumRounds = InfoSplit[0];
-    NumJudge = InfoSplit[1];
-    HTMLString = ""
-    for ( x = 1; x <= NumRounds; x++ ) {
-        HTMLString = HTMLString + "Round " + x + ': <input type="number" id="R' + x + 'R"><input type="number" id="R' + x + 'Q"><br>';
+    xmlhttp = GetInfo(document.getElementById("Tournament").options[document.getElementById("Tournament").selectedIndex].value);
+    xmlhttp.onreadystatechange = function () {
+    	TInfo = xmlhttp.responseText;
+    	InfoSplit = TInfo.split("|");
+    	NumRounds = InfoSplit[0];
+    	NumJudge = InfoSplit[1];
+    	HTMLString = ""
+    	for ( x = 1; x <= NumRounds; x++ ) {
+    	    HTMLString = HTMLString + "Round " + x + ': <input type="number" id="R' + x + 'R"><input type="number" id="R' + x + 'Q"><br>';
+    	}
+    	document.getElementById("Rounds").innerHTML = HTMLString;
+		HTMLString = ""
+    	for ( x = 1; x <= NumJudge; x++ ) {
+    	    HTMLString = HTMLString + "Judge " + x + ': <input type="number" id="J' + x + 'R"><br>';
+    	}
+    	HTMLString = HTMLString + 'Place: <input type="number" id="place"><br>';
+    	document.getElementById("Outs").innerHTML = HTMLString;
+    	document.getElementById("info").style.display = 'inline';
+    	document.getElementById("Events").style.display = 'inline';
+    	document.getElementById("Students").style.display = 'inline';
+    	document.getElementById("submit").style.display = 'inline';
+    	document.getElementById("TourneyID").innerHTML = '<input type="hidden" id="TID" value="' + document.getElementById("Tournament").options[document.getElementById("Tournament").selectedIndex].value + '">';
     }
-    document.getElementById("Rounds").innerHTML = HTMLString;
-    HTMLString = ""
-    for ( x = 1; x <= NumJudge; x++ ) {
-        HTMLString = HTMLString + "Judge " + x + ': <input type="number" id="J' + x + 'R"><br>';
-    }
-    HTMLString = HTMLString + 'Place: <input type="number" id="place"><br>';
-    document.getElementById("Outs").innerHTML = HTMLString;
-    document.getElementById("info").style.display = 'inline';
-    document.getElementById("Events").style.display = 'inline';
-    document.getElementById("Students").style.display = 'inline';
-    document.getElementById("submit").style.display = 'inline';
-    document.getElementById("TourneyID").innerHTML = '<input type="hidden" id="TID" value="' + document.getElementById("Tournament").options[document.getElementById("Tournament").selectedIndex].value + '">';
 }
 function OutsHideShow() {
     if ( document.getElementById("broke").checked ) {
