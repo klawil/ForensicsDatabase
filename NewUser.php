@@ -30,9 +30,8 @@ if ( isset($_POST['UName']) ) {
 		$iswrong = 1;
 	}
 	if ( $iswrong == 0 ) {
-		include "MySQLAuth.php";
-		$query = mysql_query("select * from users where UName='" . $_POST['UName'] . "';");
-		if ( ! (mysql_num_rows($query) == 0 ) ) {
+		$query = mysqli_query($DBConn, "select * from users where UName='" . $_POST['UName'] . "';");
+		if ( ! (mysqli_num_rows($query) == 0 ) ) {
 			echo 'That username already exists<br>';
 			$UName = "";
 			$iswrong = 1;
@@ -51,10 +50,14 @@ Password: <input type="password" name="PWord"><br>
 </html>';
 		return 0;
 	}
-	mysql_query("insert into users set UName='" . $_POST['UName'] . "', FName='" . $_POST['FName'] . "', LName='" . $_POST['LName'] . "', Email='" . $_POST['Email'] . "', password='" . password_hash($_POST['PWord'], PASSWORD_DEFAULT) . "';");
-	$query = mysql_query("INSERT INTO Tournaments SET TName='" . $_POST['TName'] . "', Date='" . $_POST['Date'] . "', NumRounds='" . $_POST['NumRounds'] . "', NumFinalsJudges='" . $_POST['NumFinalsJudges'] . "';");
-	if (( mysql_errno() )) {
-		echo "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . ".";
+	$query = mysqli_query($DBConn, "insert into users set UName='" . $_POST['UName'] . "', FName='" . $_POST['FName'] . "', LName='" . $_POST['LName'] . "', Email='" . $_POST['Email'] . "', password='" . password_hash($_POST['PWord'], PASSWORD_DEFAULT) . "';");
+	if ( !$query ) {
+		echo "Error - MySQL error: " . mysqli_error() . ".";
+		return 0;
+	}
+	$query = mysqli_query($DBConn, "INSERT INTO Tournaments SET TName='" . $_POST['TName'] . "', Date='" . $_POST['Date'] . "', NumRounds='" . $_POST['NumRounds'] . "', NumFinalsJudges='" . $_POST['NumFinalsJudges'] . "';");
+	if ( !$query ) {
+		echo "Error - MySQL error: " . mysqli_error() . ".";
 		return 0;
 	}
 	echo 'User ' . $_POST['FName'] . ' ' . $_POST['LName'] . ' (' . $_POST['UName'] . ') has been added.

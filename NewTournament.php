@@ -13,13 +13,10 @@ if ( isset($_POST['TName']) ) {
 	if ( strlen($_POST['TName']) > 30 ) {
 		echo 'Name is too long. Must be 30 characters or less.
 ';
-	} elseif ( strlen($_POST['TblName']) > 15 ) {
-		echo 'Table Name is too long. Must be 15 characters or less.
-';
 	} else {
-		$query = mysql_query("INSERT INTO Tournaments SET TName='" . $_POST['TName'] . "', Date='" . $_POST['Date'] . "', NumRounds='" . $_POST['NumRounds'] . "', NumFinalsJudges='" . $_POST['NumFinalsJudges'] . "';");
-		if (( mysql_errno() )) {
-			echo "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . ".";
+		$query = mysqli_query($DBConn, "INSERT INTO Tournaments SET TName='" . $_POST['TName'] . "', Date='" . $_POST['Date'] . "', NumRounds='" . $_POST['NumRounds'] . "', NumFinalsJudges='" . $_POST['NumFinalsJudges'] . "';");
+		if ( !$query ) {
+			echo "Error - MySQL error: " . mysqli_error() . ".";
 			break;
 		}
 		echo $_POST['TName'] . " added succesfully.";

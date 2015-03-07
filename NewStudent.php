@@ -17,9 +17,9 @@ if (( isset($_POST['FName']) )) {
 		echo 'Last Name is too long
 ';
 	} else {
-		$query = mysql_query("INSERT INTO Students SET FName='" . $_POST['FName'] . "', LName='" . $_POST['LName'] . "', Year=" . $_POST['Year'] . ";");
-		if (( mysql_errno() )) {
-			echo "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . ".";
+		$query = mysqli_query($DBConn, "INSERT INTO Students SET FName='" . $_POST['FName'] . "', LName='" . $_POST['LName'] . "', Year=" . $_POST['Year'] . ";");
+		if ( !$query ) {
+			echo "Error - MySQL error: " . mysqli_error() . ".";
 			break;
 		} else {
 		echo $_POST['FName'] . " " . $_POST['LName'] . " added.
