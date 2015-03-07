@@ -5,7 +5,7 @@ $GLOBALS['SecretWord'] = "ForensicsSECRET";
 $GLOBALS['UserName'] = "";
 $GLOBALS['CanUserEdit'] = 0;
 function Tournaments($IncludeAll) {
-	$query = mysqli_query($DBConn, "select TName, TID from Tournaments order by Date desc, TName;");
+	$query = mysqli_query($GLOBALS['DBConn'], "select TName, TID from Tournaments order by Date desc, TName;");
 	if ( !$query ) {
 		return "Error - MySQL error: " . mysqli_error() . ".";
 	}
@@ -24,7 +24,7 @@ function Tournaments($IncludeAll) {
 	return $TournamentString;
 }
 function Students($IncludeAll, $FormName = NULL) {
-	$query = mysqli_query($DBConn, "select FName, LName, SID from Students order by LName, FName;");
+	$query = mysqli_query($GLOBALS['DBConn'], "select FName, LName, SID from Students order by LName, FName;");
 	if ( !$query ) {
 		return "Error - MySQL error: " . mysqli_error() . ".";
 	}
@@ -47,7 +47,7 @@ function Students($IncludeAll, $FormName = NULL) {
 	return $StudentString;
 }
 function Events($IncludeAll) {
-	$query = mysqli_query($DBConn, "select * from Events order by EName;");
+	$query = mysqli_query($GLOBALS['DBConn'], "select * from Events order by EName;");
 	if ( !$query ) {
 		return "Error - MySQL error: " . mysqli_error() . ".";
 	}
@@ -181,7 +181,7 @@ function Authorize() {
 		$Array = explode(',',$_COOKIE[$GLOBALS['CookieName']],2);
 		$GLOBALS['UserName'] = $Array[0];
 		$Cookie = $Array[1];
-		$query = mysqli_query($DBConn, "select cookie, cookieExp, CanMod, concat(LName, ', ', FName) as Name from users where UName='" . $GLOBALS['UserName'] . "';");
+		$query = mysqli_query($GLOBALS['DBConn'], "select cookie, cookieExp, CanMod, concat(LName, ', ', FName) as Name from users where UName='" . $GLOBALS['UserName'] . "';");
 		if ( !$query ) {
 			return 0;
 		}
@@ -203,7 +203,7 @@ function SetAuthCookie($UN) {
 	$ExpDate = time() + (86400 * 7);
 	$MD5 = md5($UN . $GLOBALS['SecretWord'] . $ExpDate);
 	$Cookie = $UN . "," . $MD5;
-	mysqli_query($DBConn, "update users set cookie='" . $MD5 . "', cookieExp='" . $ExpDate . "' where UName='" . $UN . "';");
+	$query = mysqli_query($GLOBALS['DBConn'], "update users set cookie='" . $MD5 . "', cookieExp='" . $ExpDate . "' where UName='" . $UN . "';");
 	if ( !$query ) {
 		echo "Error - MySQL error: " . mysqli_error() . ".";
 		return 0;
