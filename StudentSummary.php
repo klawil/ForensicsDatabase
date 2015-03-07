@@ -95,7 +95,7 @@ function MakeGraph() {
 		echo "data.addColumn('number', '" . $key . "');
 ";
 	}
-	$query = mysqli_query("select TName from Results, Tournaments where (SID='" . $_POST['SID'] . "' or SID2='" . $_POST['SID'] . "') and Results.TID = Tournaments.TID group by Date order by Date;");
+	$query = mysqli_query($DBConn, "select TName from Results, Tournaments where (SID='" . $_POST['SID'] . "' or SID2='" . $_POST['SID'] . "') and Results.TID = Tournaments.TID group by Date order by Date;");
 	if ( !$query ) {
 		$ErrorString = "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 		echo $ErrorString;
