@@ -101,6 +101,7 @@ function ShowLogin() {
 	if ( document.getElementById("logoutwin").style.display != "block" ) {
 		document.getElementById("logoutwin").style.display = "block";
 	} else {
+		document.getElementById("login_message").style.display = "none";
 		document.getElementById("logoutwin").style.display = "none";
 	}
 }
@@ -145,6 +146,7 @@ function ShowLogin() {
 	if ( document.getElementById("loginwin").style.display != "block" ) {
 		document.getElementById("loginwin").style.display = "block";
 	} else {
+		document.getElementById("login_message").style.display = "none";
 		document.getElementById("loginwin").style.display = "none";
 	}
 }
