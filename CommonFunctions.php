@@ -5,18 +5,18 @@ $GLOBALS['SecretWord'] = "ForensicsSECRET";
 $GLOBALS['UserName'] = "";
 $GLOBALS['CanUserEdit'] = 0;
 function Tournaments($IncludeAll) {
-	$query = mysql_query("select TName, TID from Tournaments order by Date desc, TName;");
-	if (( mysql_errno() )) {
-		return "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . ".";
+	$query = mysqli_query($DBConn, "select TName, TID from Tournaments order by Date desc, TName;");
+	if ( !$query ) {
+		return "Error - MySQL error: " . mysqli_error() . ".";
 	}
-	$NumRows = mysql_num_rows($query);
+	$NumRows = mysqli_num_rows($query);
 	$CurrentRow = 0;
 	$TournamentString = '<select id="Tournament" name="TID">';
 	if ( $IncludeAll == 1 ) {
 		$TournamentString = $TournamentString . "<option value='-1'>All Tournaments</option>";
 	}
 	while ( $CurrentRow < $NumRows ) {
-		$results = mysql_fetch_assoc($query);
+		$results = mysqli_fetch_assoc($query);
 		$TournamentString = $TournamentString . '<option value="' . $results['TID'] . '">' . $results['TName'] . "</option>";
 		$CurrentRow++;
 	}
@@ -24,11 +24,11 @@ function Tournaments($IncludeAll) {
 	return $TournamentString;
 }
 function Students($IncludeAll, $FormName = NULL) {
-	$query = mysql_query("select FName, LName, SID from Students order by LName, FName;");
-	if (( mysql_errno() )) {
-		return "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . ".";
+	$query = mysqli_query($DBConn, "select FName, LName, SID from Students order by LName, FName;");
+	if ( !$query ) {
+		return "Error - MySQL error: " . mysqli_error() . ".";
 	}
-	$NumRows = mysql_num_rows($query);
+	$NumRows = mysqli_num_rows($query);
 	$CurrentRow = 0;
 	if ( $FormName == NULL ) {
 		$StudentString = '<select id="Student" name="SID">';
@@ -39,7 +39,7 @@ function Students($IncludeAll, $FormName = NULL) {
 		$StudentString = $StudentString . "<option value='-1'>All Students</option>";
 	}
 	while ( $CurrentRow < $NumRows ) {
-		$results = mysql_fetch_assoc($query);
+		$results = mysqli_fetch_assoc($query);
 		$StudentString = $StudentString . '<option value="' . $results['SID'] . '">' . $results['LName'] . ", " . $results['FName'] . "</option>";
 		$CurrentRow++;
 	}
@@ -47,18 +47,18 @@ function Students($IncludeAll, $FormName = NULL) {
 	return $StudentString;
 }
 function Events($IncludeAll) {
-	$query = mysql_query("select * from Events order by EName;");
-	if (( mysql_errno() )) {
-		return "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . ".";
+	$query = mysqli_query($DBConn, "select * from Events order by EName;");
+	if ( !$query ) {
+		return "Error - MySQL error: " . mysqli_error() . ".";
 	}
-	$NumRows = mysql_num_rows($query);
+	$NumRows = mysqli_num_rows($query);
 	$CurrentRow = 0;
 	$EventString = '<select id="Event" name="EID">';
 	if ( $IncludeAll == 1 ) {
 		$EventString = $EventString . "<option value='-1'>All Events</option>";
 	}
 	while ( $CurrentRow < $NumRows ) {
-		$results = mysql_fetch_assoc($query);
+		$results = mysqli_fetch_assoc($query);
 		$EventString = $EventString . '<option value="' . $results['EID'] . '">' . $results['EName'] . "</option>";
 		$CurrentRow++;
 	}
@@ -181,11 +181,11 @@ function Authorize() {
 		$Array = explode(',',$_COOKIE[$GLOBALS['CookieName']],2);
 		$GLOBALS['UserName'] = $Array[0];
 		$Cookie = $Array[1];
-		$query = mysql_query("select cookie, cookieExp, CanMod, concat(LName, ', ', FName) as Name from users where UName='" . $GLOBALS['UserName'] . "';");
-		if (( mysql_errno() )) {
+		$query = mysqli_query($DBConn, "select cookie, cookieExp, CanMod, concat(LName, ', ', FName) as Name from users where UName='" . $GLOBALS['UserName'] . "';");
+		if ( !$query ) {
 			return 0;
 		}
-		$Data = mysql_fetch_assoc($query);
+		$Data = mysqli_fetch_assoc($query);
 		if ( $Cookie != $Data['cookie'] ) {
 			setcookie($GLOBALS['CookieName'], "", time() - 3600);
 			$GLOBALS['UserName'] = "";
@@ -203,9 +203,9 @@ function SetAuthCookie($UN) {
 	$ExpDate = time() + (86400 * 7);
 	$MD5 = md5($UN . $GLOBALS['SecretWord'] . $ExpDate);
 	$Cookie = $UN . "," . $MD5;
-	mysql_query("update users set cookie='" . $MD5 . "', cookieExp='" . $ExpDate . "' where UName='" . $UN . "';");
-	if (( mysql_errno() )) {
-		echo "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . ".";
+	mysqli_query($DBConn, "update users set cookie='" . $MD5 . "', cookieExp='" . $ExpDate . "' where UName='" . $UN . "';");
+	if ( !$query ) {
+		echo "Error - MySQL error: " . mysqli_error() . ".";
 		return 0;
 	}
 	setcookie($GLOBALS['CookieName'], $Cookie, $ExpDate, "/");

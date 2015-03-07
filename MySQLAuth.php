@@ -3,6 +3,9 @@ $UN = "forensics";
 $PW = "A15j89%%8JsTk991LexzQ#";
 $DB = "Forensics_2015";
 $HOST = "localhost";
-$DBConn = mysql_connect($HOST, $UN, $PW);
-mysql_select_db($DB, $DBConn);
+$DBConn = mysqli_connect($HOST, $UN, $PW, $DB);
+if ( !$DBConn ) {
+	echo "Connection failed: " . mysqli_connect_error();
+	return 0;
+}
 ?>
