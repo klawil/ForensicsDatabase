@@ -18,7 +18,7 @@ include "CommonFunctions.php";
 <?php
 $query = mysqli_query($DBConn, 'select distinct SID2, concat(LName, ", ", FName) as Name, EName from Students, Events, Results, Tournaments where Results.TID = Tournaments.TID and Results.EID = Events.EID and Results.State = 1 and Results.SID = Students.SID order by EName, Date;');
 if ( !$query ) {
-	echo "Error - MySQL error: " . mysqli_error() . ".";
+	echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 } else {
 	$NumRows = mysqli_num_rows($query);
 	$CurrentRow = 0;
@@ -34,7 +34,7 @@ if ( !$query ) {
 		if ( $Data['SID2'] != NULL ) {
 			$NameQuery = mysqli_query($DBConn, "select concat(LName, ', ', FName) as Name from Students where SID='" . $Data['SID2'] . "';");
 			if ( !$query ) {
-				echo "Error - MySQL error: " . mysqli_error() . ".";
+				echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 				break;
 			}
 			$NameData = mysqli_fetch_assoc($NameQuery);
@@ -47,7 +47,7 @@ if ( !$query ) {
 }
 $query = mysqli_query($DBConn, 'select EName from Results, Events where Results.EID = Events.EID group by EName order by EName;');
 if ( !$query ) {
-	echo "Error - MySQL error: " . mysqli_error() . ".";
+	echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 } else {
 	$NumRows = mysqli_num_rows($query);
 	$CurrentRow = 1;
@@ -71,7 +71,7 @@ foreach ( $Events as $key => $value ) {
 }
 $query = mysqli_query($DBConn, "select TName, Date from Results, Tournaments where Results.TID = Tournaments.TID group by Date order by Date;");
 if ( !$query ) {
-	echo "Error - MySQL error: " . mysqli_error() . ".";
+	echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 } else {
 	$CurrentRow = 1;
 	$NumRows = mysqli_num_rows($query);
@@ -88,7 +88,7 @@ if ( !$query ) {
 }
 $query = mysqli_query($DBConn, "select EName, Date, avg(PRanks/NumberRounds) as Ranks from Results, Tournaments, Events where Results.TID = Tournaments.TID and Results.EID = Events.EID group by Date, EName order by Date, EName;");
 if ( !$query ) {
-	echo "Error - MySQL error: " . mysqli_error() . ".";
+	echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 } else {
 	$Row = -1;
 	$Date1 = "";

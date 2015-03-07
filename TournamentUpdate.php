@@ -7,7 +7,7 @@ if ( isset($_POST['RID']) ) {
 	}
 	$query = mysqli_query($DBConn, "update Results set SID2='" . $_POST['SID'] . "' where RID='" . $_POST['RID'] . "';");
 	if ( !$query ) {
-		echo "Error - MySQL error: " . mysqli_error() . ".";
+		echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 		return 0;
 	}
 	echo "true";
@@ -20,7 +20,7 @@ if ( isset($_POST['RID']) ) {
 	}
 	$query = mysqli_query($DBConn, "SELECT NumRounds, NumFinalsJudges from Tournaments where TID='" . $_POST['TID'] . "';");
 	if ( !$query ) {
-		echo "Error - MySQL error: " . mysqli_error() . ".";
+		echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 		break;
 	}
 	$NumRows = mysqli_num_rows($query);
@@ -62,12 +62,12 @@ if ( isset($_POST['RID']) ) {
 	}
 	$query = mysqli_query($DBConn, "insert into Results set SID='" . $_POST['Student'] . "', EID='" . $_POST['Event'] . "', TID='" . $_POST['TID'] . "', broke='" . $_POST['broke'] . "', State='" . $_POST['qual'] . "'" . $PString . ";");
 	if ( !$query ) {
-		echo "Error - MySQL error: " . mysqli_error() . ".";
+		echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 		return 0;
 	}
 	$query = mysqli_query($DBConn, "select last_insert_id() as RID;");
 	if ( !$query ) {
-		echo "Error - MySQL error: " . mysqli_error() . ".";
+		echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 		return 0;
 	}
 	$data = mysqli_fetch_assoc($query);
@@ -81,7 +81,7 @@ if ( isset($_POST['RID']) ) {
 				$FRanks = $FRanks + $_POST['J' . $x . 'R'];
 				$query = mysqli_query($DBConn, "insert into Ballots set RID='" . $RID . "', Judge='" . $x . "', Rank='" . $_POST['J' . $x . 'R'] . "', Qual='" . $_POST['J' . $x . 'Q'] . "';");
 				if ( !$query ) {
-					echo "Error - MySQL error: " . mysqli_error() . " on Judge " . $x . ".";
+					echo "Error - MySQL error: " . mysqli_error($DBConn) . " on Judge " . $x . ".";
 					return 0;
 				}
 			}
@@ -98,25 +98,25 @@ if ( isset($_POST['RID']) ) {
 		$PQuals = $PQuals + $_POST['R' . $x . 'Q'];
 		$query = mysqli_query($DBConn, "insert into Ballots set RID='" . $RID . "', Round='" . $x . "', Rank='" . $_POST['R' . $x . 'R'] . "', Qual='" . $_POST['R' . $x . 'Q'] . "';");
 		if ( !$query ) {
-			echo "Error - MySQL error: " . mysqli_error() . " on Round " . $x . ".";
+			echo "Error - MySQL error: " . mysqli_error($DBConn) . " on Round " . $x . ".";
 			return 0;
 		}
 	}
 	$query = mysqli_query($DBConn, "update Results set PRanks='" . $PRanks . "', PQuals='" . $PQuals . "', FRanks='" . $FRanks . "' where RID='" . $RID . "';");
 	if ( !$query ) {
-		echo "Error - MySQL error: " . mysqli_error() . ".";
+		echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 		return 0;
 	}
 	$query = mysqli_query($DBConn, "select Partner from Events where EID='" . $_POST['Event'] . "';");
 	if ( !$query ) {
-		echo "Error - MySQL error: " . mysqli_error() . ".";
+		echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 		return 0;
 	}
 	$Data = mysqli_fetch_assoc($query);
 	if ( $Data['Partner'] == "1" ) {
 		$query = mysqli_query($DBConn, "select FName, LName, SID from Students order by LName, FName;");
 		if ( !$query ) {
-			echo "Error - MySQL error: " . mysqli_error() . ".";
+			echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 			return 0;
 		}
 		$NumRows = mysqli_num_rows($query);

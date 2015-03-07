@@ -16,7 +16,7 @@ if ( isset($_POST['TName']) ) {
 	} else {
 		$query = mysqli_query($DBConn, "INSERT INTO Tournaments SET TName='" . $_POST['TName'] . "', Date='" . $_POST['Date'] . "', NumRounds='" . $_POST['NumRounds'] . "', NumFinalsJudges='" . $_POST['NumFinalsJudges'] . "';");
 		if ( !$query ) {
-			echo "Error - MySQL error: " . mysqli_error() . ".";
+			echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 			break;
 		}
 		echo $_POST['TName'] . " added succesfully.";

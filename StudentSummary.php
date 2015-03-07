@@ -4,7 +4,7 @@ if ( isset($_POST['SID']) ) {
 	$ErrorString = "";
 	$query = mysqli_query($DBConn, "select concat(LName, ', ', FName) as NameLF, concat(FName, ' ', LName) as NameFL, Year from Students where SID='" . $_POST['SID'] . "';");
 	if ( !$query ) {
-		$ErrorString =  "Error - MySQL error: " . mysqli_error() . ".";
+		$ErrorString =  "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 		break;
 	}
 	$Data = mysqli_fetch_assoc($query);
@@ -13,7 +13,7 @@ if ( isset($_POST['SID']) ) {
 	$Year = $Data['Year'];
 	$query = mysqli_query($DBConn, "select EName from Results, Events where (SID='" . $_POST['SID'] . "' or SID2='" . $_POST['SID'] . "') and Results.EID = Events.EID group by EName order by EName;");
 	if ( !$query ) {
-		$ErrorString =  "Error - MySQL error: " . mysqli_error() . ".";
+		$ErrorString =  "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 		break;
 	}
 	$NumRows = mysqli_num_rows($query);
@@ -66,7 +66,7 @@ if ( isset($_POST['SID']) && $ErrorString == "" ) {
 	echo '<h3>State Qualifications</h3>
 ';
 	if ( !$query ) {
-		$ErrorString =  "Error - MySQL error: " . mysqli_error() . ".";
+		$ErrorString =  "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 		break;
 	}
 	if ( $ErrorString == "" && mysqli_num_rows($query) > 0 ) {
@@ -97,7 +97,7 @@ function MakeGraph() {
 	}
 	$query = mysqli_query("select TName from Results, Tournaments where (SID='" . $_POST['SID'] . "' or SID2='" . $_POST['SID'] . "') and Results.TID = Tournaments.TID group by Date order by Date;");
 	if ( !$query ) {
-		$ErrorString = "Error - MySQL error: " . mysqli_error() . ".";
+		$ErrorString = "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 		echo $ErrorString;
 		break;
 	}
@@ -113,7 +113,7 @@ function MakeGraph() {
 	}
 	$query = mysqli_query($DBConn, "select EName, Date, avg(PRanks/NumberRounds) as Ranks from Results, Tournaments, Events where Results.TID = Tournaments.TID and Results.EID = Events.EID and (Results.SID='" . $_POST['SID'] . "' or Results.SID2='" . $_POST['SID'] . "') group by Date, EName order by Date, EName;");
 	if ( !$query ) {
-		$ErrorString = "Error - MySQL error: " . mysqli_error() . ".";
+		$ErrorString = "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 		echo $ErrorString;
 		break;
 	}

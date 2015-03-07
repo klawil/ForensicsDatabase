@@ -19,7 +19,7 @@ if (( isset($_POST['FName']) )) {
 	} else {
 		$query = mysqli_query($DBConn, "INSERT INTO Students SET FName='" . $_POST['FName'] . "', LName='" . $_POST['LName'] . "', Year=" . $_POST['Year'] . ";");
 		if ( !$query ) {
-			echo "Error - MySQL error: " . mysqli_error() . ".";
+			echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 			break;
 		} else {
 		echo $_POST['FName'] . " " . $_POST['LName'] . " added.

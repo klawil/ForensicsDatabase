@@ -7,7 +7,7 @@ $GLOBALS['CanUserEdit'] = 0;
 function Tournaments($IncludeAll) {
 	$query = mysqli_query($GLOBALS['DBConn'], "select TName, TID from Tournaments order by Date desc, TName;");
 	if ( !$query ) {
-		return "Error - MySQL error: " . mysqli_error() . ".";
+		return "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 	}
 	$NumRows = mysqli_num_rows($query);
 	$CurrentRow = 0;
@@ -26,7 +26,7 @@ function Tournaments($IncludeAll) {
 function Students($IncludeAll, $FormName = NULL) {
 	$query = mysqli_query($GLOBALS['DBConn'], "select FName, LName, SID from Students order by LName, FName;");
 	if ( !$query ) {
-		return "Error - MySQL error: " . mysqli_error() . ".";
+		return "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 	}
 	$NumRows = mysqli_num_rows($query);
 	$CurrentRow = 0;
@@ -49,7 +49,7 @@ function Students($IncludeAll, $FormName = NULL) {
 function Events($IncludeAll) {
 	$query = mysqli_query($GLOBALS['DBConn'], "select * from Events order by EName;");
 	if ( !$query ) {
-		return "Error - MySQL error: " . mysqli_error() . ".";
+		return "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 	}
 	$NumRows = mysqli_num_rows($query);
 	$CurrentRow = 0;
@@ -205,7 +205,7 @@ function SetAuthCookie($UN) {
 	$Cookie = $UN . "," . $MD5;
 	$query = mysqli_query($GLOBALS['DBConn'], "update users set cookie='" . $MD5 . "', cookieExp='" . $ExpDate . "' where UName='" . $UN . "';");
 	if ( !$query ) {
-		echo "Error - MySQL error: " . mysqli_error() . ".";
+		echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 		return 0;
 	}
 	setcookie($GLOBALS['CookieName'], $Cookie, $ExpDate, "/");

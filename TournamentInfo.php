@@ -69,8 +69,8 @@ if ( isset($_POST['OrderBy']) ) {
 		$WString = $WString . "Results.State='" . $_POST['State'] . "'";
 	}
 	$NumRoundQuery = mysqli_query($DBConn, "SELECT max(Round) as Rd, max(Judge) as Jdg FROM Tournaments, Results, Ballots, Events, Students " . $WString . ";");
-	if ( !$query ) {
-		echo "Error - MySQL error: " . mysqli_error() . " on Judge " . $x . ".";
+	if ( !$NumRoundQuery ) {
+		echo "Error - MySQL error: " . mysqli_error($DBConn) . " on Judge " . $x . ".";
 		return 0;
 	}
 	$Data = mysqli_fetch_assoc($NumRoundQuery);
@@ -78,7 +78,7 @@ if ( isset($_POST['OrderBy']) ) {
 	$NumJudges = $Data['Jdg'];
 	$query = mysqli_query($DBConn, 'select SID2, Results.RID as RID, concat(LName, ", ", FName) as Name, PRanks / NumberRounds as PScore, PQuals/ NumberRounds as PQual, FRanks / NumberJudges as FScore, TName, EName, Rank, Qual, Judge, Round, broke, State, place from Students, Events, Tournaments, Results, Ballots' . $WString . $OString . ";");
 	if ( !$query ) {
-		echo "Error - MySQL error: " . mysqli_error() . ".";
+		echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 		return 0;
 	}
 	echo '<table id="Results-Table" border="1" style="border-collapse: collapse;"><tr>';

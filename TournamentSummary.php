@@ -6,7 +6,7 @@ $ResultsString = "";
 if ( isset($_POST['TID']) ) {
 	$query = mysqli_query($DBConn, "select TName, Date from Tournaments where TID='" . $_POST['TID'] . "';");
 	if ( !$query ) {
-		$ErrorString = "Error - MySQL error: " . mysqli_error() . ".";
+		$ErrorString = "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 		break;
 	}
 	if ( mysqli_num_rows($query) != 1 ) {
