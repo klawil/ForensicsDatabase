@@ -68,21 +68,17 @@ if ( isset($_POST['OrderBy']) ) {
 		}
 		$WString = $WString . "Results.State='" . $_POST['State'] . "'";
 	}
-	if (( mysql_errno() )) {
-		echo "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . " on Judge " . $x . ".";
+	$NumRoundQuery = mysqli_query($DBConn, "SELECT max(Round) as Rd, max(Judge) as Jdg FROM Tournaments, Results, Ballots, Events, Students " . $WString . ";");
+	if ( !$query ) {
+		echo "Error - MySQL error: " . mysqli_error() . " on Judge " . $x . ".";
 		return 0;
 	}
-	$NumRoundQuery = mysql_query("SELECT max(Round) as Rd, max(Judge) as Jdg FROM Tournaments, Results, Ballots, Events, Students " . $WString . ";");
-	if (( mysql_errno() )) {
-		echo "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . " on Judge " . $x . ".";
-		return 0;
-	}
-	$Data = mysql_fetch_assoc($NumRoundQuery);
+	$Data = mysqli_fetch_assoc($NumRoundQuery);
 	$NumRounds = $Data['Rd'];
 	$NumJudges = $Data['Jdg'];
-	$query = mysql_query('select SID2, Results.RID as RID, concat(LName, ", ", FName) as Name, PRanks / NumberRounds as PScore, PQuals/ NumberRounds as PQual, FRanks / NumberJudges as FScore, TName, EName, Rank, Qual, Judge, Round, broke, State, place from Students, Events, Tournaments, Results, Ballots' . $WString . $OString . ";");
-	if (( mysql_errno() )) {
-		echo "Error - MySQL error " . mysql_errno() . ": " . mysql_error() . ".";
+	$query = mysqli_query($DBConn, 'select SID2, Results.RID as RID, concat(LName, ", ", FName) as Name, PRanks / NumberRounds as PScore, PQuals/ NumberRounds as PQual, FRanks / NumberJudges as FScore, TName, EName, Rank, Qual, Judge, Round, broke, State, place from Students, Events, Tournaments, Results, Ballots' . $WString . $OString . ";");
+	if ( !$query ) {
+		echo "Error - MySQL error: " . mysqli_error() . ".";
 		return 0;
 	}
 	echo '<table id="Results-Table" border="1" style="border-collapse: collapse;"><tr>';
@@ -123,7 +119,7 @@ if ( isset($_POST['OrderBy']) ) {
 	if ( $_POST['ToCol'] == '1' ) {
 		echo '<th>Total</th>';
 	}
-	$NumRows = mysql_num_rows($query);
+	$NumRows = mysqli_num_rows($query);
 	$RID = "";
 	$On = "Prelim";
 	$x = 1;
@@ -131,7 +127,7 @@ if ( isset($_POST['OrderBy']) ) {
 	$z = 1;
 	$First = 1;
 	while ( $z <= $NumRows ) {
-		$Data = mysql_fetch_assoc($query);
+		$Data = mysqli_fetch_assoc($query);
 		if ( $Data['RID'] != $RID ) {
 			if ( $First == 0 ) {
 				if ( $CellsLeft > $NumJudges ) {
@@ -158,8 +154,8 @@ if ( isset($_POST['OrderBy']) ) {
 			}
 			if ( $_POST['NCol'] == '1' ) {
 				if ( $Data['SID2'] != NULL ) {
-					$NameQuery = mysql_query("select concat(LName, ', ', FName) as Name from Students where SID='" . $Data['SID2'] . "';");
-					$NameData = mysql_fetch_assoc($NameQuery);
+					$NameQuery = mysqli_query($DBConn, "select concat(LName, ', ', FName) as Name from Students where SID='" . $Data['SID2'] . "';");
+					$NameData = mysqli_fetch_assoc($NameQuery);
 					echo '<td>' . $Data['Name'] . ' and ' . $NameData['Name'] . '</td>';
 				} else {
 					echo '<td>' . $Data['Name'] . '</td>';
@@ -285,8 +281,8 @@ if ( isset($_POST['OrderBy']) ) {
 	echo $Result;
 	return 0;
 } elseif ( isset($_POST['TID']) ) {
-	$query = mysql_query("select NumRounds, NumFinalsJudges from Tournaments where TID=" . $_POST['TID'] . ";");
-	$data = mysql_fetch_assoc($query);
+	$query = mysqli_query($DBConn, "select NumRounds, NumFinalsJudges from Tournaments where TID=" . $_POST['TID'] . ";");
+	$data = mysqli_fetch_assoc($query);
 	echo $data['NumRounds'] . "|" . $data['NumFinalsJudges'];
 	return 0;
 } elseif ( isset($_POST['Events']) ) {

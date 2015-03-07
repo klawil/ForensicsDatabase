@@ -19,8 +19,8 @@ if ( $GLOBALS['CanUserEdit'] != 1 ) {
 </html>';
 	return 0;
 }
-$query = mysql_query("update Ballots set Rank=1 where RID=119 and Judge=1;");
-echo mysql_affected_rows();
+$query = mysqli_query($DBConn "update Ballots set Rank=1 where RID=119 and Judge=1;");
+echo mysqli_affected_rows();
 ?>
 Select Tournament
 <div id="Tourneys"><?php echo Tournaments(0); ?> <input type="button" value="Select" onclick="MakePage();"></div><form id="EntryID" action="TournamentUpdate.php"><div id="TourneyID"></div>
