@@ -404,11 +404,13 @@ function SubmitInfo() {
     } else {
         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
-    xmlhttp.open("POST","TournamentInfo.php",false);
+    xmlhttp.open("POST","TournamentInfo.php",true);
     xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
     xmlhttp.send(PostString);
-    response = xmlhttp.responseText;
-    document.getElementById("Results").innerHTML = response;
+    xmlhttp.onreadystatechange=function() {
+    	response = xmlhttp.responseText;
+    	document.getElementById("Results").innerHTML = response;
+    }
 }
 </script>
 </body>

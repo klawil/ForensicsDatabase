@@ -111,16 +111,18 @@ function UserLogout() {
 	} else {
 		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
 	}
-	xmlhttp.open("POST","Login.php",false);
+	xmlhttp.open("POST","Login.php",true);
 	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xmlhttp.send(PString);
-	response = xmlhttp.responseText;
-	if ( response == "true" ) {
-		location.reload();
-	} else {
-		document.getElementById("login_message").style.display = "block";
-		document.getElementById("LoginForm").reset();
-		document.getElementById("login_message").innerHTML = response;
+	document.getElementById("login_message").style.display = "block";
+	document.getElementById("login_message").innerHTML = "Logging Out...";
+	xmlhttp.onreadystatechange=function() {
+		response = xmlhttp.responseText;
+		if ( response == "true" ) {
+			location.reload();
+		} else {
+			document.getElementById("login_message").innerHTML = response;
+		}
 	}
 }
 </script>
@@ -153,16 +155,19 @@ function LoginUser() {
 	} else {
 		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
 	}
-	xmlhttp.open("POST","Login.php",false);
+	xmlhttp.open("POST","Login.php",true);
 	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xmlhttp.send(PString);
-	response = xmlhttp.responseText;
-	if ( response == "true" ) {
-		location.reload();
-	} else {
-		document.getElementById("login_message").style.display = "block";
-		document.getElementById("LoginForm").reset();
-		document.getElementById("login_message").innerHTML = response;
+	document.getElementById("login_message").style.display = "block";
+	document.getElementById("login_message").innerHTML = "Checking Credentials...";
+	xmlhttp.onreadystatechange=function() {
+		response = xmlhttp.responseText;
+		if ( response == "true" ) {
+			location.reload();
+		} else {
+			document.getElementById("LoginForm").reset();
+			document.getElementById("login_message").innerHTML = response;
+		}
 	}
 }
 </script>

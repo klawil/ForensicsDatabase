@@ -181,16 +181,18 @@ function SubmitPartner() {
     } else {
         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
-    xmlhttp.open("POST","TournamentUpdate.php",false);
+    xmlhttp.open("POST","TournamentUpdate.php",true);
     xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
     xmlhttp.send(PString);
-    response = xmlhttp.responseText;
-    if ( response == "true" ) {
-        document.getElementById("Message").innerHTML = document.getElementById("Student").options[document.getElementById("Student").selectedIndex].text + " entry in " + document.getElementById("Event").options[document.getElementById("Event").selectedIndex].text + " submitted successfully.";
-        document.getElementById("EntryID").reset();
-        OutsHideShow();
-    } else {
-        document.getElementById("Message").innerHTML = response;
+    xmlhttp.onreadystatechange=function() {
+    	response = xmlhttp.responseText;
+    	if ( response == "true" ) {
+    	    document.getElementById("Message").innerHTML = document.getElementById("Student").options[document.getElementById("Student").selectedIndex].text + " entry in " + document.getElementById("Event").options[document.getElementById("Event").selectedIndex].text + " submitted successfully.";
+    	    document.getElementById("EntryID").reset();
+    	    OutsHideShow();
+    	} else {
+    	    document.getElementById("Message").innerHTML = response;
+    	}
     }
 }
 function SubmitInfo() {
@@ -236,18 +238,20 @@ function SubmitInfo() {
     } else {
         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
-    xmlhttp.open("POST","TournamentUpdate.php",false);
+    xmlhttp.open("POST","TournamentUpdate.php",true);
     xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
     xmlhttp.send(RString + BString + IString);
-    response = xmlhttp.responseText;
-    if ( response.indexOf("true") > -1 ) {
-    	string = response;
-    	string = string.replace("true",document.getElementById("Student").options[document.getElementById("Student").selectedIndex].text + " entry in " + document.getElementById("Event").options[document.getElementById("Event").selectedIndex].text + " submitted successfully.");
-        document.getElementById("Message").innerHTML = string;
-        document.getElementById("EntryID").reset();
-        OutsHideShow();
-    } else {
-        document.getElementById("Message").innerHTML = response;
+    xmlhttp.onreadystatechange=function() {
+    	response = xmlhttp.responseText;
+    	if ( response.indexOf("true") > -1 ) {
+    		string = response;
+    		string = string.replace("true",document.getElementById("Student").options[document.getElementById("Student").selectedIndex].text + " entry in " + document.getElementById("Event").options[document.getElementById("Event").selectedIndex].text + " submitted successfully.");
+    	    document.getElementById("Message").innerHTML = string;
+    	    document.getElementById("EntryID").reset();
+    	    OutsHideShow();
+    	} else {
+    	    document.getElementById("Message").innerHTML = response;
+    	}
     }
 }
 function GetInfo(TID){
@@ -256,12 +260,14 @@ function GetInfo(TID){
     } else {
         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
-    xmlhttp.open("POST","TournamentInfo.php",false);
+    xmlhttp.open("POST","TournamentInfo.php",true);
     xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
     xmlhttp.send("TID=" + TID);
-    response = "";
-    response = xmlhttp.responseText;
-    return response;
+    xmlhttp.onreadystatechange=function() {
+    	response = "";
+    	response = xmlhttp.responseText;
+    	return response;
+	}
 }
 function MakePage(){
     document.getElementById("Header").innerHTML = document.getElementById("Tournament").options[document.getElementById("Tournament").selectedIndex].text;
