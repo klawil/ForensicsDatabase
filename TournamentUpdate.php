@@ -275,7 +275,9 @@ function SubmitInfo(override) {
     		string = response;
     		string = string.replace("true",document.getElementById("Student").options[document.getElementById("Student").selectedIndex].text + " entry in " + document.getElementById("Event").options[document.getElementById("Event").selectedIndex].text + " submitted successfully.");
     	    document.getElementById("Message").innerHTML = string;
+    	    EventIndex = document.getElementById("Event").selectedIndex;
     	    document.getElementById("EntryID").reset();
+    	    document.getElementById("Event").selectedIndex = EventIndex;
     	    OutsHideShow();
     	} else {
     	    document.getElementById("Message").innerHTML = response;
