@@ -1,6 +1,10 @@
 <?php
 include "CommonFunctions.php";
 if ( isset($_POST['RID']) ) {
+	if ( $GLOBALS['CanUserEdit'] != 1 ) {
+		echo "Error - You aren't authorized to enter data.";
+		return 0;
+	}
 	if ( ! isset($_POST['SID']) ) {
 		echo "Error - No partner selected.";
 		return 0;
@@ -13,6 +17,10 @@ if ( isset($_POST['RID']) ) {
 	echo "true";
 	return 0;
 } elseif ( isset($_POST['TID']) ) {
+	if ( $GLOBALS['CanUserEdit'] != 1 ) {
+		echo "Error - You aren't authorized to enter data.";
+		return 0;
+	}
 	$tbl = "Tournaments";
 	if (( ! isset($_POST['TID']) )) {
 		echo "Error - No tournament ID specified";
@@ -60,22 +68,38 @@ if ( isset($_POST['RID']) ) {
 	} else {
 		$PString = $PString . ", NumberJudges=0";
 	}
-	if ( mysqli_num_rows(mysqli_query($DBConn, "select * from Results where EID='" . $_POST['Event'] . "' and SID='" . $_POST['Student'] . "' and TID='" . $_POST['TID'] . "';")) != 0 ) {
-		echo "That person-event-tournament combination already exists.";
+	if ( $_POST['override'] != 1 && mysqli_num_rows(mysqli_query($DBConn, "select * from Results where EID='" . $_POST['Event'] . "' and SID='" . $_POST['Student'] . "' and TID='" . $_POST['TID'] . "';")) != 0 ) {
+		echo "That entry already exists.<br>Edit the existing entry? <input type='hidden' id='override' ><input type='button' value='yes' onclick='SubmitInfo(1);'>";
 		return 0;
 	}
-	$query = mysqli_query($DBConn, "insert into Results set SID='" . $_POST['Student'] . "', EID='" . $_POST['Event'] . "', TID='" . $_POST['TID'] . "', broke='" . $_POST['broke'] . "', State='" . $_POST['qual'] . "'" . $PString . ";");
-	if ( !$query ) {
-		echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
-		return 0;
+	if ( $_POST['override'] == 1 ) {
+		$RIDquery = mysqli_query($DBConn, "select RID from Results where EID='" . $_POST['Event'] . "' and SID='" . $_POST['Student'] . "' and TID='" . $_POST['TID'] . "';");
+		if ( !$query ) {
+			echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
+			return 0;
+		}
+		$data = mysqli_fetch_assoc($RIDquery);
+		$RID = $data['RID'];
+		$query = mysqli_query($DBConn, "update Results set broke='" . $_POST['broke'] . "', State='" . $_POST['qual'] . "'" . $PString . " where RID='" . $RID . "';");
+		if ( !$query ) {
+			echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
+			return 0;
+		}
+		$query = mysqli_query($DBConn, "delete from Ballots where RID='" . $RID . "';");
+	} else {
+		$query = mysqli_query($DBConn, "insert into Results set SID='" . $_POST['Student'] . "', EID='" . $_POST['Event'] . "', TID='" . $_POST['TID'] . "', broke='" . $_POST['broke'] . "', State='" . $_POST['qual'] . "'" . $PString . ";");
+		if ( !$query ) {
+			echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
+			return 0;
+		}
+		$query = mysqli_query($DBConn, "select last_insert_id() as RID;");
+		if ( !$query ) {
+			echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
+			return 0;
+		}
+		$data = mysqli_fetch_assoc($query);
+		$RID = $data['RID'];
 	}
-	$query = mysqli_query($DBConn, "select last_insert_id() as RID;");
-	if ( !$query ) {
-		echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
-		return 0;
-	}
-	$data = mysqli_fetch_assoc($query);
-	$RID = $data['RID'];
 	$FRanks = 0;
 	if (( $_POST['broke'] == 1 )) {
 		for ( $x = 1; $x <= $NumJudges; $x++ ) {
@@ -198,11 +222,12 @@ function SubmitPartner() {
     	}
     }
 }
-function SubmitInfo() {
+function SubmitInfo(override) {
     event.preventDefault();
+    overrde = override || 0;
     document.getElementById("Message").innerHTML = "Submitting...";
     x = 3;
-    RString = "";
+    RString = "override=" + override + "&";
     while (document.getElementById("EntryID").elements[x].value != "broke") {
         RString = RString + document.getElementById("EntryID").elements[x].id + "=" + document.getElementById("EntryID").elements[x].value + "&";
         if ( document.getElementById("EntryID").elements[x].value == "" ) {
