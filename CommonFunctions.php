@@ -210,6 +210,12 @@ function Authorize() {
 		}
 		$GLOBALS['UserName'] = $Data['Name'];
 		$GLOBALS['CanUserEdit'] = $Data['CanMod'];
+		$myfile = fopen("/var/log/forensics/general.log","a");
+		if ( $GLOBALS['UserName'] != "" ) {
+			fwrite($myfile, "User: " . $GLOBALS['UserName'] . "|");
+		}
+		fwrite($myfile, "IP: " . $_SERVER['HTTP_CLIENT_IP'] . "|Page: " . basename($_SERVER['PHP_SELF']) . "|Date: " . date('Y-m-d H-i-s') . "\n");
+		fclose($myfile);
 	}
 }
 function SetAuthCookie($UN) {
