@@ -4,7 +4,7 @@ $GLOBALS['CookieName'] = "forensics_db_auth_token";
 $GLOBALS['SecretWord'] = "ForensicsSECRET";
 $GLOBALS['UserName'] = "";
 $GLOBALS['CanUserEdit'] = 0;
-function Tournaments($IncludeAll) {
+function Tournaments($IncludeAll, $DefaultTID = NULL) {
 	$query = mysqli_query($GLOBALS['DBConn'], "select TName, TID from Tournaments order by Date desc, TName;");
 	if ( !$query ) {
 		return "Error - MySQL error: " . mysqli_error($DBConn) . ".";
@@ -17,13 +17,17 @@ function Tournaments($IncludeAll) {
 	}
 	while ( $CurrentRow < $NumRows ) {
 		$results = mysqli_fetch_assoc($query);
-		$TournamentString = $TournamentString . '<option value="' . $results['TID'] . '">' . $results['TName'] . "</option>";
+		if ( $results['TID'] == $DefaultTID ) {
+			$TournamentString = $TournamentString . '<option selected="selected" value="' . $results['TID'] . '">' . $results['TName'] . "</option>";
+		} else {
+			$TournamentString = $TournamentString . '<option value="' . $results['TID'] . '">' . $results['TName'] . "</option>";
+		}
 		$CurrentRow++;
 	}
 	$TournamentString = $TournamentString . "</select>";
 	return $TournamentString;
 }
-function Students($IncludeAll, $FormName = NULL) {
+function Students($IncludeAll, $FormName = NULL, $DefaultSID = NULL) {
 	$query = mysqli_query($GLOBALS['DBConn'], "select FName, LName, SID from Students order by LName, FName;");
 	if ( !$query ) {
 		return "Error - MySQL error: " . mysqli_error($DBConn) . ".";
@@ -40,13 +44,17 @@ function Students($IncludeAll, $FormName = NULL) {
 	}
 	while ( $CurrentRow < $NumRows ) {
 		$results = mysqli_fetch_assoc($query);
-		$StudentString = $StudentString . '<option value="' . $results['SID'] . '">' . $results['LName'] . ", " . $results['FName'] . "</option>";
+		if ( $results['TID'] == $DefaultTID ) {
+			$StudentString = $StudentString . '<option selected="selected" value="' . $results['SID'] . '">' . $results['LName'] . ", " . $results['FName'] . "</option>";
+		} else {
+			$StudentString = $StudentString . '<option value="' . $results['SID'] . '">' . $results['LName'] . ", " . $results['FName'] . "</option>";
+		}
 		$CurrentRow++;
 	}
 	$StudentString = $StudentString . "</select>";
 	return $StudentString;
 }
-function Events($IncludeAll) {
+function Events($IncludeAll, $DefautEID = NULL) {
 	$query = mysqli_query($GLOBALS['DBConn'], "select * from Events order by EName;");
 	if ( !$query ) {
 		return "Error - MySQL error: " . mysqli_error($DBConn) . ".";
@@ -59,7 +67,11 @@ function Events($IncludeAll) {
 	}
 	while ( $CurrentRow < $NumRows ) {
 		$results = mysqli_fetch_assoc($query);
-		$EventString = $EventString . '<option value="' . $results['EID'] . '">' . $results['EName'] . "</option>";
+		if ( $results['EID'] == $DefaultEID ) {
+			$EventString = $EventString . '<option selected="selected" value="' . $results['EID'] . '">' . $results['EName'] . "</option>";
+		} else {
+			$EventString = $EventString . '<option value="' . $results['EID'] . '">' . $results['EName'] . "</option>";
+		}
 		$CurrentRow++;
 	}
 	$EventString = $EventString . "</select>";
