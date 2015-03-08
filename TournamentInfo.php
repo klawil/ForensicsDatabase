@@ -294,7 +294,6 @@ if ( isset($_POST['OrderBy']) ) {
 <link rel="stylesheet" type="text/css" href="Styles.css">
 </head>
 <body>
-<form id="display">
 <h1><div id="Header" style="width: 100%;">Select Information To Be Returned</div></h1>
 <?php MakeHeader(); ?>
 <div style="display: float; float: left;">
