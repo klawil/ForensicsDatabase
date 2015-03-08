@@ -81,7 +81,13 @@ if ( $TName != "" ) {
 ?>
 <h3><?php echo $ErrorString; ?></h3>
 <form id="TournamentInfo" action="TournamentSummary.php" method="post">
-<?php echo Tournaments(0); ?><br>
+<?php
+if ( isset($_POST['TID']) ) {
+	echo Tournaments(0,$_POST['TID']);
+} else {
+	echo Tournaments(0);
+}
+?><br>
 <input type="submit" value="Select">
 </form>
 <?php echo $ResultsString; ?>
