@@ -97,6 +97,7 @@ function MakeHeader() {
 		<a href="TournamentUpdate.php"><li>Insert Data</li></a>
 		</ul>
 	</li>
+	<a href="https://github.com/klawil/ForensicsDatabase"><li>The Project on Github</li></a>
 	';
 	}
 	if ( $GLOBALS['UserName'] != "" ) {
