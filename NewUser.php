@@ -12,14 +12,14 @@ if ( isset($_POST['UName']) ) {
 	if ( $_POST['FName'] == "" ) {
 		echo 'You must enter a first name<br>';
 		$iswrong = 1;
-	} elseif ( strlen($_POST['FName']) ) {
+	} elseif ( strlen($_POST['FName']) > 30 ) {
 		echo 'First Name must be less than 30 characters<br>';
 		$iswrong = 1;
 	}
 	if ( $_POST['LName'] == "" ) {
 		echo 'You must enter a last name<br>';
 		$iswrong = 1;
-	} elseif ( strlen($_POST['LName']) ) {
+	} elseif ( strlen($_POST['LName']) > 30 ) {
 		echo 'Last Name must be less than 30 characters<br>';
 		$iswrong = 1;
 	}
@@ -30,7 +30,7 @@ if ( isset($_POST['UName']) ) {
 	if ( $_POST['UName'] == "" ) {
 		echo 'You must enter a user name<br>';
 		$iswrong = 1;
-	} elseif ( strlen($_POST['UName']) ) {
+	} elseif ( strlen($_POST['UName']) > 20 ) {
 		echo 'Username must be less than 20 characters<br>';
 		$iswrong = 1;
 	}
