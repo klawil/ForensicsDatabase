@@ -10,8 +10,8 @@ include 'CommonFunctions.php';
 MakeHeader();
 if ( isset($_POST['TName']) ) {
 	$tbl = "Tournaments";
-	if ( strlen($_POST['TName']) > 30 ) {
-		echo 'Name is too long. Must be 30 characters or less.
+	if ( strlen($_POST['TName']) > 50 ) {
+		echo 'Name is too long. Must be 50 characters or less.
 ';
 	} else {
 		$query = mysqli_query($DBConn, "INSERT INTO Tournaments SET TName='" . $_POST['TName'] . "', Date='" . $_POST['Date'] . "', NumRounds='" . $_POST['NumRounds'] . "', NumFinalsJudges='" . $_POST['NumFinalsJudges'] . "';");
@@ -41,8 +41,8 @@ if ( $GLOBALS['CanUserEdit'] != 1 ) {
 <script>
 function CheckTName(){
     var TName = document.forms["NewTournament"]["TName"].value;
-    if ( TName.length > 30 ) {
-        document.getElementById("TNameWarn").innerHTML = "Must be 30 characters or less";
+    if ( TName.length > 50 ) {
+        document.getElementById("TNameWarn").innerHTML = "Must be 50 characters or less";
     } else {
         document.getElementById("TNameWarn").innerHTML = "";
     }

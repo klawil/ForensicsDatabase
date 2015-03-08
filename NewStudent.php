@@ -10,10 +10,10 @@ include 'CommonFunctions.php';
 MakeHeader();
 if (( isset($_POST['FName']) )) {
 	$tbl = "Students";
-	if ( strlen($_POST['FName']) > 20 ) {
+	if ( strlen($_POST['FName']) > 50 ) {
 		echo 'First Name is too long
 ';
-	} elseif ( strlen($_POST['LName']) > 20 ) {
+	} elseif ( strlen($_POST['LName']) > 50 ) {
 		echo 'Last Name is too long
 ';
 	} else {
@@ -45,16 +45,16 @@ if ( $GLOBALS['CanUserEdit'] != 1 ) {
 <script>
 function CheckFName(){
     var FName = document.forms["NewStudent"]["FName"].value;
-    if ( FName.length > 20 ) {
-        document.getElementById("FNameWarn").innerHTML = "Must be  20 characters or less";
+    if ( FName.length > 50 ) {
+        document.getElementById("FNameWarn").innerHTML = "Must be  50 characters or less";
     } else {
         document.getElementById("FNameWarn").innerHTML = "";
     }
 }
 function CheckLName(){
     var LName = document.forms["NewStudent"]["LName"].value;
-    if ( LName.length > 20 ) {
-        document.getElementById("LNameWarn").innerHTML = "Must be  20 characters or less";
+    if ( LName.length > 50 ) {
+        document.getElementById("LNameWarn").innerHTML = "Must be  50 characters or less";
     } else {
         document.getElementById("LNameWarn").innerHTML = "";
     }

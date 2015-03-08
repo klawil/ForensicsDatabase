@@ -12,9 +12,15 @@ if ( isset($_POST['UName']) ) {
 	if ( $_POST['FName'] == "" ) {
 		echo 'You must enter a first name<br>';
 		$iswrong = 1;
+	} elseif ( strlen($_POST['FName']) ) {
+		echo 'First Name must be less than 30 characters<br>';
+		$iswrong = 1;
 	}
 	if ( $_POST['LName'] == "" ) {
 		echo 'You must enter a last name<br>';
+		$iswrong = 1;
+	} elseif ( strlen($_POST['LName']) ) {
+		echo 'Last Name must be less than 30 characters<br>';
 		$iswrong = 1;
 	}
 	if ( $_POST['Email'] == "" ) {
@@ -23,6 +29,9 @@ if ( isset($_POST['UName']) ) {
 	}
 	if ( $_POST['UName'] == "" ) {
 		echo 'You must enter a user name<br>';
+		$iswrong = 1;
+	} elseif ( strlen($_POST['UName']) ) {
+		echo 'Username must be less than 20 characters<br>';
 		$iswrong = 1;
 	}
 	if ( $_POST['PWord'] == "" ) {
