@@ -54,7 +54,7 @@ function Students($IncludeAll, $FormName = NULL, $DefaultSID = NULL) {
 	$StudentString = $StudentString . "</select>";
 	return $StudentString;
 }
-function Events($IncludeAll, $DefautEID = NULL) {
+function Events($IncludeAll, $DefaultEID = NULL) {
 	$query = mysqli_query($GLOBALS['DBConn'], "select * from Events order by EName;");
 	if ( !$query ) {
 		return "Error - MySQL error: " . mysqli_error($DBConn) . ".";
