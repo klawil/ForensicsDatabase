@@ -16,6 +16,8 @@ if (( isset($_POST['FName']) )) {
 	} elseif ( strlen($_POST['LName']) > 50 ) {
 		echo 'Last Name is too long
 ';
+	} elseif ( mysqli_num_rows( mysqli_query($DBConn, "select * from Students where FName='" . $_POST['FName'] . "' and LName='" . $_POST['LName'] . "';") ) != 0 ) {
+		echo $_POST['FName'] . " " . $_POST['LName'] . " already exists.";
 	} else {
 		$query = mysqli_query($DBConn, "INSERT INTO Students SET FName='" . $_POST['FName'] . "', LName='" . $_POST['LName'] . "', Year=" . $_POST['Year'] . ";");
 		if ( !$query ) {
