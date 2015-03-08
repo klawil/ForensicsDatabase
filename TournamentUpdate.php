@@ -60,6 +60,10 @@ if ( isset($_POST['RID']) ) {
 	} else {
 		$PString = $PString . ", NumberJudges=0";
 	}
+	if ( mysqli_num_rows(mysqli_query($DBConn, "select * from Results where EID='" . $_POST['Event'] . "' and SID='" . $_POST['Student'] . "' and TID='" . $_POST['TID'] . "';")) != 0 ) {
+		echo "That person-event-tournament combination already exists.";
+		return 0;
+	}
 	$query = mysqli_query($DBConn, "insert into Results set SID='" . $_POST['Student'] . "', EID='" . $_POST['Event'] . "', TID='" . $_POST['TID'] . "', broke='" . $_POST['broke'] . "', State='" . $_POST['qual'] . "'" . $PString . ";");
 	if ( !$query ) {
 		echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
