@@ -174,7 +174,7 @@ function LoginUser() {
 	xmlhttp.send(PString);
 	document.getElementById("login_message").style.display = "block";
 	document.getElementById("login_message").innerHTML = "Checking Credentials...";
-	xmlhttp.onreadystatechange=function() {
+	xmlhttp.onreadystatechange = function() {
 		response = xmlhttp.responseText;
 		if ( response == "true" ) {
 			location.reload();
