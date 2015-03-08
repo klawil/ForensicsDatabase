@@ -44,7 +44,7 @@ function Students($IncludeAll, $FormName = NULL, $DefaultSID = NULL) {
 	}
 	while ( $CurrentRow < $NumRows ) {
 		$results = mysqli_fetch_assoc($query);
-		if ( $results['TID'] == $DefaultTID ) {
+		if ( $results['SID'] == $DefaultSID ) {
 			$StudentString = $StudentString . '<option selected="selected" value="' . $results['SID'] . '">' . $results['LName'] . ", " . $results['FName'] . "</option>";
 		} else {
 			$StudentString = $StudentString . '<option value="' . $results['SID'] . '">' . $results['LName'] . ", " . $results['FName'] . "</option>";
