@@ -51,3 +51,8 @@ if [ "$?" != "0" ]; then
 	exit
 fi
 echo "MySQL Database setup is complete."
+sudo mkdir /var/log/forensics
+sudo touch /var/log/forensics/general.log
+sudo chown -R www-data /var/log/forensics
+sudo chmod 744 /var/log/forensics/general.log
+echo "Log File setup complete"
