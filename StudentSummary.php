@@ -49,7 +49,13 @@ if ( isset($_POST['SID']) && $ErrorString == "" ) {
 MakeHeader();
 ?>
 <form id="StudentSelect" action="StudentSummary.php" method="post">
-Select another student: <?php echo Students(0,"StudentSelect"); ?>
+Select a student: <?php
+if ( isset($_POST['SID']) && $ErrorString == "" ) {
+	echo Students(0,"StudentSelect",$_POST['SID']);
+} else {
+	echo Students(0,"StudentSelect");
+}
+?>
 <input type="submit" value="select">
 </form>
 <div style="display: float; float: left; padding-right: 10; width: 18%">
