@@ -196,27 +196,27 @@ function Authorize() {
 		$Cookie = $Array[1];
 		$query = mysqli_query($GLOBALS['DBConn'], "select cookie, cookieExp, CanMod, concat(LName, ', ', FName) as Name from users where UName='" . $GLOBALS['UserName'] . "';");
 		if ( !$query ) {
-			return 0;
+			break;
 		}
 		$Data = mysqli_fetch_assoc($query);
 		if ( $Cookie != $Data['cookie'] ) {
 			setcookie($GLOBALS['CookieName'], "", time() - 3600);
 			$GLOBALS['UserName'] = "";
-			return 0;
+			break;
 		} elseif ( time() > $Data['cookieExp'] ) {
 			setcookie($GLOBALS['CookieName'], "", time() - 3600);
 			$GLOBALS['UserName'] = "";
-			return 0;
+			break;
 		}
 		$GLOBALS['UserName'] = $Data['Name'];
 		$GLOBALS['CanUserEdit'] = $Data['CanMod'];
-		$myfile = fopen("/var/log/forensics/general.log","a");
-		if ( $GLOBALS['UserName'] != "" ) {
-			fwrite($myfile, "User: " . $GLOBALS['UserName'] . "|");
-		}
-		fwrite($myfile, "IP: " . $_SERVER['HTTP_CLIENT_IP'] . "|Page: " . basename($_SERVER['PHP_SELF']) . "|Date: " . date('Y-m-d H-i-s') . "\n");
-		fclose($myfile);
 	}
+	$myfile = fopen("/var/log/forensics/general.log","a");
+	if ( $GLOBALS['UserName'] != "" ) {
+		fwrite($myfile, "User: " . $GLOBALS['UserName'] . "|");
+	}
+	fwrite($myfile, "IP: " . $_SERVER['HTTP_CLIENT_IP'] . "|Page: " . basename($_SERVER['PHP_SELF']) . "|Date: " . date('Y-m-d H-i-s') . "\n");
+	fclose($myfile);
 }
 function SetAuthCookie($UN) {
 	$ExpDate = time() + (86400 * 7);
