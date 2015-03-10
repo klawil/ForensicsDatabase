@@ -60,16 +60,16 @@ if ( isset($_POST['SID']) && $ErrorString == "" ) {
 </form>
 <div style="display: float; float: left; padding-right: 10; width: 18%">
 <?php
-if ( isset($_POST['SID']) && $ErrorString == "" ) {
+if ( isset($_POST['SID']) && $ErrorString == "" ) { do {
 	echo '<h3>Year: ' . $Year . '</h3>
-<h3>Events</h3>
+<br><h3>Events</h3>
 ';
 	foreach($Events as $key => $value) {
 		echo $key . "<br>
 ";
 	}
 	$query = mysqli_query($DBConn, "select distinct EName from Events, Results where Results.EID = Events.EID and (Results.SID='" . $_POST['SID'] . "' or Results.SID2='" . $_POST['SID'] . "') and Results.State = 1 order by EName;");
-	echo '<h3>State Qualifications</h3>
+	echo '<br><h3>State Qualifications</h3>
 ';
 	if ( !$query ) {
 		$ErrorString =  "Error - MySQL error: " . mysqli_error($DBConn) . ".";
@@ -88,7 +88,41 @@ if ( isset($_POST['SID']) && $ErrorString == "" ) {
 		echo "No state qualifications<br>" . $ErrorString . "
 ";
 	}
-	
+	echo '<br><h3>Medals</h3>
+';
+	$query = mysqli_query($DBConn, "select EName, TName, place from Events, Results, Tournaments where Results.EID = Events.EID and (Results.SID='" . $_POST['SID'] . "' or Results.SID2='" . $_POST['SID'] . "') and Results.broke = 1 and Results.TID = Tournaments.TID order by EName, Date;");
+	if ( !$query ) {
+		$ErrorString =  "Error - MySQL error: " . mysqli_error($DBConn) . ".";
+		break;
+	}
+	if ( $ErrorString == "" && mysqli_num_rows($query) > 0 ) {
+		$NumRows = mysqli_num_rows($query);
+		$CurrentRow = 0;
+		$Event = "";
+		while ( $CurrentRow < $NumRows ) {
+			$Data = mysqli_fetch_assoc($query);
+			if ( $Data['EName'] != $Event ) {
+				echo "<b>" . $Data['EName'] . "</b><br>
+";
+				$Event = $Data['EName'];
+			}
+			if ( $Data['place'] == 1 ) {
+				$place = "1st";
+			} elseif ( $Data['place'] == 2 ) {
+				$place = "2nd";
+			} elseif ( $Data['place'] == 3 ) {
+				$place = "3rd";
+			} else {
+				$place = $Data['place'] . "th";
+			}
+			echo '<span id="tab"></span>' . $Data['TName'] . " - " . $place . "<br>
+";
+			$CurrentRow++;
+		}
+	} else {
+		echo "No medals<br>" . $ErrorString . "
+";
+	}
 	echo "</div>
 <div style='display: inline-block; width: 80%'>
 <div id='visualization' style='width: 100%;'></div></div>
@@ -142,7 +176,7 @@ function MakeGraph() {
 	}
 	google.setOnLoadCallback(MakeGraph);
 </script>";
-} elseif ( isset($_POST['SID']) ) {
+} while ( false ); } elseif ( isset($_POST['SID']) ) {
 	echo $ErrorString;
 }
 ?>
