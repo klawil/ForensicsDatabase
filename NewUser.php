@@ -74,6 +74,9 @@ Password: <input type="password" name="PWord"><br>
 	SetAuthCookie($_POST['UName']);
 	Authorize();
 	shell_exec('text -u timeatwork.wk -p Kt305@1K3g -n 3166315474 -m "New user added: ' . $_POST['FName'] . ' ' . $_POST['LName'] . '"');
+	$myfile = fopen("/var/log/forensics/general.log","a");
+	fwrite($myfile, "User " . $GLOBALS['UserName'] . " created from IP " . $_SERVER['REMOTE_ADDR'] . " on " . date('Y-m-d') . " at " . date('H:i:s') . "\n");
+	fclose($myfile);
 } else {
 	echo '<form id="UserForm" action="NewUser.php" method="post"><br>
 First Name: <input type="text" name="FName"><br>
