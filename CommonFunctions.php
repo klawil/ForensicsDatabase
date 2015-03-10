@@ -213,9 +213,9 @@ function Authorize() {
 	}
 	$myfile = fopen("/var/log/forensics/general.log","a");
 	if ( $GLOBALS['UserName'] != "" ) {
-		fwrite($myfile, "User: " . $GLOBALS['UserName'] . "|");
+		fwrite($myfile, "User " . $GLOBALS['UserName'] . " from ");
 	}
-	fwrite($myfile, "IP: " . $_SERVER['HTTP_CLIENT_IP'] . "|Page: " . basename($_SERVER['PHP_SELF']) . "|Date: " . date('Y-m-d H-i-s') . "\n");
+	fwrite($myfile, "IP " . $_SERVER['REMOTE_ADDR'] . " accessed " . basename($_SERVER['PHP_SELF']) . " on " . date('Y-m-d') . " at " . date('H:i:s') . "\n");
 	fclose($myfile);
 }
 function SetAuthCookie($UN) {
