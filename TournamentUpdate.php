@@ -2,6 +2,9 @@
 include "CommonFunctions.php";
 if ( isset($_POST['RID']) ) {
 	if ( $GLOBALS['CanUserEdit'] != 1 ) {
+		$myfile = fopen("/var/log/forensics/general.log","a");
+		fwrite($myfile,"IP " . $_SERVER['REMOTE_ADDR'] . " tried to enter a partner on page " . basename($_SERVER['PHP_SELF']) . " on " . date('Y-m-d') . " at " . date('H:i:s') . "\n");
+		fclose($myfile);
 		echo "Error - You aren't authorized to enter data.";
 		return 0;
 	}
@@ -18,6 +21,9 @@ if ( isset($_POST['RID']) ) {
 	return 0;
 } elseif ( isset($_POST['TID']) ) {
 	if ( $GLOBALS['CanUserEdit'] != 1 ) {
+		$myfile = fopen("/var/log/forensics/general.log","a");
+		fwrite($myfile,"IP " . $_SERVER['REMOTE_ADDR'] . " tried to enter data on page " . basename($_SERVER['PHP_SELF']) . " on " . date('Y-m-d') . " at " . date('H:i:s') . "\n");
+		fclose($myfile);
 		echo "Error - You aren't authorized to enter data.";
 		return 0;
 	}
@@ -178,6 +184,9 @@ if ( isset($_POST['RID']) ) {
 <?php
 MakeHeader();
 if ( $GLOBALS['CanUserEdit'] != 1 ) {
+	$myfile = fopen("/var/log/forensics/general.log","a");
+	fwrite($myfile,"IP " . $_SERVER['REMOTE_ADDR'] . " tried to access restricted page " . basename($_SERVER['PHP_SELF']) . " on " . date('Y-m-d') . " at " . date('H:i:s') . "\n");
+	fclose($myfile);
 	echo '<h2>Authentication Error: You do not have the permission to access this page</h2>
 </body>
 </html>';
