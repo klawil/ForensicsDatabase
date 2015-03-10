@@ -64,11 +64,6 @@ Password: <input type="password" name="PWord"><br>
 		echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 		return 0;
 	}
-	$query = mysqli_query($DBConn, "INSERT INTO Tournaments SET TName='" . $_POST['TName'] . "', Date='" . $_POST['Date'] . "', NumRounds='" . $_POST['NumRounds'] . "', NumFinalsJudges='" . $_POST['NumFinalsJudges'] . "';");
-	if ( !$query ) {
-		echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
-		return 0;
-	}
 	echo 'User ' . $_POST['FName'] . ' ' . $_POST['LName'] . ' (' . $_POST['UName'] . ') has been added.
 <a href="/">Return to Main Page</a>';
 	SetAuthCookie($_POST['UName']);
