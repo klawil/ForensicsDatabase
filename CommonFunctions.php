@@ -80,7 +80,8 @@ function Events($IncludeAll, $DefaultEID = NULL) {
 function MakeHeader() {
 	echo '<nav>
 	<ul>
-	<a href="TournamentInfo.php"><li>Results</li></a>
+	<a href="."><li>Medals</li></a>
+	<a href="TournamentInfo.php"><li>Custom Results</li></a>
 	<li>Summary
 		<ul>
 		<a href="StudentSummary.php"><li>Student</li></a>
