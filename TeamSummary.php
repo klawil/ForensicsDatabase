@@ -1,5 +1,6 @@
 <?php
 include "CommonFunctions.php";
+$ErrorString = "";
 ?>
 <html>
 <head>
