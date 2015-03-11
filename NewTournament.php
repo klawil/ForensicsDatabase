@@ -35,7 +35,7 @@ if ( isset($_POST['TName']) ) {
 <form id="NewTournament" action="NewTournament.php" method="post">
 <table>
     <tr><td>Name</td><td><input type="text" name="TName" onblur="CheckTName();"></td><td id="TNameWarn"></td></tr>
-    <tr><td>Rounds</td><td><input type="number" name="NumRounds"></td></tr>
+    <tr><td>Prelim Rounds</td><td><input type="number" name="NumRounds"></td></tr>
     <tr><td>Finals Judges</td><td><input type="number" name="NumFinalsJudges"></td></tr>
     <tr><td>Date</td><td><input type="date" name="Date"></td></tr>
 </table>
