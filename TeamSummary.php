@@ -59,7 +59,7 @@ if ( !$query ) {
 	}
 }
 echo "</div>
-<div id='visualization' style='width: 84%; height: 92%; display: float; float: left; margin-top: -50; margin-left: -50; margin-right: -50;'></div>
+<div id='visualization' style='width: 79%; height: 92%; display: float; float: left; margin-top: -50; margin-left: -50;'></div>
 <script>
 function MakeGraph() {
 	var data = new google.visualization.DataTable();
