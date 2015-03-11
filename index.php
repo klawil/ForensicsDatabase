@@ -9,7 +9,7 @@
 $ErrorString = "";
 include 'CommonFunctions.php';
 MakeHeader();
-$query = mysqli_query($DBConn, "select concat(LName, ', ', FName) as Name, EName, TName, place from Events, Results, Tournaments, Students where Results.EID = Events.EID and Results.broke = 1 and Results.TID = Tournaments.TID and Results.SID = Students.SID order by EName, Date;");
+$query = mysqli_query($DBConn, "select concat(LName, ', ', FName) as Name, EName, TName, place, SID2 from Events, Results, Tournaments, Students where Results.EID = Events.EID and Results.broke = 1 and Results.TID = Tournaments.TID and Results.SID = Students.SID order by EName, place, Date;");
 if ( !$query ) {
 	$ErrorString =  "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 }
@@ -52,7 +52,17 @@ if ( $ErrorString == "" && mysqli_num_rows($query) > 0 ) {
 		} else {
 			$place = $Data['place'] . "th";
 		}
-		echo '<span id="tab"></span>' . $Data['Name'] . " - " . $Data['TName'] . " - " . $place . "<br>
+		$Name = $Data['Name'];
+		if ( $Data['SID2'] != NULL ) {
+			$NameQuery = mysqli_query($DBConn, "select concat(LName, ', ', FName) as Name from Students where SID='" . $Data['SID2'] . "';");
+			if ( !$query ) {
+				echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
+				break;
+			}
+			$NameData = mysqli_fetch_assoc($NameQuery);
+			$Name = $Name . " and " . $NameData['Name'];
+		}
+		echo '<span id="tab"></span>' . $Name . " - " . $Data['TName'] . " - " . $place . "<br>
 ";
 		$CurrentRow++;
 	}
