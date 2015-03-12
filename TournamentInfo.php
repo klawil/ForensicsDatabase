@@ -7,7 +7,14 @@ if ( $GLOBALS['UserName'] != "" ) {
 fwrite($myfile, "IP " . $_SERVER['REMOTE_ADDR'] . " accessed " . basename($_SERVER['PHP_SELF']) . " on " . date('Y-m-d') . " at " . date('H:i:s') . " (Request for Info)\n");
 fclose($myfile);
 $tbl = "Tournaments";
-if ( isset($_POST['OrderBy']) ) {
+if ( isset($_POST['FileType']) ) {
+	if ( $_POST['FileType'] != "CSV" ) {
+		echo "Error - No protocol for " . $_POST['FileType'] . " file types.";
+		return 0;
+	}
+	
+	return 0;
+} elseif ( isset($_POST['OrderBy']) ) {
 	if ( ! isset($_POST['broke']) ) {
 		echo "Error - No break selection.";
 		return 0;
@@ -334,14 +341,28 @@ if ( isset($_POST['OrderBy']) ) {
         <tr><td><input type="checkbox" id="CQual" checked>State Qualifier</td><td></td></tr>
     </table>
 </div>
-<div class="SubmitButton"><input type="submit" onclick="SubmitInfo();" value="Show Results"></div>
+<div class="SubmitButton"><input type="button" onclick="SubmitInfo();" value="Show Results"> <input type="button" onclick="GetCSV();" value="Get as CSV"></div>
 </form>
 <div style="width: 100%; display: float; float: left;"></div>
 <br><br>
 <div id="Results" style="width: 100%; display: float; float: left;"></div>
 <script>
+function GetCSV() {
+	PostString = "FileType=CSV";
+	if ( window.XMLHttpRequest ) {
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.open("POST","TournamentInfo.php",true);
+    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xmlhttp.send(PostString);
+    xmlhttp.onreadystatechange=function() {
+    	response = xmlhttp.responseText;
+    	document.getElementById("Results").innerHTML = response;
+    }
+}
 function SubmitInfo() {
-    //event.preventDefault();
     document.getElementById("Results").innerHTML = "Loading...";
     OrderBy = document.getElementById("OrderBy").options[document.getElementById("OrderBy").selectedIndex].value;
     PostString = "OrderBy=" + OrderBy;
