@@ -16,10 +16,13 @@ $query = mysqli_query($DBConn, "select concat(LName, ', ', FName) as Name, EName
 if ( !$query ) {
 	$ErrorString =  "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 }
-echo "<h2>Medals from Kapaun Mt. Carmel Catholic High School</h2>
-";
-if ( $ErrorString == "" && mysqli_num_rows($query) > 0 ) {
-	$NumRows = mysqli_num_rows($query);
+$NumRows = mysqli_num_rows($query);
+if ( $NumRows > 0 ) {
+	echo "<h2>Medals from Kapaun Mt. Carmel Catholic High School - " . $NumRows . "</h2>";
+} else {
+	echo "<h2>Medals from Kapaun Mt. Carmel Catholic High School</h2>";
+}
+if ( $ErrorString == "" && $NumRows > 0 ) {
 	$FirstThird = floor($NumRows/3);
 	$SecondThird = floor(2*$NumRows/3);
 	$Third = 1;
