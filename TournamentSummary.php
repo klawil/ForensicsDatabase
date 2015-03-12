@@ -60,6 +60,7 @@ if ( isset($_POST['TID']) ) {
 <html>
 <head><title>Tournament Information</title>
 <link rel="stylesheet" type="text/css" href="Styles.css">
+<meta charset="UTF-8">
 </head>
 <body>
 <?php

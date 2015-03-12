@@ -3,6 +3,7 @@
 <title>New Tournament</title>
 </head>
 <link rel="stylesheet" type="text/css" href="Styles.css">
+<meta charset="UTF-8">
 <body>
 <h1>New Tournament</h1>
 <?php

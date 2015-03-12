@@ -298,6 +298,7 @@ if ( isset($_POST['OrderBy']) ) {
 <html>
 <head><title>Display Results</title>
 <link rel="stylesheet" type="text/css" href="Styles.css">
+<meta charset="UTF-8">
 </head>
 <body>
 <h1><div id="Header" style="width: 100%;">Select Results To Be Returned</div></h1>

@@ -178,6 +178,7 @@ if ( isset($_POST['RID']) ) {
 <html>
 <head><title>Enter Tournament Information</title>
 <link rel="stylesheet" type="text/css" href="Styles.css">
+<meta charset="UTF-8">
 </head>
 <body>
 <h1>Tournament Update</h1>

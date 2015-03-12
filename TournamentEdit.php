@@ -9,6 +9,7 @@ if ( isset($_POST['TID']) ) {
 <head>
 <title>Tournament Edit</title>
 <link rel="stylesheet" type="text/css" href="Styles.css">
+<meta charset="UTF-8">
 </head>
 <body>
 <h1>Tournament Edit</h1>
