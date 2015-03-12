@@ -2,7 +2,11 @@
 	float: none;
 }
 #visualization {
-	display: none;
+	float: none;
+}
+.sidebar {
+	float: none;
+	width: 100%;
 }
 
 /*************\
