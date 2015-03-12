@@ -182,7 +182,16 @@ if ( isset($_POST['OrderBy']) ) {
 				}
 			}
 			if ( $_POST['PCol'] == '1' ) {
-				echo '<td>' . $Data['place'] . '</td>';
+				if ( $Data['place'] == 1 ) {
+					$place = "1st";
+				} elseif ( $Data['place'] == 2 ) {
+					$place = "2nd";
+				} elseif ( $Data['place'] == 3 ) {
+					$place = "3rd";
+				} else {
+					$place = $Data['place'] . "th";
+				}
+				echo '<td>' . $place . '</td>';
 			}
 			$RID = $Data['RID'];
 			$x = 1;
