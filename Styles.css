@@ -30,6 +30,21 @@ input[type="number"] {
 }
 
 /****************\
+|* Results Page *|
+\****************/
+#container {
+	width: 100%;
+}
+.Criteria, .ReturnData {
+	/*display: inline-block;*/
+	float: left;
+}
+.SubmitButton {
+	width: 100%;
+	float: left;
+}
+
+/****************\
 |*  Navigation  *|
 \****************/
 nav ul {

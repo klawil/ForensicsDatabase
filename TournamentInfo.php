@@ -322,11 +322,10 @@ if ( isset($_POST['OrderBy']) ) {
 <div><b>Order By:</b> <select id="OrderBy"><option value="DateName">Date then Name then Event</option><option value="DateEvent">Date then Event then Name</option><option value="NameDate">Name then Date then Event</option><option value="NameEvent">Name then Event then Date</option><option value="EventDate">Event then Date then Name</option><option value="EventName">Event then Name then Date</option><option value="EventPRank">Event then Average Ranks then Name</option></select></div><br>
 <div><b>Broke:</b> <select id="broke"><option value="2">Both</option><option value="1">Yes</option><option value="0">No</option></select></div><br>
 <div><b>State Qual:</b> <select id="State"><option value="2">Both</option><option value="1">Yes</option><option value="0">No</option></select></div><br>
-<div><input type="submit" onclick="SubmitInfo();" value="Show Results"></div>
 </div>
-<div id="Selection" style="display: float; padding-left: 20;"><br>
-    <table style="padding-left: 30;">
-        <tr><th><h3>Information to Display:</h3></th></tr>
+<div id="Selection" style="display: float; /*padding-left: 20;*/"><br>
+    <table style="/*padding-left: 30;*/">
+        <tr><th colspan="2" style="text-align: left;"><h3>Information to Display:</h3></th></tr>
         <tr><th style="padding-right: 15; text-align: left;">Entry Information:</th><th style="text-align: left;">Results:</th></tr>
         <tr><td><input type="checkbox" id="CName" checked>Name</td><td><input type="checkbox" id="CPrelims" checked>Prelim Scores</td></tr>
         <tr><td><input type="checkbox" id="CTournament" checked>Tournament</td><td><input type="checkbox" id="CFinals" checked>Finals Scores</td></tr>
@@ -335,6 +334,7 @@ if ( isset($_POST['OrderBy']) ) {
         <tr><td><input type="checkbox" id="CQual" checked>State Qualifier</td><td></td></tr>
     </table>
 </div>
+<div class="SubmitButton"><input type="submit" onclick="SubmitInfo();" value="Show Results"></div>
 </form>
 <div style="width: 100%; display: float; float: left;"></div>
 <br><br>
