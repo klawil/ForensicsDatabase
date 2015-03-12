@@ -18,13 +18,19 @@ $ErrorString = "";
 <h1>Team Summary</h1>
 <?php MakeHeader(); ?>
 <div style="display: float; float: right;">
-<h3>State Qualifiers</h3>
+<h3>State Qualifiers
 <?php
 $query = mysqli_query($DBConn, 'select distinct SID2, concat(LName, ", ", FName) as Name, EName from Students, Events, Results, Tournaments where Results.TID = Tournaments.TID and Results.EID = Events.EID and Results.State = 1 and Results.SID = Students.SID order by EName, Date;');
 if ( !$query ) {
-	echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
+	echo "</h3>
+Error - MySQL error: " . mysqli_error($DBConn) . ".";
 } else {
 	$NumRows = mysqli_num_rows($query);
+	if ( $NumRows != 0 ) {
+		echo " - " . $NumRows . "</h3>";
+	} else {
+		echo "</h3>";
+	}
 	$CurrentRow = 0;
 	$Event = "";
 	while ( $CurrentRow < $NumRows ) {
