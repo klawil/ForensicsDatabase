@@ -1,5 +1,11 @@
 <?php
 include "CommonFunctions.php";
+$myfile = fopen("/var/log/forensics/general.log","a");
+if ( $GLOBALS['UserName'] != "" ) {
+	fwrite($myfile, "User " . $GLOBALS['UserName'] . " from ");
+}
+fwrite($myfile, "IP " . $_SERVER['REMOTE_ADDR'] . " accessed " . basename($_SERVER['PHP_SELF']) . " on " . date('Y-m-d') . " at " . date('H:i:s') . " (Request for Info)\n");
+fclose($myfile);
 $tbl = "Tournaments";
 if ( isset($_POST['OrderBy']) ) {
 	if ( ! isset($_POST['broke']) ) {

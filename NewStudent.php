@@ -17,7 +17,7 @@ if ( $GLOBALS['CanUserEdit'] != 1 ) {
 </html>';
 	return 0;
 }
-if (( isset($_POST['FName']) )) {
+if (( isset($_POST['FName']) )) {do{
 	$tbl = "Students";
 	if ( strlen($_POST['FName']) > 50 ) {
 		echo 'First Name is too long
@@ -33,11 +33,17 @@ if (( isset($_POST['FName']) )) {
 			echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 			break;
 		} else {
-		echo $_POST['FName'] . " " . $_POST['LName'] . " added.
+			echo $_POST['FName'] . " " . $_POST['LName'] . " added.
 ";
+			$myfile = fopen("/var/log/forensics/general.log","a");
+			if ( $GLOBALS['UserName'] != "" ) {
+				fwrite($myfile, "User " . $GLOBALS['UserName'] . " from ");
+			}
+			fwrite($myfile, "IP " . $_SERVER['REMOTE_ADDR'] . " accessed " . basename($_SERVER['PHP_SELF']) . " on " . date('Y-m-d') . " at " . date('H:i:s') . " (Created Student " . $_POST['LName'] . ", " . $_POST['FName'] . ")\n");
+			fclose($myfile);
 		}
 	}
-}
+}while (false);}
 ?>
 <form id="NewStudent" action="NewStudent.php" method="post">
 <table>

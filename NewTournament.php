@@ -17,7 +17,7 @@ if ( $GLOBALS['CanUserEdit'] != 1 ) {
 </html>';
 	return 0;
 }
-if ( isset($_POST['TName']) ) {
+if ( isset($_POST['TName']) ) { do{
 	$tbl = "Tournaments";
 	if ( strlen($_POST['TName']) > 50 ) {
 		echo 'Name is too long. Must be 50 characters or less.
@@ -29,8 +29,14 @@ if ( isset($_POST['TName']) ) {
 			break;
 		}
 		echo $_POST['TName'] . " added succesfully.";
+		$myfile = fopen("/var/log/forensics/general.log","a");
+		if ( $GLOBALS['UserName'] != "" ) {
+			fwrite($myfile, "User " . $GLOBALS['UserName'] . " from ");
+		}
+		fwrite($myfile, "IP " . $_SERVER['REMOTE_ADDR'] . " accessed " . basename($_SERVER['PHP_SELF']) . " on " . date('Y-m-d') . " at " . date('H:i:s') . " (Created Tournament " . $_POST['TName'] . ")\n");
+		fclose($myfile);
 	}
-}
+} while (false);}
 ?>
 <form id="NewTournament" action="NewTournament.php" method="post">
 <table>
