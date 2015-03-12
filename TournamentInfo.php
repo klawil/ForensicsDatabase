@@ -297,7 +297,7 @@ if ( isset($_POST['OrderBy']) ) {
 <h1><div id="Header" style="width: 100%;">Select Information To Be Returned</div></h1>
 <?php MakeHeader(); ?>
 <div style="display: float; float: left;">
-<h3>Select Information From:</h3>
+<h3>Select Results From:</h3>
 <b>Tournament:</b> <div id="Tourneys"><?php echo Tournaments(1); ?></div><br>
 <b>Student:</b> <div id="Students"><?php echo Students(1); ?></div><br>
 <b>Event:</b> <div id="Events"><?php echo Events(1); ?></div><br>
@@ -308,7 +308,7 @@ if ( isset($_POST['OrderBy']) ) {
 </div>
 <div id="Selection" style="display: float; padding-left: 20;"><br>
     <table style="padding-left: 30;">
-        <tr><th><h3>Information to Return:</h3></th></tr>
+        <tr><th><h3>Information to Display:</h3></th></tr>
         <tr><th style="padding-right: 15; text-align: left;">Entry Information:</th><th style="text-align: left;">Results:</th></tr>
         <tr><td><input type="checkbox" id="CName" checked>Name</td><td><input type="checkbox" id="CPrelims" checked>Prelim Scores</td></tr>
         <tr><td><input type="checkbox" id="CTournament" checked>Tournament</td><td><input type="checkbox" id="CFinals" checked>Finals Scores</td></tr>
