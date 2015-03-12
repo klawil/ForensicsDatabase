@@ -290,11 +290,11 @@ if ( isset($_POST['OrderBy']) ) {
 }
 ?>
 <html>
-<head><title>Display Info</title>
+<head><title>Display Results</title>
 <link rel="stylesheet" type="text/css" href="Styles.css">
 </head>
 <body>
-<h1><div id="Header" style="width: 100%;">Select Information To Be Returned</div></h1>
+<h1><div id="Header" style="width: 100%;">Select Results To Be Returned</div></h1>
 <?php MakeHeader(); ?>
 <div style="display: float; float: left;">
 <h3>Select Results From:</h3>
