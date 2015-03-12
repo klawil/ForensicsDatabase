@@ -1,0 +1,25 @@
+* {
+	float: none;
+}
+#visualization {
+	display: none;
+}
+
+/*************\
+|*  Columns  *|
+\*************/
+.main {
+	width: 100%;
+}
+.left {
+	float: none;
+	width: 100%;
+}
+.center {
+	float: none;
+	width: 100%;
+}
+.right {
+	float: none;
+	width: 100%;
+}
