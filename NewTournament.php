@@ -3,6 +3,8 @@
 <title>New Tournament</title>
 </head>
 <link rel="stylesheet" type="text/css" href="Styles.css">
+<link rel="stylesheet" media="(max-width: 800px)" href="MobileStyles.css" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
 <body>
 <h1>New Tournament</h1>

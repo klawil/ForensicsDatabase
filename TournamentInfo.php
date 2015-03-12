@@ -299,6 +299,8 @@ if ( isset($_POST['OrderBy']) ) {
 <head><title>Display Results</title>
 <link rel="stylesheet" type="text/css" href="Styles.css">
 <meta charset="UTF-8">
+<link rel="stylesheet" media="(max-width: 800px)" href="MobileStyles.css" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 <h1><div id="Header" style="width: 100%;">Select Results To Be Returned</div></h1>
@@ -330,7 +332,7 @@ if ( isset($_POST['OrderBy']) ) {
 <div id="Results" style="width: 100%; display: float; float: left;"></div>
 <script>
 function SubmitInfo() {
-    event.preventDefault();
+    //event.preventDefault();
     document.getElementById("Results").innerHTML = "Loading...";
     OrderBy = document.getElementById("OrderBy").options[document.getElementById("OrderBy").selectedIndex].value;
     PostString = "OrderBy=" + OrderBy;

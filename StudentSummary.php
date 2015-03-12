@@ -33,7 +33,7 @@ if ( isset($_POST['SID']) ) {
 	google.load('visualization', '1.1', {packages: ['corechart', 'imagelinechart']});
 </script>
 <link rel="stylesheet" type="text/css" href="Styles.css">
-<link rel="stylesheet" media="(max-width: 850px)" href="MobileStyles.css" />
+<link rel="stylesheet" media="(max-width: 800px)" href="MobileStyles.css" />
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -61,7 +61,7 @@ if ( isset($_POST['SID']) && $ErrorString == "" ) {
 ?>
 <input type="submit" value="select">
 </form>
-<div style="display: float; float: left; padding-right: 10; width: 18%">
+<div class="sidebar" style="display: float; float: left; padding-right: 10; width: 18%">
 <?php
 if ( isset($_POST['SID']) && $ErrorString == "" ) { do {
 	echo '<h3>Year: ' . $Year . '</h3>
