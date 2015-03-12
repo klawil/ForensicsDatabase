@@ -33,7 +33,9 @@ if ( isset($_POST['SID']) ) {
 	google.load('visualization', '1.1', {packages: ['corechart', 'imagelinechart']});
 </script>
 <link rel="stylesheet" type="text/css" href="Styles.css">
+<link rel="stylesheet" media="(max-width: 850px)" href="MobileStyles.css" />
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 <?php
