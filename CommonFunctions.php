@@ -191,7 +191,7 @@ function LoginUser() {
 	}
 }
 function Authorize() {
-	if ( isset($_COOKIE[$GLOBALS['CookieName']]) ) {
+	if ( isset($_COOKIE[$GLOBALS['CookieName']]) ) { do {
 		$Array = explode(',',$_COOKIE[$GLOBALS['CookieName']],2);
 		$GLOBALS['UserName'] = $Array[0];
 		$Cookie = $Array[1];
@@ -211,7 +211,7 @@ function Authorize() {
 		}
 		$GLOBALS['UserName'] = $Data['Name'];
 		$GLOBALS['CanUserEdit'] = $Data['CanMod'];
-	}
+	} while (false);}
 	$myfile = fopen("/var/log/forensics/general.log","a");
 	if ( $GLOBALS['UserName'] != "" ) {
 		fwrite($myfile, "User " . $GLOBALS['UserName'] . " from ");
