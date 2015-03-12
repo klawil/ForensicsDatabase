@@ -90,7 +90,7 @@ if ( isset($_POST['SID']) && $ErrorString == "" ) { do {
 	}
 	echo '<br><h3>Medals</h3>
 ';
-	$query = mysqli_query($DBConn, "select EName, TName, place from Events, Results, Tournaments where Results.EID = Events.EID and (Results.SID='" . $_POST['SID'] . "' or Results.SID2='" . $_POST['SID'] . "') and Results.broke = 1 and Results.TID = Tournaments.TID order by EName, Date;");
+	$query = mysqli_query($DBConn, "select EName, TName, place from Events, Results, Tournaments where Results.EID = Events.EID and (Results.SID='" . $_POST['SID'] . "' or Results.SID2='" . $_POST['SID'] . "') and Results.broke = 1 and Results.TID = Tournaments.TID order by EName, place, Date;");
 	if ( !$query ) {
 		$ErrorString =  "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 		break;
