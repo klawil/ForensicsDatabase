@@ -45,6 +45,7 @@ nav ul {
 }
 nav ul a {
 	color: #FFFFFF;
+	text-decoration: none;
 }
 nav ul #login {
 	float: right;
