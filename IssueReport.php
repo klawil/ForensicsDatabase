@@ -30,6 +30,12 @@ Describe the issue:<br>
 </body>
 </html>';
 		return 0;
+	} else {
+		$Desc = str_replace('"','[QUOTE]',$Desc);
+		$Name = str_replace('"','[QUOTE]',$_POST['Name']);
+		$Page = str_replace('"','[QUOTE]',$_POST['Page']);
+		shell_exec('echo "Issue Report\n\nName: ' . $Name . '\nPage: ' . $Page . '\nDesc:\n' . $Desc . '" | mail -s "Issue Report" william');
+		echo "Issue Catalogued<br>";
 	}
 }
 ?>
