@@ -16,25 +16,25 @@ function CreateQueryString() {
 		return 0;
 	}
 	if ( $_POST['OrderBy'] == "NameDate" ) {
-		$OString = " order by Name, Date, EName, Judge asc, Round";
+		$OString = " order by Name, Date, EName";
 	} elseif ( $_POST['OrderBy'] == "NameEvent" ) {
-		$OString = " order by Name, EName, Date, Judge asc, Round";
+		$OString = " order by Name, EName, Date";
 	} elseif ( $_POST['OrderBy'] == "EventName" ) {
-		$OString = " order by EName, Name, Date, Judge asc, Round";
+		$OString = " order by EName, Name, Date";
 	} elseif ( $_POST['OrderBy'] == "EventDate" ) {
-		$OString = " order by EName, Date, Name, Judge asc, Round";
+		$OString = " order by EName, Date, Name";
 	} elseif ( $_POST['OrderBy'] == "DateName" ) {
-		$OString = " order by Date, Name, EName, Judge asc, Round";
+		$OString = " order by Date, Name, EName";
 	} elseif ( $_POST['OrderBy'] == "DateEvent" ) {
-		$OString = " order by Date, EName, Name, Judge asc, Round";
+		$OString = " order by Date, EName, Name";
 	} elseif ( $_POST['OrderBy'] == "EventPRank" ) {
-		$OString = " order by EName, PScore, PQual desc, FScore, Name, Date, Judge asc, Round";
+		$OString = " order by EName, (PRanks / NumRounds), (PQuals / NumRounds) desc, (FRanks / NumberJudges), Name, Date";
 	} else {
 		echo "Error - No valid sorting parameter given.";
 		return 0;
 	}
-	$WString = " where Results.SID = Students.SID and Results.TID = Tournaments.TID and Results.RID = Ballots.RID and Events.EID = Results.EID";
-	if ( isset($_POST['TID']) ) {
+	$WString = " where Results.SID = Students.SID and Results.TID = Tournaments.TID and Events.EID = Results.EID";
+	if ( isset($_POST['TID']) && $_POST['TID'] != '-1' ) {
 		if ( ! $WString == "" ) {
 			$WString = $WString . " and ";
 		} else {
@@ -42,7 +42,7 @@ function CreateQueryString() {
 		}
 		$WString = $WString . "Results.TID='" . $_POST['TID'] . "'";
 	}
-	if ( isset($_POST['SID']) ) {
+	if ( isset($_POST['SID']) && $_POST['SID'] != '-1' ) {
 		if ( ! $WString == "" ) {
 			$WString = $WString . " and ";
 		} else {
@@ -50,7 +50,7 @@ function CreateQueryString() {
 		}
 		$WString = $WString . "(Results.SID='" . $_POST['SID'] . "' or Results.SID2='" . $_POST['SID'] . "')";
 	}
-	if ( isset($_POST['EID']) ) {
+	if ( isset($_POST['EID']) && $_POST['EID'] != '-1') {
 		if ( ! $WString == "" ) {
 			$WString = $WString . " and ";
 		} else {
@@ -76,213 +76,281 @@ function CreateQueryString() {
 	}
 	return $WString . $OString . "|" . $WString;
 }
+function CSVEncode($String) {
+	$String = '"' . str_replace('"', '""', $String) . '"';
+	return $String;
+}
 if ( isset($_POST['FileType']) ) {
+	header("Content-type: text/csv");
+	header("Content-Disposition: attachment; filename=Results.csv");
+	header("Pragma: no-cache");
+	header("Expires: 0");
 	if ( $_POST['FileType'] != "CSV" ) {
 		echo "Error - No protocol for " . $_POST['FileType'] . " file types.";
 		return 0;
 	}
-	$QString = CreateQueryString();
-	if ( $QString == 0 ) {
+	$Strings = CreateQueryString();
+	if ( $Strings == "0" ) {
 		return 0;
 	}
+	$Strings = explode("|",$Strings);
+	$QString = $Strings[0];
+	$WString = $Strings[1];
 	$NumRoundQuery = mysqli_query($DBConn, "SELECT max(Round) as Rd, max(Judge) as Jdg FROM Tournaments, Results, Ballots, Events, Students " . $WString . ";");
 	if ( !$NumRoundQuery ) {
-		echo "Error - MySQL error: " . mysqli_error($DBConn) . " on Judge " . $x . ".";
+		echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 		return 0;
 	}
 	$Data = mysqli_fetch_assoc($NumRoundQuery);
 	$NumRounds = $Data['Rd'];
 	$NumJudges = $Data['Jdg'];
-	$query = mysqli_query($DBConn, 'select SID2, Results.RID as RID, concat(LName, ", ", FName) as Name, PRanks / NumberRounds as PScore, PQuals/ NumberRounds as PQual, FRanks / NumberJudges as FScore, TName, EName, Rank, Qual, Judge, Round, broke, State, place from Students, Events, Tournaments, Results, Ballots' . $QString . ";");
+	$query = mysqli_query($DBConn, 'select SID2, RID, concat(LName, ", ", FName) as Name, PRanks, PQuals, FRanks, TName, EName, NumberRounds, NumberJudges, broke, State, place from Students, Events, Tournaments, Results' . $QString . ";");
 	if ( !$query ) {
 		echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 		return 0;
 	}
-	echo '<table id="Results-Table" border="1" style="border-collapse: collapse;"><tr>';
-	if ( $_POST['NCol'] == '1' ) {
-		echo '<th>Name</th>';
-	}
-	if ( $_POST['ECol'] == '1' ) {
-		echo '<th>Event</th>';
-	}
-	if ( $_POST['TCol'] == '1' ) {
-		echo '<th>Tournament</th>';
-	}
-	if ( $_POST['BCol'] == '1' ) {
-		echo '<th>Broke</th>';
-	}
-	if ( $_POST['QCol'] == '1' ) {
-		echo '<th>Qualified</th>';
-	}
-	if ( $_POST['PCol'] == '1' ) {
-		echo '<th>Place</th>';
-	}
-	if ( $_POST['RCol'] == '1' ) {
-		for ( $x = 1; $x <= $NumRounds; $x++ ) {
-			echo '<th>Round ' . $x . "</th>";
-		}
-	}
-	if ( $_POST['ToCol'] == '1' ) {
-		echo '<th>Prelims</th>';
-	}
-	if ( $_POST['JCol'] == '1' ) {
-		for ( $x = 1; $x <= $NumJudges; $x++ ) {
-			echo '<th>Judge ' . $x . "</th>";
-		}
-	}
-	if ( $_POST['ToCol'] == '1' ) {
-		echo '<th>Total</th>';
-	}
-	$NumRows = mysqli_num_rows($query);
-	$RID = "";
-	$On = "Prelim";
-	$x = 1;
-	$y = 1;
-	$z = 1;
 	$First = 1;
-	while ( $z <= $NumRows ) {
-		$Data = mysqli_fetch_assoc($query);
-		if ( $Data['RID'] != $RID ) {
-			if ( $First == 0 ) {
-				if ( $CellsLeft > $NumJudges ) {
-					for ( $y = 1; $y < $CellsLeft - $NumJudges; $y++ ){
-						echo '<td></td>';
-					}
-					if ( $_POST['ToCol'] == '1' ) {
-						echo '<td>' . $TotalR . "/" . $TotalQ . '</td>';
-					}
-					$CellsLeft = $NumJudges;
-				}
-				for ( $y = 1; $y <= $CellsLeft; $y++ ){
-					echo '<td></td>';
-				}
-				if ( $_POST['ToCol'] == '1' ) {
-					echo '<td>' . $TotalR . "/" . $TotalQ . '</td>';
-				}
-			}
+	if ( $_POST['NCol'] == 'on' ) {
+		if ( !$First ) {
+			echo ',';
+		} else {
 			$First = 0;
-			echo '</tr>
-<tr>';
-			if ( $_POST['NCol'] == '1' ) {
-				if ( $Data['SID2'] != NULL ) {
-					$NameQuery = mysqli_query($DBConn, "select concat(LName, ', ', FName) as Name from Students where SID='" . $Data['SID2'] . "';");
-					$NameData = mysqli_fetch_assoc($NameQuery);
-					echo '<td>' . $Data['Name'] . ' and ' . $NameData['Name'] . '</td>';
-				} else {
-					echo '<td>' . $Data['Name'] . '</td>';
-				}
-			}
-			if ( $_POST['ECol'] == '1' ) {
-				echo '<td>' . $Data['EName'] . '</td>';
-			}
-			if ( $_POST['TCol'] == '1' ) {
-				echo '<td>' . $Data['TName'] . '</td>';
-			}
-			if ( $_POST['BCol'] == '1' ) {
-				if ( $Data['broke'] == "1" ) {
-					echo '<td>yes</td>';
-				} else {
-					echo '<td>no</td>';
-				}
-			}
-			if ( $_POST['QCol'] == '1' ) {
-				if ( $Data['State'] == "1" ) {
-					echo '<td>yes</td>';
-				} else {
-					echo '<td>no</td>';
-				}
-			}
-			if ( $_POST['PCol'] == '1' ) {
-				if ( $Data['place'] == 1 ) {
-					$place = "1st";
-				} elseif ( $Data['place'] == 2 ) {
-					$place = "2nd";
-				} elseif ( $Data['place'] == 3 ) {
-					$place = "3rd";
-				} else {
-					$place = $Data['place'] . "th";
-				}
-				echo '<td>' . $place . '</td>';
-			}
-			$RID = $Data['RID'];
-			$x = 1;
-			$On = "Prelim";
-			$TotalR = 0;
-			$TotalQ = 0;
 		}
-		$DoFinal = 1;
-		if ( $On == "Prelim" ) {
-			if ( $Data['Round'] == $x ) {
-				if ( $_POST['RCol'] == '1' ) {
-					echo '<td>' . $Data['Rank'] . "/" . $Data['Qual'] . "</td>";
-				}
-				$TotalR = $TotalR + $Data['Rank'];
-				$TotalQ = $TotalQ + $Data['Qual'];
-			} elseif ( $Data['Judge'] != NULL ) {
-				$num = $x;
-				for ( $x = $num; $x <= $NumRounds; $x++ ) {
-					echo '<td></td>';
-				}
-			}
-			$CellsLeft = ($NumRounds - $x);
-			if ( $_POST['JCol'] == '1' ) {
-				$CellsLeft = $CellsLeft + $NumJudges;
-			}
-			if ( $_POST['ToCol'] == '1' ) {
-				$CellsLeft = $CellsLeft + 1;
-			}
-			if ( $x >= $NumRounds ) {
-				$On = "Final";
-				if ( $Data['Judge'] != NULL ) {
-					$x = 1;
-					$DoFinal = 1;
-				} else {
-					$x = 0;
-					$DoFinal = 0;
-				}
-				if ( $_POST['ToCol'] == '1' ) {
-					echo '<td>' . $TotalR . "/" . $TotalQ . '</td>';
-				}
-				if ( $_POST['JCol'] == '1' ) {
-					$CellsLeft = $NumJudges;
-				} else {
-					$CellsLeft = 0;
-				}
-			}
+		echo CSVEncode('Name');
+	}
+	if ( $_POST['ECol'] == 'on' ) {
+		if ( !$First ) {
+			echo ',';
+		} else {
+			$First = 0;
 		}
-		if ( $DoFinal == 1 && $On == "Final" ) {
-			if ( $x == 1 && $CellsLeft > $NumJudges ) {
-				for ( $y = 1; $y <= $CellsLeft - $NumJudges; $y++ ) {
-					echo '<td></td>';
-				}
-			}
-			if ( $Data['Judge'] == $x ) {
-				if ( $_POST['JCol'] == '1' ) {
-					echo '<td>' . $Data['Rank'] . '</td>';
-				}
-				$TotalR = $TotalR + $Data['Rank'];
-				$TotalQ = $TotalQ + $Data['Qual'];
-			}
-			if ( $_POST['JCol'] == '1' ) {
-				$CellsLeft = $NumJudges - $x;
+		echo CSVEncode('Event');
+	}
+	if ( $_POST['TCol'] == 'on' ) {
+		if ( !$First ) {
+			echo ',';
+		} else {
+			$First = 0;
+		}
+		echo CSVEncode('Tournament');
+	}
+	if ( $_POST['BCol'] == 'on' ) {
+		if ( !$First ) {
+			echo ',';
+		} else {
+			$First = 0;
+		}
+		echo CSVEncode('Broke');
+	}
+	if ( $_POST['QCol'] == 'on' ) {
+		if ( !$First ) {
+			echo ',';
+		} else {
+			$First = 0;
+		}
+		echo CSVEncode('Qualified');
+	}
+	if ( $_POST['PCol'] == 'on' ) {
+		if ( !$First ) {
+			echo ',';
+		} else {
+			$First = 0;
+		}
+		echo CSVEncode('Place');
+	}
+	if ( $_POST['RCol'] == 'on' ) {
+		for ( $x = 1; $x <= $NumRounds; $x++ ) {
+			if ( !$First ) {
+				echo ',';
 			} else {
-				$CellsLeft = 0;
+				$First = 0;
 			}
-			if ($x == $NumJudges) {
-				$On = "Prelim";
-				$x = 0;
+			echo CSVEncode('Round ' . $x);
+		}
+	}
+	if ( $_POST['ToCol'] == 'on' ) {
+		if ( !$First ) {
+			echo ',';
+		} else {
+			$First = 0;
+		}
+		echo CSVEncode('Prelims');
+	}
+	if ( $_POST['JCol'] == 'on' ) {
+		for ( $x = 1; $x <= $NumJudges; $x++ ) {
+			if ( !$First ) {
+				echo ',';
+			} else {
+				$First = 0;
+			}
+			echo CSVEncode('Judge ' . $x);
+		}
+	}
+	if ( $_POST['ToCol'] == 'on' ) {
+		if ( !$First ) {
+			echo ',';
+		} else {
+			$First = 0;
+		}
+		echo CSVEncode('Total');
+	}
+	echo '
+';
+	$MasterNumRows = mysqli_num_rows($query);
+	$RID = "";
+	$z = 1;
+	while ( $z <= $MasterNumRows ) {
+		$Data = mysqli_fetch_assoc($query);
+		$RID = $Data['RID'];
+		$First = 1;
+		if ( $_POST['NCol'] == 'on' ) {
+			if ( !$First ) {
+				echo ',';
+			} else {
+				$First = 0;
+			}
+			if ( $Data['SID2'] != NULL ) {
+				$NameQuery = mysqli_query($DBConn, "select concat(LName, ', ', FName) as Name from Students where SID='" . $Data['SID2'] . "';");
+				$NameData = mysqli_fetch_assoc($NameQuery);
+				echo CSVEncode($Data['Name'] . ' and ' . $NameData['Name']);
+			} else {
+				echo CSVEncode($Data['Name']);
 			}
 		}
-		$x = $x + 1;
-		$z = $z + 1;
+		if ( $_POST['ECol'] == 'on' ) {
+			if ( !$First ) {
+				echo ',';
+			} else {
+				$First = 0;
+			}
+			echo CSVEncode($Data['EName']);
+		}
+		if ( $_POST['TCol'] == 'on' ) {
+			if ( !$First ) {
+				echo ',';
+			} else {
+				$First = 0;
+			}
+			echo CSVEncode($Data['TName']);
+		}
+		if ( $_POST['BCol'] == 'on' ) {
+			if ( !$First ) {
+				echo ',';
+			} else {
+				$First = 0;
+			}
+			if ( $Data['broke'] == "1" ) {
+				echo CSVEncode('yes');
+			} else {
+				echo CSVEncode('no');
+			}
+		}
+		if ( $_POST['QCol'] == 'on' ) {
+			if ( !$First ) {
+				echo ',';
+			} else {
+				$First = 0;
+			}
+			if ( $Data['State'] == "1" ) {
+				echo CSVEncode('yes');
+			} else {
+				echo CSVEncode('no');
+			}
+		}
+		if ( $_POST['PCol'] == 'on' ) {
+			if ( !$First ) {
+				echo ',';
+			} else {
+				$First = 0;
+			}
+			$place = "";
+			if ( $Data['place'] == 1 ) {
+				$place = "1st";
+			} elseif ( $Data['place'] == 2 ) {
+				$place = "2nd";
+			} elseif ( $Data['place'] == 3 ) {
+				$place = "3rd";
+			} elseif ( $Data['place'] != "" ) {
+				$place = $Data['place'] . "th";
+			}
+			echo CSVEncode($place);
+		}
+		if ( $_POST['RCol'] == 'on' ) {
+			$RQuery = mysqli_query($DBConn, "select Rank, Qual from Ballots where RID='" . $RID . "' and Round is not null order by Round;");
+			if ( !$query ) {
+				echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
+				return 0;
+			}
+			$NumRows = mysqli_num_rows($RQuery);
+			$CurrentRow = 1;
+			while ( $CurrentRow <= $NumRows ) {
+				if ( !$First ) {
+					echo ',';
+				} else {
+					$First = 0;
+				}
+				$RData = mysqli_fetch_assoc($RQuery);
+				echo CSVEncode($RData['Rank'] . "/" . $RData['Qual']);
+				$CurrentRow++;
+			}
+			if ( $NumRows < $NumRounds ) {
+				for ( $x = $NumRows; $x < $NumRounds; $x++ ) {
+					if ( !$First ) {
+						echo ',';
+					} else {
+						$First = 0;
+					}
+				}
+			}
+		}
+		if ( $_POST['ToCol'] == 'on' ) {
+			if ( !$First ) {
+				echo ',';
+			} else {
+				$First = 0;
+			}
+			echo CSVEncode($Data['PRanks'] . '/' . $Data['PQuals']);
+		}
+		if ( $_POST['JCol'] == 'on' ) {
+			$RQuery = mysqli_query($DBConn, "select Rank, Qual from Ballots where RID='" . $RID . "' and Judge is not null order by Round;");
+			if ( !$query ) {
+				echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
+				return 0;
+			}
+			$NumRows = mysqli_num_rows($RQuery);
+			$CurrentRow = 1;
+			while ( $CurrentRow <= $NumRows ) {
+				if ( !$First ) {
+					echo ',';
+				} else {
+					$First = 0;
+				}
+				$JData = mysqli_fetch_assoc($RQuery);
+				echo CSVEncode($JData['Rank']);
+				$CurrentRow++;
+			}
+			if ( $NumRows < $NumJudges ) {
+				for ( $x = $NumRows; $x < $NumJudges; $x++ ) {
+					if ( !$First ) {
+						echo ',';
+					} else {
+						$First = 0;
+					}
+				}
+			}
+		}
+		if ( $_POST['ToCol'] == 'on' ) {
+			if ( !$First ) {
+				echo ',';
+			} else {
+				$First = 0;
+			}
+			echo CSVEncode(($Data['FRanks'] + $Data['PRanks']) . '/' . $Data['PQuals']);
+		}
+		$z++;
+		echo '
+';
 	}
-	for ( $x = 1; $x <= $CellsLeft; $x++ ) {
-		echo '<td></td>';
-	}
-	if ( $_POST['ToCol'] == '1' ) {
-		echo '<td>' . $TotalR . "/" . $TotalQ . '</td>';
-	}
-	echo "</tr></table>";
 	return 0;
 } elseif ( isset($_POST['OrderBy']) ) {
 	$Strings = CreateQueryString();
@@ -294,13 +362,13 @@ if ( isset($_POST['FileType']) ) {
 	$WString = $Strings[1];
 	$NumRoundQuery = mysqli_query($DBConn, "SELECT max(Round) as Rd, max(Judge) as Jdg FROM Tournaments, Results, Ballots, Events, Students " . $WString . ";");
 	if ( !$NumRoundQuery ) {
-		echo "Error - MySQL error: " . mysqli_error($DBConn) . " on Judge " . $x . ".";
+		echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 		return 0;
 	}
 	$Data = mysqli_fetch_assoc($NumRoundQuery);
 	$NumRounds = $Data['Rd'];
 	$NumJudges = $Data['Jdg'];
-	$query = mysqli_query($DBConn, 'select SID2, Results.RID as RID, concat(LName, ", ", FName) as Name, PRanks / NumberRounds as PScore, PQuals/ NumberRounds as PQual, FRanks / NumberJudges as FScore, TName, EName, Rank, Qual, Judge, Round, broke, State, place from Students, Events, Tournaments, Results, Ballots' . $WString . $OString . ";");
+	$query = mysqli_query($DBConn, 'select SID2, RID, concat(LName, ", ", FName) as Name, PRanks, PQuals, FRanks, TName, EName, NumberRounds, NumberJudges, broke, State, place from Students, Events, Tournaments, Results' . $QString . ";");
 	if ( !$query ) {
 		echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 		return 0;
@@ -340,161 +408,101 @@ if ( isset($_POST['FileType']) ) {
 	if ( $_POST['ToCol'] == '1' ) {
 		echo '<th>Total</th>';
 	}
-	$NumRows = mysqli_num_rows($query);
+	echo '</tr>';
+	$MasterNumRows = mysqli_num_rows($query);
 	$RID = "";
-	$On = "Prelim";
-	$x = 1;
-	$y = 1;
 	$z = 1;
-	$First = 1;
-	while ( $z <= $NumRows ) {
+	while ( $z <= $MasterNumRows ) {
 		$Data = mysqli_fetch_assoc($query);
-		if ( $Data['RID'] != $RID ) {
-			if ( $First == 0 ) {
-				if ( $_POST['RCol'] == '1' && $CellsLeft > $NumJudges ) {
-					for ( $y = 1; $y < $CellsLeft - $NumJudges; $y++ ){
-						echo '<td></td>';
-					}
-					if ( $_POST['ToCol'] == '1' ) {
-						echo '<td>' . $TotalR . "/" . $TotalQ . '</td>';
-					}
-					$CellsLeft = $NumJudges;
-				} elseif ( $CellsLeft > $NumJudges ) {
-					if ( $_POST['ToCol'] == '1' ) {
-						echo '<td>' . $TotalR . "/" . $TotalQ . '</td>';
-					}
-					$CellsLeft = $NumJudges;
-				}
-				for ( $y = 1; $y <= $CellsLeft; $y++ ){
-					echo '<td></td>';
-				}
-				if ( $_POST['ToCol'] == '1' ) {
-					echo '<td>' . $TotalR . "/" . $TotalQ . '</td>';
-				}
-			}
-			$First = 0;
-			echo '</tr>
-<tr>';
-			if ( $_POST['NCol'] == '1' ) {
-				if ( $Data['SID2'] != NULL ) {
-					$NameQuery = mysqli_query($DBConn, "select concat(LName, ', ', FName) as Name from Students where SID='" . $Data['SID2'] . "';");
-					$NameData = mysqli_fetch_assoc($NameQuery);
-					echo '<td>' . $Data['Name'] . ' and ' . $NameData['Name'] . '</td>';
-				} else {
-					echo '<td>' . $Data['Name'] . '</td>';
-				}
-			}
-			if ( $_POST['ECol'] == '1' ) {
-				echo '<td>' . $Data['EName'] . '</td>';
-			}
-			if ( $_POST['TCol'] == '1' ) {
-				echo '<td>' . $Data['TName'] . '</td>';
-			}
-			if ( $_POST['BCol'] == '1' ) {
-				if ( $Data['broke'] == "1" ) {
-					echo '<td>yes</td>';
-				} else {
-					echo '<td>no</td>';
-				}
-			}
-			if ( $_POST['QCol'] == '1' ) {
-				if ( $Data['State'] == "1" ) {
-					echo '<td>yes</td>';
-				} else {
-					echo '<td>no</td>';
-				}
-			}
-			if ( $_POST['PCol'] == '1' ) {
-				if ( $Data['place'] == 1 ) {
-					$place = "1st";
-				} elseif ( $Data['place'] == 2 ) {
-					$place = "2nd";
-				} elseif ( $Data['place'] == 3 ) {
-					$place = "3rd";
-				} elseif ( $Data['place'] != "" ) {
-					$place = $Data['place'] . "th";
-				}
-				echo '<td>' . $place . '</td>';
-			}
-			$RID = $Data['RID'];
-			$x = 1;
-			$On = "Prelim";
-			$TotalR = 0;
-			$TotalQ = 0;
-		}
-		$DoFinal = 1;
-		if ( $On == "Prelim" ) {
-			if ( $Data['Round'] == $x ) {
-				if ( $_POST['RCol'] == '1' ) {
-					echo '<td>' . $Data['Rank'] . "/" . $Data['Qual'] . "</td>";
-				}
-				$TotalR = $TotalR + $Data['Rank'];
-				$TotalQ = $TotalQ + $Data['Qual'];
-			} elseif ( $Data['Judge'] != NULL ) {
-				$num = $x;
-				for ( $x = $num; $x <= $NumRounds; $x++ ) {
-					echo '<td></td>';
-				}
-			}
-			$CellsLeft = ($NumRounds - $x);
-			if ( $_POST['JCol'] == '1' ) {
-				$CellsLeft = $CellsLeft + $NumJudges;
-			}
-			if ( $_POST['ToCol'] == '1' ) {
-				$CellsLeft = $CellsLeft + 1;
-			}
-			if ( $x >= $NumRounds ) {
-				$On = "Final";
-				if ( $Data['Judge'] != NULL ) {
-					$x = 1;
-					$DoFinal = 1;
-				} else {
-					$x = 0;
-					$DoFinal = 0;
-				}
-				if ( $_POST['ToCol'] == '1' ) {
-					echo '<td>' . $TotalR . "/" . $TotalQ . '</td>';
-				}
-				if ( $_POST['JCol'] == '1' ) {
-					$CellsLeft = $NumJudges;
-				} else {
-					$CellsLeft = 0;
-				}
-			}
-		}
-		if ( $DoFinal == 1 && $On == "Final" ) {
-			if ( $_POST['RCol'] == '1' && $x == 1 && $CellsLeft > $NumJudges ) {
-				for ( $y = 1; $y <= $CellsLeft - $NumJudges; $y++ ) {
-					echo '<td></td>';
-				}
-			} elseif ( $x == 1 && $CellsLeft > $NumJudges ) {
-				$CellsLeft = $NumJudges;
-			}
-			if ( $Data['Judge'] == $x ) {
-				if ( $_POST['JCol'] == '1' ) {
-					echo '<td>' . $Data['Rank'] . '</td>';
-				}
-				$TotalR = $TotalR + $Data['Rank'];
-				$TotalQ = $TotalQ + $Data['Qual'];
-			}
-			if ( $_POST['JCol'] == '1' ) {
-				$CellsLeft = $NumJudges - $x;
+		$RID = $Data['RID'];
+		echo '<tr>';
+		if ( $_POST['NCol'] == '1' ) {
+			if ( $Data['SID2'] != NULL ) {
+				$NameQuery = mysqli_query($DBConn, "select concat(LName, ', ', FName) as Name from Students where SID='" . $Data['SID2'] . "';");
+				$NameData = mysqli_fetch_assoc($NameQuery);
+				echo '<td>' . $Data['Name'] . ' and ' . $NameData['Name'] . '</td>';
 			} else {
-				$CellsLeft = 0;
-			}
-			if ($x == $NumJudges) {
-				$On = "Prelim";
-				$x = 0;
+				echo '<td>' . $Data['Name'] . '</td>';
 			}
 		}
-		$x = $x + 1;
-		$z = $z + 1;
-	}
-	for ( $x = 1; $x <= $CellsLeft; $x++ ) {
-		echo '<td></td>';
-	}
-	if ( $_POST['ToCol'] == '1' ) {
-		echo '<td>' . $TotalR . "/" . $TotalQ . '</td>';
+		if ( $_POST['ECol'] == '1' ) {
+			echo '<td>' . $Data['EName'] . '</td>';
+		}
+		if ( $_POST['TCol'] == '1' ) {
+			echo '<td>' . $Data['TName'] . '</td>';
+		}
+		if ( $_POST['BCol'] == '1' ) {
+			if ( $Data['broke'] == "1" ) {
+				echo '<td>yes</td>';
+			} else {
+				echo '<td>no</td>';
+			}
+		}
+		if ( $_POST['QCol'] == '1' ) {
+			if ( $Data['State'] == "1" ) {
+				echo '<td>yes</td>';
+			} else {
+				echo '<td>no</td>';
+			}
+		}
+		if ( $_POST['PCol'] == '1' ) {
+			$place = "";
+			if ( $Data['place'] == 1 ) {
+				$place = "1st";
+			} elseif ( $Data['place'] == 2 ) {
+				$place = "2nd";
+			} elseif ( $Data['place'] == 3 ) {
+				$place = "3rd";
+			} elseif ( $Data['place'] != "" ) {
+				$place = $Data['place'] . "th";
+			}
+			echo '<td>' . $place . '</td>';
+		}
+		if ( $_POST['RCol'] == '1' ) {
+			$RQuery = mysqli_query($DBConn, "select Rank, Qual from Ballots where RID='" . $RID . "' and Round is not null order by Round;");
+			if ( !$query ) {
+				echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
+				return 0;
+			}
+			$NumRows = mysqli_num_rows($RQuery);
+			$CurrentRow = 1;
+			while ( $CurrentRow <= $NumRows ) {
+				$RData = mysqli_fetch_assoc($RQuery);
+				echo '<td>' . $RData['Rank'] . "/" . $RData['Qual'] . "</td>";
+				$CurrentRow++;
+			}
+			if ( $NumRows < $NumRounds ) {
+				for ( $x = $NumRows; $x < $NumRounds; $x++ ) {
+					echo '<td></td>';
+				}
+			}
+		}
+		if ( $_POST['ToCol'] == '1' ) {
+			echo '<td>' . $Data['PRanks'] . '/' . $Data['PQuals'] . '</td>';
+		}
+		if ( $_POST['JCol'] == '1' ) {
+			$RQuery = mysqli_query($DBConn, "select Rank, Qual from Ballots where RID='" . $RID . "' and Judge is not null order by Round;");
+			if ( !$query ) {
+				echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
+				return 0;
+			}
+			$NumRows = mysqli_num_rows($RQuery);
+			$CurrentRow = 1;
+			while ( $CurrentRow <= $NumRows ) {
+				$JData = mysqli_fetch_assoc($RQuery);
+				echo '<td>' . $JData['Rank'] . "</td>";
+				$CurrentRow++;
+			}
+			if ( $NumRows < $NumJudges ) {
+				for ( $x = $NumRows; $x < $NumJudges; $x++ ) {
+					echo '<td></td>';
+				}
+			}
+		}
+		if ( $_POST['ToCol'] == '1' ) {
+			echo '<td>' . ($Data['FRanks'] + $Data['PRanks']) . '/' . $Data['PQuals'] . '</td>';
+		}
+		$z++;
 	}
 	echo "</tr></table>";
 	return 0;
@@ -515,6 +523,7 @@ if ( isset($_POST['FileType']) ) {
 	echo $Result;
 	return 0;
 } elseif ( isset($_POST['TID']) ) {
+	echo "Test";
 	$query = mysqli_query($DBConn, "select NumRounds, NumFinalsJudges from Tournaments where TID=" . $_POST['TID'] . ";");
 	$data = mysqli_fetch_assoc($query);
 	echo $data['NumRounds'] . "|" . $data['NumFinalsJudges'];
@@ -539,51 +548,42 @@ if ( isset($_POST['FileType']) ) {
 <body>
 <h1><div id="Header" style="width: 100%;">Select Results To Be Returned</div></h1>
 <?php MakeHeader(); ?>
+<form id="QueryForm" action="TournamentInfo.php" method="post">
 <div style="display: float; float: left;">
 <h3>Select Results From:</h3>
 <b>Tournament:</b> <div id="Tourneys"><?php echo Tournaments(1); ?></div><br>
 <b>Student:</b> <div id="Students"><?php echo Students(1); ?></div><br>
 <b>Event:</b> <div id="Events"><?php echo Events(1); ?></div><br>
-<div><b>Order By:</b> <select id="OrderBy"><option value="DateName">Date then Name then Event</option><option value="DateEvent">Date then Event then Name</option><option value="NameDate">Name then Date then Event</option><option value="NameEvent">Name then Event then Date</option><option value="EventDate">Event then Date then Name</option><option value="EventName">Event then Name then Date</option><option value="EventPRank">Event then Average Ranks then Name</option></select></div><br>
-<div><b>Broke:</b> <select id="broke"><option value="2">Both</option><option value="1">Yes</option><option value="0">No</option></select></div><br>
-<div><b>State Qual:</b> <select id="State"><option value="2">Both</option><option value="1">Yes</option><option value="0">No</option></select></div><br>
+<div><b>Order By:</b> <select name="OrderBy" id="OrderBy"><option value="DateName">Date then Name then Event</option><option value="DateEvent">Date then Event then Name</option><option value="NameDate">Name then Date then Event</option><option value="NameEvent">Name then Event then Date</option><option value="EventDate">Event then Date then Name</option><option value="EventName">Event then Name then Date</option><option value="EventPRank">Event then Average Ranks then Name</option></select></div><br>
+<div><b>Broke:</b> <select name="broke" id="broke"><option value="2">Both</option><option value="1">Yes</option><option value="0">No</option></select></div><br>
+<div><b>State Qual:</b> <select name="State" id="State"><option value="2">Both</option><option value="1">Yes</option><option value="0">No</option></select></div><br>
 </div>
 <div id="Selection" style="display: float; /*padding-left: 20;*/"><br>
     <table style="/*padding-left: 30;*/">
         <tr><th colspan="2" style="text-align: left;"><h3>Information to Display:</h3></th></tr>
         <tr><th style="padding-right: 15; text-align: left;">Entry Information:</th><th style="text-align: left;">Results:</th></tr>
-        <tr><td><input type="checkbox" id="CName" checked>Name</td><td><input type="checkbox" id="CPrelims" checked>Prelim Scores</td></tr>
-        <tr><td><input type="checkbox" id="CTournament" checked>Tournament</td><td><input type="checkbox" id="CFinals" checked>Finals Scores</td></tr>
-        <tr><td><input type="checkbox" id="CEvent" checked>Event</td><td><input type="checkbox" id="CTotals" dir="" checked>Totals</td></tr>
-        <tr><td><input type="checkbox" id="CBroke" dir="" checked>Broke</td><td><input type="checkbox" id="CPlace" checked>Place</td></tr>
-        <tr><td><input type="checkbox" id="CQual" checked>State Qualifier</td><td></td></tr>
+        <tr><td><input type="checkbox" id="CName" name="NCol" checked>Name</td><td><input type="checkbox" id="CPrelims" name="RCol" checked>Prelim Scores</td></tr>
+        <tr><td><input type="checkbox" id="CTournament" name="TCol" checked>Tournament</td><td><input type="checkbox" id="CFinals" name="JCol" checked>Finals Scores</td></tr>
+        <tr><td><input type="checkbox" id="CEvent" name="ECol" checked>Event</td><td><input type="checkbox" id="CTotals" name="ToCol" checked>Totals</td></tr>
+        <tr><td><input type="checkbox" id="CBroke" name="BCol" dir="" checked>Broke</td><td><input type="checkbox" id="CPlace" name="PCol" checked>Place</td></tr>
+        <tr><td><input type="checkbox" id="CQual" name="QCol" checked>State Qualifier</td><td></td></tr>
     </table>
 </div>
-<div class="SubmitButton"><input type="button" onclick="SubmitInfo();" value="Show Results"> <input type="button" onclick="GetCSV();" value="Get as CSV"></div>
+<div class="SubmitButton"><input type="button" onclick="SubmitInfo();" value="Show Results"> <input type="button" onclick="SubmitInfo('CSV');" value="Get as CSV"></div>
+<input type="hidden" name="FileType" value="CSV">
 </form>
 <div style="width: 100%; display: float; float: left;"></div>
 <br><br>
 <div id="Results" style="width: 100%; display: float; float: left;"></div>
 <script>
-function GetCSV() {
-	PostString = "FileType=CSV";
-	if ( window.XMLHttpRequest ) {
-        xmlhttp = new XMLHttpRequest();
-    } else {
-        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-    }
-    xmlhttp.open("POST","TournamentInfo.php",true);
-    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    xmlhttp.send(PostString);
-    xmlhttp.onreadystatechange=function() {
-    	response = xmlhttp.responseText;
-    	document.getElementById("Results").innerHTML = response;
-    }
-}
-function SubmitInfo() {
+function SubmitInfo(FileType) {
+	FileType = FileType || "";
     document.getElementById("Results").innerHTML = "Loading...";
     OrderBy = document.getElementById("OrderBy").options[document.getElementById("OrderBy").selectedIndex].value;
     PostString = "OrderBy=" + OrderBy;
+    if ( FileType != "" ) {
+    	document.getElementById("QueryForm").submit();
+    }
     TID = document.getElementById("Tournament").options[document.getElementById("Tournament").selectedIndex].value;
     if ( TID != "-1" ) {
         PostString = PostString + "&TID=" + TID;
