@@ -351,10 +351,15 @@ if ( isset($_POST['FileType']) ) {
 		$Data = mysqli_fetch_assoc($query);
 		if ( $Data['RID'] != $RID ) {
 			if ( $First == 0 ) {
-				if ( $CellsLeft > $NumJudges ) {
+				if ( $_POST['RCol'] == '1' && $CellsLeft > $NumJudges ) {
 					for ( $y = 1; $y < $CellsLeft - $NumJudges; $y++ ){
 						echo '<td></td>';
 					}
+					if ( $_POST['ToCol'] == '1' ) {
+						echo '<td>' . $TotalR . "/" . $TotalQ . '</td>';
+					}
+					$CellsLeft = $NumJudges;
+				} elseif ( $CellsLeft > $NumJudges ) {
 					if ( $_POST['ToCol'] == '1' ) {
 						echo '<td>' . $TotalR . "/" . $TotalQ . '</td>';
 					}
@@ -406,7 +411,7 @@ if ( isset($_POST['FileType']) ) {
 					$place = "2nd";
 				} elseif ( $Data['place'] == 3 ) {
 					$place = "3rd";
-				} else {
+				} elseif ( $Data['place'] != "" ) {
 					$place = $Data['place'] . "th";
 				}
 				echo '<td>' . $place . '</td>';
@@ -458,10 +463,12 @@ if ( isset($_POST['FileType']) ) {
 			}
 		}
 		if ( $DoFinal == 1 && $On == "Final" ) {
-			if ( $x == 1 && $CellsLeft > $NumJudges ) {
+			if ( $_POST['RCol'] == '1' && $x == 1 && $CellsLeft > $NumJudges ) {
 				for ( $y = 1; $y <= $CellsLeft - $NumJudges; $y++ ) {
 					echo '<td></td>';
 				}
+			} elseif ( $x == 1 && $CellsLeft > $NumJudges ) {
+				$CellsLeft = $NumJudges;
 			}
 			if ( $Data['Judge'] == $x ) {
 				if ( $_POST['JCol'] == '1' ) {
