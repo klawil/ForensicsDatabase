@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>New Tournament</title>
+<title>New Tournament | ForensicsDB.com</title>
 </head>
 <link rel="stylesheet" type="text/css" href="Styles.css">
 <link rel="stylesheet" media="(max-width: 800px)" href="MobileStyles.css" />

@@ -305,7 +305,7 @@ if ( isset($_POST['OrderBy']) ) {
 }
 ?>
 <html>
-<head><title>Display Results</title>
+<head><title>Display Results | ForensicsDB.com</title>
 <link rel="stylesheet" type="text/css" href="Styles.css">
 <meta charset="UTF-8">
 <link rel="stylesheet" media="(max-width: 800px)" href="MobileStyles.css" />

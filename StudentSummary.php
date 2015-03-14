@@ -27,7 +27,7 @@ if ( isset($_POST['SID']) ) {
 }
 ?>
 <html>
-<head><title>Student Summary</title>
+<head><title>Student Summary | ForensicsDB.com</title>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
 	google.load('visualization', '1.1', {packages: ['corechart', 'imagelinechart']});

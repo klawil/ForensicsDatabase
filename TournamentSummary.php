@@ -58,7 +58,7 @@ if ( isset($_POST['TID']) ) {
 }
 ?>
 <html>
-<head><title>Tournament Information</title>
+<head><title>Tournament Information | ForensicsDB.com</title>
 <link rel="stylesheet" type="text/css" href="Styles.css">
 <link rel="stylesheet" media="(max-width: 800px)" href="MobileStyles.css" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">

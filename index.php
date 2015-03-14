@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>KMC Forensics</title>
+<title>KMC Forensics | ForensicsDB.com</title>
 <link rel="stylesheet" type="text/css" href="Styles.css">
 <link rel="stylesheet" media="(max-width: 850px)" href="MobileStyles.css" />
 <meta charset="UTF-8">
