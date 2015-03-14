@@ -211,7 +211,7 @@ function Authorize() {
 		}
 		$GLOBALS['UserName'] = $Data['Name'];
 		$GLOBALS['CanUserEdit'] = $Data['CanMod'];
-	} while (false);}
+	} while (false); }
 	$myfile = fopen("/var/log/forensics/general.log","a");
 	if ( $GLOBALS['UserName'] != "" ) {
 		fwrite($myfile, "User " . $GLOBALS['UserName'] . " from ");
