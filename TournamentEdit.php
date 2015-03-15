@@ -60,7 +60,6 @@ if ( isset($_POST['RID']) ) {
 		$FRanks = $FRanks + $_POST['J' . ($Judges + 1) . 'R'];
 		$Judges++;
 	}
-	echo $PRanks . "|" . $PQuals . "|" . $FRanks;
 	if ( $_POST['broke'] == "on" ) {
 		$broke = 1;
 	} else {
@@ -71,12 +70,12 @@ if ( isset($_POST['RID']) ) {
 	} else {
 		$State = 0;
 	}
-	$SID2 = "";
+	$SID2 = ", SID2=null";
 	if ( isset($_POST['SID2']) && $_POST['SID2'] != "" ) {
 		$SID2 = ", SID2='" . $_POST['SID2'] . "'";
 	}
-	$place = "";
-	if ( isset($_POST['place']) ) {
+	$place = ", place=null";
+	if ( $_POST['broke'] == "on" && isset($_POST['place']) && $_POST['place'] != "") {
 		$place = ", place='" . $_POST['place'] . "'";
 	}
 	$IString = "SID='" . $_POST['SID'] ."', EID='" . $_POST['EID'] . "', NumberRounds='" . $Rounds . "', NumberJudges='" . $Judges . "', PRanks='" . $PRanks . "', PQuals='" . $PQuals . "', FRanks='" . $FRanks . "', broke='" . $broke . "', State='" . $State . "'" . $place . $SID2;
