@@ -110,6 +110,8 @@ function MakeHeader() {
 	</li>
 	<a href="https://github.com/klawil/ForensicsDatabase" target="_blank"><li>The Project on Github</li></a>
 	';
+	echo '<a href="IssueReport.php"><li>Report an Issue</li></a>
+	';
 	}
 	if ( $GLOBALS['UserName'] != "" ) {
 		echo '<li id="login"><b onclick="ShowLogin();">' . $GLOBALS['UserName'] . '</b>
