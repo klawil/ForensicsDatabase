@@ -1,6 +1,27 @@
 <?php
 include 'CommonFunctions.php';
-if ( isset($_POST['RID']) ) {
+if ( isset($_POST['delete']) ) {
+	if ( $GLOBALS['CanUserEdit'] != 1 ) {
+		$myfile = fopen("/var/log/forensics/general.log","a");
+		fwrite($myfile,"IP " . $_SERVER['REMOTE_ADDR'] . " tried to access page " . basename($_SERVER['PHP_SELF']) . " on " . date('Y-m-d') . " at " . date('H:i:s') . "\n");
+		fclose($myfile);
+		echo "Error - You aren't authorized to enter data.";
+		return 0;
+	}
+	$RID = $_POST['RID'];
+	$query = mysqli_query($DBConn, "delete from Results where RID='" . $RID . "';");
+	if ( !$query ) {
+		echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
+		return 0;
+	}
+	$query = mysqli_query($DBConn, "delete from Ballots where RID='" . $RID . "';");
+	if ( !$query ) {
+		echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
+		return 0;
+	}
+	echo "true";
+	return 0;
+} elseif ( isset($_POST['RID']) ) {
 	if ( $GLOBALS['CanUserEdit'] != 1 ) {
 		$myfile = fopen("/var/log/forensics/general.log","a");
 		fwrite($myfile,"IP " . $_SERVER['REMOTE_ADDR'] . " tried to access page " . basename($_SERVER['PHP_SELF']) . " on " . date('Y-m-d') . " at " . date('H:i:s') . "\n");
@@ -85,6 +106,10 @@ if ( isset($_POST['RID']) ) {
 		return 0;
 	}
 	$query = mysqli_query($DBConn, "delete from Ballots where RID='" . $RID . "';");
+	if ( !$query ) {
+		echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
+		break;
+	}
 	if (( $_POST['broke'] == "on" )) {
 		for ( $x = 1; $x <= $NumJudges; $x++ ) {
 			if (( isset($_POST['J' . $x . 'R']) && $_POST['J' . $x . 'R'] != "" )) {
@@ -196,7 +221,7 @@ if ( isset($_POST['RID']) ) {
 				echo '<td><input type="number" name="J' . $x . 'R[' . $RID . ']"></td>';
 			}
 		}
-		echo '<td><input type="number" name="place[' . $RID . ']" value="' . $Data['place'] . '"></td><td><input type="button" onclick="EditEntry(' . $RID . ');" value="Change"><input type="button" onclick="" value="Delete"></td><td id="' . $RID . 'M" style="display: none;"></td></tr>
+		echo '<td><input type="number" name="place[' . $RID . ']" value="' . $Data['place'] . '"></td><td><input type="button" onclick="EditEntry(' . $RID . ');" value="Change"><input type="button" onclick="DeleteRID(' . $RID . ');" value="Delete"></td><td id="' . $RID . 'M" style="display: none;"></td></tr>
 ';
 		$z++;
 	}
@@ -231,6 +256,32 @@ Select Tournament
 <div id="TourneyEdit"></div>
 <script>
 TID = "";
+function DeleteRID(RID) {
+	RID = RID || "asdf";
+	if ( RID == "asdf" ) {
+		window.alert("No result ID selected");
+		return 0;
+	}
+	document.getElementById(RID + "M").innerHTML = "Deleting...";
+	document.getElementById(RID + "M").style.display = "inline";
+	FString = "TID=" + TID + "&RID=" + RID + "&delete=1";
+	if ( window.XMLHttpRequest ) {
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.open("POST","TournamentEdit.php",true);
+    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xmlhttp.send(FString);
+    xmlhttp.onreadystatechange=function() {
+    	response = xmlhttp.responseText;
+    	if ( response == "true" ) {
+    		document.getElementById(RID + "M").innerHTML = "Deleted";
+    	} else {
+    		document.getElementById(RID + "M").innerHTML = response;
+    	}
+    }
+}
 function EditEntry(RID) {
 	RID = RID || "asdf";
 	if ( RID == "asdf" ) {
