@@ -373,6 +373,7 @@ if ( isset($_POST['FileType']) ) {
 		echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 		return 0;
 	}
+	echo mysqli_num_rows($query) . " Results<br>";
 	echo '<table id="Results-Table" border="1" style="border-collapse: collapse;"><tr>';
 	if ( $_POST['NCol'] == '1' ) {
 		echo '<th>Name</th>';
