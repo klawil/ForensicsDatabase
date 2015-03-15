@@ -312,12 +312,12 @@ if ( isset($_POST['FileType']) ) {
 			echo CSVEncode($Data['PRanks'] . '/' . $Data['PQuals']);
 		}
 		if ( $_POST['JCol'] == 'on' ) {
-			$RQuery = mysqli_query($DBConn, "select Rank, Qual from Ballots where RID='" . $RID . "' and Judge is not null order by Round;");
-			if ( !$query ) {
+			$JQuery = mysqli_query($DBConn, "select Rank, Qual from Ballots where RID='" . $RID . "' and Judge is not null order by Round;");
+			if ( !$JQuery ) {
 				echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 				return 0;
 			}
-			$NumRows = mysqli_num_rows($RQuery);
+			$NumRows = mysqli_num_rows($JQuery);
 			$CurrentRow = 1;
 			while ( $CurrentRow <= $NumRows ) {
 				if ( !$First ) {
@@ -325,7 +325,7 @@ if ( isset($_POST['FileType']) ) {
 				} else {
 					$First = 0;
 				}
-				$JData = mysqli_fetch_assoc($RQuery);
+				$JData = mysqli_fetch_assoc($JQuery);
 				echo CSVEncode($JData['Rank']);
 				$CurrentRow++;
 			}
@@ -481,15 +481,15 @@ if ( isset($_POST['FileType']) ) {
 			echo '<td>' . $Data['PRanks'] . '/' . $Data['PQuals'] . '</td>';
 		}
 		if ( $_POST['JCol'] == '1' ) {
-			$RQuery = mysqli_query($DBConn, "select Rank, Qual from Ballots where RID='" . $RID . "' and Judge is not null order by Round;");
-			if ( !$query ) {
+			$JQuery = mysqli_query($DBConn, "select Rank, Qual from Ballots where RID='" . $RID . "' and Judge is not null order by Round;");
+			if ( !$JQuery ) {
 				echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 				return 0;
 			}
-			$NumRows = mysqli_num_rows($RQuery);
+			$NumRows = mysqli_num_rows($JQuery);
 			$CurrentRow = 1;
 			while ( $CurrentRow <= $NumRows ) {
-				$JData = mysqli_fetch_assoc($RQuery);
+				$JData = mysqli_fetch_assoc($JQuery);
 				echo '<td>' . $JData['Rank'] . "</td>";
 				$CurrentRow++;
 			}
