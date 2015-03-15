@@ -1,9 +1,123 @@
 <?php
 include 'CommonFunctions.php';
 if ( isset($_POST['RID']) ) {
+	if ( $GLOBALS['CanUserEdit'] != 1 ) {
+		$myfile = fopen("/var/log/forensics/general.log","a");
+		fwrite($myfile,"IP " . $_SERVER['REMOTE_ADDR'] . " tried to access page " . basename($_SERVER['PHP_SELF']) . " on " . date('Y-m-d') . " at " . date('H:i:s') . "\n");
+		fclose($myfile);
+		echo "Error - You aren't authorized to enter data.";
+		return 0;
+	}
+	$RID = $_POST['RID'];
+	$tbl = "Tournaments";
+	if (( ! isset($_POST['TID']) )) {
+		echo "Error - No tournament ID specified";
+		return 0;
+	}
+	$query = mysqli_query($DBConn, "SELECT NumRounds, NumFinalsJudges from Tournaments where TID='" . $_POST['TID'] . "';");
+	if ( !$query ) {
+		echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
+		break;
+	}
+	$NumRows = mysqli_num_rows($query);
+	if ( $NumRows == 0 ) {
+		echo "Error - No tournament with that ID";
+		return 0;
+	}
+	$data = mysqli_fetch_assoc($query);
+	$NumRounds = $data['NumRounds'];
+	$NumJudges = $data['NumFinalsJudges'];
+	if ( ! isset($_POST['broke']) ) {
+		echo "Error - No information on whether participant broke.";
+		return 0;
+	} elseif ( $_POST['broke'] == "1" && ! isset($_POST['place']) ) {
+		echo "Error - No place listed.";
+		return 0;
+	}
+	if (( ! isset($_POST['State']) )) {
+		echo "Error - No 'State Qualifier' checkbox information.";
+		return 0;
+	}
+	if (( ! isset($_POST['EID']) )) {
+		echo "Error - No event information.";
+		return 0;
+	}
+	if (( ! isset($_POST['SID']) )) {
+		echo "Error - No student information.";
+		return 0;
+	}
+	$Rounds = 0;
+	$PRanks = 0;
+	$PQuals = 0;
+	while ( isset($_POST['R' . ($Rounds + 1) . 'R']) && $_POST['R' . ($Rounds + 1) . 'R'] != "" ) {
+		$PRanks = $PRanks + $_POST['R' . ($Rounds + 1) . 'R'];
+		$PQuals = $PQuals + $_POST['R' . ($Rounds + 1) . 'Q'];
+		$Rounds++;
+	}
+	$Judges = 0;
+	$FRanks = 0;
+	while ( $_POST['broke'] == "on" && isset($_POST['J' . ($Judges + 1) . 'R']) && $_POST['J' . ($Judges + 1) . 'R'] != "" ) {
+		$FRanks = $FRanks + $_POST['J' . ($Judges + 1) . 'R'];
+		$Judges++;
+	}
+	echo $PRanks . "|" . $PQuals . "|" . $FRanks;
+	if ( $_POST['broke'] == "on" ) {
+		$broke = 1;
+	} else {
+		$broke = 0;
+	}
+	if ( $_POST['State'] == "on" ) {
+		$State = 1;
+	} else {
+		$State = 0;
+	}
+	$SID2 = "";
+	if ( isset($_POST['SID2']) && $_POST['SID2'] != "" ) {
+		$SID2 = ", SID2='" . $_POST['SID2'] . "'";
+	}
+	$place = "";
+	if ( isset($_POST['place']) ) {
+		$place = ", place='" . $_POST['place'] . "'";
+	}
+	$IString = "SID='" . $_POST['SID'] ."', EID='" . $_POST['EID'] . "', NumberRounds='" . $Rounds . "', NumberJudges='" . $Judges . "', PRanks='" . $PRanks . "', PQuals='" . $PQuals . "', FRanks='" . $FRanks . "', broke='" . $broke . "', State='" . $State . "'" . $place . $SID2;
+	$query = mysqli_query($DBConn, "update Results set " . $IString . " where RID='" . $RID . "';");
+	if ( !$query ) {
+		echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
+		return 0;
+	}
+	$query = mysqli_query($DBConn, "delete from Ballots where RID='" . $RID . "';");
+	if (( $_POST['broke'] == "on" )) {
+		for ( $x = 1; $x <= $NumJudges; $x++ ) {
+			if (( isset($_POST['J' . $x . 'R']) && $_POST['J' . $x . 'R'] != "" )) {
+				$query = mysqli_query($DBConn, "insert into Ballots set RID='" . $RID . "', Judge='" . $x . "', Rank='" . $_POST['J' . $x . 'R'] . "';");
+				if ( !$query ) {
+					echo "Error - MySQL error: " . mysqli_error($DBConn) . " on Judge " . $x . ".";
+					return 0;
+				}
+			}
+		}
+	}
+	for ( $x = 1; $x <= $NumRounds; $x++ ) {
+		if (( ! isset($_POST['R' . $x . 'R']) || ! isset($_POST['R' . $x . 'Q']) )) {
+			echo "Error - Either quals or ranks for round " . $x . " are missing.";
+			return 0;
+		}
+		$query = mysqli_query($DBConn, "insert into Ballots set RID='" . $RID . "', Round='" . $x . "', Rank='" . $_POST['R' . $x . 'R'] . "', Qual='" . $_POST['R' . $x . 'Q'] . "';");
+		if ( !$query ) {
+			echo "Error - MySQL error: " . mysqli_error($DBConn) . " on Round " . $x . ".";
+			return 0;
+		}
+	}
 	echo "true";
 	return 0;
 } elseif ( isset($_POST['TID']) ) {
+	if ( $GLOBALS['CanUserEdit'] != 1 ) {
+		$myfile = fopen("/var/log/forensics/general.log","a");
+		fwrite($myfile,"IP " . $_SERVER['REMOTE_ADDR'] . " tried to enter a partner on page " . basename($_SERVER['PHP_SELF']) . " on " . date('Y-m-d') . " at " . date('H:i:s') . "\n");
+		fclose($myfile);
+		echo "Error - You aren't authorized to enter data.";
+		return 0;
+	}
 	$WString = " where TID='" . $_POST['TID'] . "' and Results.SID = Students.SID and Results.EID = Events.EID order by EName, LName, FName";
 	$NumRoundQuery = mysqli_query($DBConn, "SELECT NumRounds, NumFinalsJudges FROM Tournaments where TID = '" . $_POST['TID'] . "';");
 	if ( !$NumRoundQuery ) {
@@ -78,8 +192,8 @@ if ( isset($_POST['RID']) ) {
 			echo '<td><input type="number" name="J' . $CurrentRow . 'R[' . $RID . ']" value="' . $JData['Rank'] . '"></td>';
 			$CurrentRow++;
 		}
-		if ( $NumRows < $NumRounds ) {
-			for ( $x = $NumRows; $x < $NumRounds; $x++ ) {
+		if ( $CurrentRow <= $NumRounds ) {
+			for ( $x = $CurrentRow; $x <= $NumRounds; $x++ ) {
 				echo '<td><input type="number" name="J' . $x . 'R[' . $RID . ']"></td>';
 			}
 		}
