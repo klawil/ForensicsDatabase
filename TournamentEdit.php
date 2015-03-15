@@ -26,11 +26,6 @@ if ( $GLOBALS['CanUserEdit'] != 1 ) {
 </html>';
 	return 0;
 }
-$query = mysqli_query($DBConn "update Ballots set Rank=1 where RID=119 and Judge=1;");
-if ( !$query ) {
-	echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
-	return 0;
-}
 ?>
 Select Tournament
 <form id="TIDPick"><?php echo Tournaments(0); ?> <input type="button" value="Select" onclick="MakePage();"></form>
