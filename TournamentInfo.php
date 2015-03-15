@@ -565,7 +565,7 @@ if ( isset($_POST['FileType']) ) {
         <tr><td><input type="checkbox" id="CName" name="NCol" checked>Name</td><td><input type="checkbox" id="CPrelims" name="RCol" checked>Prelim Scores</td></tr>
         <tr><td><input type="checkbox" id="CTournament" name="TCol" checked>Tournament</td><td><input type="checkbox" id="CFinals" name="JCol" checked>Finals Scores</td></tr>
         <tr><td><input type="checkbox" id="CEvent" name="ECol" checked>Event</td><td><input type="checkbox" id="CTotals" name="ToCol" checked>Totals</td></tr>
-        <tr><td><input type="checkbox" id="CBroke" name="BCol" dir="" checked>Broke</td><td><input type="checkbox" id="CPlace" name="PCol" checked>Place</td></tr>
+        <tr><td><input type="checkbox" id="CBroke" name="BCol" checked>Broke</td><td><input type="checkbox" id="CPlace" name="PCol" checked>Place</td></tr>
         <tr><td><input type="checkbox" id="CQual" name="QCol" checked>State Qualifier</td><td></td></tr>
     </table>
 </div>
