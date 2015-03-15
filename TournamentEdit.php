@@ -33,7 +33,8 @@ if ( !$query ) {
 }
 ?>
 Select Tournament
-<div id="Tourneys"><?php echo Tournaments(0); ?> <input type="button" value="Select" onclick="MakePage();"></div><form id="EntryID" action="TournamentUpdate.php"><div id="TourneyID"></div>
+<form id="TIDPick"><?php echo Tournaments(0); ?> <input type="button" value="Select" onclick="MakePage();"></form>
+<div id="TourneyEdit"></div>
 <script>
 function MakePage() {
 	TID = document.getElementById("Tournament").options[document.getElementById("Tournament").selectedIndex].value;
