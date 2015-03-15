@@ -27,17 +27,22 @@ function Tournaments($IncludeAll, $DefaultTID = NULL) {
 	$TournamentString = $TournamentString . "</select>";
 	return $TournamentString;
 }
-function Students($IncludeAll, $FormName = NULL, $DefaultSID = NULL) {
+function Students($IncludeAll, $FormName = NULL, $DefaultSID = NULL, $SelectName = NULL) {
 	$query = mysqli_query($GLOBALS['DBConn'], "select FName, LName, SID from Students order by LName, FName;");
 	if ( !$query ) {
 		return "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 	}
 	$NumRows = mysqli_num_rows($query);
 	$CurrentRow = 0;
-	if ( $FormName == NULL ) {
-		$StudentString = '<select id="Student" name="SID">';
+	if ( $SelectName == NULL ) {
+		$Name = "SID";
 	} else {
-		$StudentString = '<select id="Student" name="SID" form="' . $FormName . '">';
+		$Name = $SelectName;
+	}
+	if ( $FormName == NULL ) {
+		$StudentString = '<select id="Student" name="' . $Name . '">';
+	} else {
+		$StudentString = '<select id="Student" name="' . $Name . '" form="' . $FormName . '">';
 	}
 	if ( $IncludeAll == 1 ) {
 		$StudentString = $StudentString . "<option value='-1'>All Students</option>";
@@ -54,14 +59,19 @@ function Students($IncludeAll, $FormName = NULL, $DefaultSID = NULL) {
 	$StudentString = $StudentString . "</select>";
 	return $StudentString;
 }
-function Events($IncludeAll, $DefaultEID = NULL) {
+function Events($IncludeAll, $DefaultEID = NULL, $SelectName = NULL) {
 	$query = mysqli_query($GLOBALS['DBConn'], "select * from Events order by EName;");
 	if ( !$query ) {
 		return "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 	}
 	$NumRows = mysqli_num_rows($query);
 	$CurrentRow = 0;
-	$EventString = '<select id="Event" name="EID">';
+	if ( $SelectName == NULL ) {
+		$Name = "EID";
+	} else {
+		$Name = $SelectName;
+	}
+	$EventString = '<select id="Event" name="' . $Name . '">';
 	if ( $IncludeAll == 1 ) {
 		$EventString = $EventString . "<option value='-1'>All Events</option>";
 	}
