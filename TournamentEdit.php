@@ -221,11 +221,19 @@ if ( isset($_POST['delete']) ) {
 				echo '<td><input type="number" name="J' . $x . 'R[' . $RID . ']"></td>';
 			}
 		}
-		echo '<td><input type="number" name="place[' . $RID . ']" value="' . $Data['place'] . '"></td><td><input type="button" onclick="EditEntry(' . $RID . ');" value="Change"><input type="button" onclick="DeleteRID(' . $RID . ');" value="Delete"></td><td id="' . $RID . 'M" style="display: none;"></td></tr>
+		echo '<td><input type="number" name="place[' . $RID . ']" value="' . $Data['place'] . '"></td><td><input type="button" onclick="EditEntry(' . $RID . ');" value="Save"><input type="button" onclick="DeleteRID(' . $RID . ');" value="Delete"></td><td id="' . $RID . 'M" style="display: none;"></td></tr>
 ';
 		$z++;
 	}
-	echo '</table></form><input type="button" value="Add Row" onclick="AddRow();">';
+	echo '<tr id="CloneRow" style="display: none;"><td>' . Students(0,NULL,NULL,"SID[ROW]") . '</td><td>' . Events(0,NULL,"EID[ROW]") . '</td>';
+	for ( $x = $NumRows; $x < $NumRounds; $x++ ) {
+		echo '<td><input type="number" name="R' . $x . 'R[ROW]"><input type="number" name="R' . $x . 'Q[ROW]"></td>';
+	}
+	echo '<td style="text-align: center;"><input type="checkbox" name="broke[ROW]"></td><td style="text-align: center;"><input type="checkbox" name="State[ROW]"></td>';
+	for ( $x = $CurrentRow; $x <= $NumRounds; $x++ ) {
+		echo '<td><input type="number" name="J' . $x . 'R[ROW]"></td>';
+	}
+	echo '<td><input type="number" name="place[ROW]"></td><td><input type="button" onclick="EditEntry([ROW]);" value="Save"><input type="button" onclick="DeleteRID([ROW]);" value="Delete"></td><td id="[ROW]M" style="display: none;"></td></table></form><input type="button" value="Add Row" onclick="AddRow();">';
 	return 0;
 }
 ?>
@@ -256,6 +264,7 @@ Select Tournament
 <div id="TourneyEdit"></div>
 <script>
 TID = "";
+NewNum = 0;
 function DeleteRID(RID) {
 	RID = RID || "asdf";
 	if ( RID == "asdf" ) {
@@ -315,7 +324,9 @@ function EditEntry(RID) {
     }
 }
 function AddRow(){
-	document.getElementById("TEdit-Table").innerHTML = document.getElementById("TEdit-Table").innerHTML + "<td>Test</td>";
+	RowHTML = document.getElementById("CloneRow").innerHTML;
+	RowHTML = RowHTML.replace("[ROW]","[N" + NewNum + "]");
+	document.getElementById("TEdit-Table").innerHTML = document.getElementById("TEdit-Table").innerHTML + '<tr id="N' + NewNum + '">' + RowHTML + '</tr>';
 }
 function MakePage() {
 	document.getElementById("TourneyEdit").innerHTML = "Loading...";
