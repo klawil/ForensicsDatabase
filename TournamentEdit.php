@@ -21,6 +21,9 @@ if ( isset($_POST['delete']) ) {
 	}
 	echo "true";
 	return 0;
+} elseif ( isset($_POST['create']) ) {
+	echo "true|meow";
+	return 0;
 } elseif ( isset($_POST['RID']) ) {
 	if ( $GLOBALS['CanUserEdit'] != 1 ) {
 		$myfile = fopen("/var/log/forensics/general.log","a");
@@ -233,7 +236,7 @@ if ( isset($_POST['delete']) ) {
 	for ( $x = $CurrentRow; $x <= $NumRounds; $x++ ) {
 		echo '<td><input type="number" name="J' . $x . 'R[ROW]"></td>';
 	}
-	echo '<td><input type="number" name="place[ROW]"></td><td><input type="button" onclick="EditEntry([ROW]);" value="Save"><input type="button" onclick="DeleteRID([ROW]);" value="Delete"></td><td id="[ROW]M" style="display: none;"></td></table></form><input type="button" value="Add Row" onclick="AddRow();">';
+	echo '<td><input type="number" name="place[ROW]"></td><td id="NROWNB"><input type="button" onclick="CreateEntry(\'NROWN\');" value="Save"></td><td id="NROWNM" style="display: none;"></td></tr></table></form><input type="button" value="Add Row" onclick="AddRow();">';
 	return 0;
 }
 ?>
@@ -283,12 +286,14 @@ function DeleteRID(RID) {
     xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
     xmlhttp.send(FString);
     xmlhttp.onreadystatechange=function() {
-    	response = xmlhttp.responseText;
-    	if ( response == "true" ) {
-    		document.getElementById(RID + "M").innerHTML = "Deleted";
-    	} else {
-    		document.getElementById(RID + "M").innerHTML = response;
-    	}
+    	if ( xmlhttp.readyState == 4 ) {
+			response = xmlhttp.responseText;
+			if ( response == "true" ) {
+				document.getElementById(RID + "M").innerHTML = "Deleted";
+			} else {
+				document.getElementById(RID + "M").innerHTML = response;
+			}
+		}
     }
 }
 function EditEntry(RID) {
@@ -315,18 +320,59 @@ function EditEntry(RID) {
     xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
     xmlhttp.send(FString);
     xmlhttp.onreadystatechange=function() {
-    	response = xmlhttp.responseText;
-    	if ( response == "true" ) {
-    		document.getElementById(RID + "M").innerHTML = "Saved";
-    	} else {
-    		document.getElementById(RID + "M").innerHTML = response;
-    	}
+    	if ( xmlhttp.readyState == 4 ) {
+			response = xmlhttp.responseText;
+			if ( response == "true" ) {
+				document.getElementById(RID + "M").innerHTML = "Saved";
+			} else {
+				document.getElementById(RID + "M").innerHTML = response;
+			}
+		}
     }
+}
+function CreateEntry(RowID) {
+	RowID = RowID || "asdf";
+	if ( RowID == "asdf" ) {
+		window.alert("No result ID selected");
+		return 0;
+	}
+	Elms = document.getElementById("TEdit").elements;
+	FString = "TID=" + TID + "&create=1";
+	for ( x = 0; x < Elms.length; x++ ) {
+		if ( Elms[x].name.indexOf("[" + RowID + "]") != '-1' ) {
+			FString = FString + "&" + Elms[x].name.replace("[" + RowID + "]","") + "=" + Elms[x].value;
+		}
+	}
+	document.getElementById(RowID + "M").innerHTML = "Submitting...";
+	document.getElementById(RowID + "M").style.display = "inline";
+	if ( window.XMLHttpRequest ) {
+		xmlhttp = new XMLHttpRequest();
+	} else {
+		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.open("POST","TournamentEdit.php",true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send(FString);
+	xmlhttp.onreadystatechange=function() {
+		if ( xmlhttp.readyState == 4 ) {
+			response = xmlhttp.responseText;
+			if ( response.indexOf("true") > -1 ) {
+				document.getElementById(RowID + "M").innerHTML = "Saved";
+				RReg = new RegExp(RowID, 'g');
+				response = response.split("|");
+				document.getElementById(RowID).innerHTML = document.getElementById(RowID).innerHTML.replace(RReg,response[1]);
+			} else {
+				document.getElementById(RowID + "M").innerHTML = "Error: " + response;
+			}
+		}
+	}
 }
 function AddRow(){
 	RowHTML = document.getElementById("CloneRow").innerHTML;
-	RowHTML = RowHTML.replace("[ROW]","[N" + NewNum + "]");
-	document.getElementById("TEdit-Table").innerHTML = document.getElementById("TEdit-Table").innerHTML + '<tr id="N' + NewNum + '">' + RowHTML + '</tr>';
+	RowHTML = RowHTML.replace(/\[ROW\]/g,"[00" + NewNum + "]");
+	RowHTML = RowHTML.replace(/NROWN/g,"00" + NewNum);
+	document.getElementById("TEdit-Table").innerHTML = document.getElementById("TEdit-Table").innerHTML + '<tr id="00' + NewNum + '">' + RowHTML + '</tr>';
+	NewNum = NewNum + 1;
 }
 function MakePage() {
 	document.getElementById("TourneyEdit").innerHTML = "Loading...";
@@ -340,8 +386,10 @@ function MakePage() {
     xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
     xmlhttp.send("TID=" + TID);
     xmlhttp.onreadystatechange=function() {
-    	response = xmlhttp.responseText;
-    	document.getElementById("TourneyEdit").innerHTML = response;
+    	if ( xmlhttp.readyState == 4 ) {
+			response = xmlhttp.responseText;
+			document.getElementById("TourneyEdit").innerHTML = response;
+		}
     }
 }
 </script>
