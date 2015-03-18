@@ -1,13 +1,13 @@
 <?php
 include "CommonFunctions.php";
+if ( isset($_POST) && $GLOBALS['CanUserEdit'] != 1 ) {
+	$myfile = fopen("/var/log/forensics/general.log","a");
+	fwrite($myfile,"IP " . $_SERVER['REMOTE_ADDR'] . " tried to access page " . basename($_SERVER['PHP_SELF']) . " on " . date('Y-m-d') . " at " . date('H:i:s') . "\n");
+	fclose($myfile);
+	echo "Error - You aren't authorized to enter data.";
+	return 0;
+}
 if ( isset($_POST['RID']) ) {
-	if ( $GLOBALS['CanUserEdit'] != 1 ) {
-		$myfile = fopen("/var/log/forensics/general.log","a");
-		fwrite($myfile,"IP " . $_SERVER['REMOTE_ADDR'] . " tried to enter a partner on page " . basename($_SERVER['PHP_SELF']) . " on " . date('Y-m-d') . " at " . date('H:i:s') . "\n");
-		fclose($myfile);
-		echo "Error - You aren't authorized to enter data.";
-		return 0;
-	}
 	if ( ! isset($_POST['SID']) ) {
 		echo "Error - No partner selected.";
 		return 0;
@@ -20,13 +20,6 @@ if ( isset($_POST['RID']) ) {
 	echo "true";
 	return 0;
 } elseif ( isset($_POST['TID']) ) {
-	if ( $GLOBALS['CanUserEdit'] != 1 ) {
-		$myfile = fopen("/var/log/forensics/general.log","a");
-		fwrite($myfile,"IP " . $_SERVER['REMOTE_ADDR'] . " tried to enter data on page " . basename($_SERVER['PHP_SELF']) . " on " . date('Y-m-d') . " at " . date('H:i:s') . "\n");
-		fclose($myfile);
-		echo "Error - You aren't authorized to enter data.";
-		return 0;
-	}
 	$tbl = "Tournaments";
 	if (( ! isset($_POST['TID']) )) {
 		echo "Error - No tournament ID specified";
