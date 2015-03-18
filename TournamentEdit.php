@@ -140,7 +140,7 @@ if ( isset($_POST['delete']) ) {
 	$Data = mysqli_fetch_assoc($NumRoundQuery);
 	$NumRounds = $Data['NumRounds'];
 	$NumJudges = $Data['NumFinalsJudges'];
-	$query = mysqli_query($DBConn, 'select Results.SID, SID2, RID, Results.EID, NumberRounds, NumberJudges, broke, State, place from Results, Students, Events' . $WString . ";");
+	$query = mysqli_query($DBConn, 'select Partner, Results.SID, SID2, RID, Results.EID, NumberRounds, NumberJudges, broke, State, place from Results, Students, Events' . $WString . ";");
 	if ( !$query ) {
 		echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
 		return 0;
@@ -164,6 +164,8 @@ if ( isset($_POST['delete']) ) {
 		echo '<tr><td>' . Students(0,NULL,$Data['SID'],"SID[" . $RID . "]");
 		if ( $Data['SID2'] != NULL ) {
 			echo '<br>' . Students(0,NULL,$Data['SID2'],"SID2[" . $RID . "]");
+		} elseif ( $Data['Partner'] == 1 ) {
+			echo '<br>' . Students(0,NULL,NULL,"SID2[" . $RID . "]");
 		}
 		echo '</td><td>' . Events(0,$Data['EID'],"EID[" . $RID . "]") . '</td>';
 		$RQuery = mysqli_query($DBConn, "select Rank, Qual from Ballots where RID='" . $RID . "' and Round is not null order by Round;");
