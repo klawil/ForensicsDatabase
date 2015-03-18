@@ -1,13 +1,13 @@
 <?php
 include 'CommonFunctions.php';
+if ( isset($_POST) && $GLOBALS['CanUserEdit'] != 1 ) {
+	$myfile = fopen("/var/log/forensics/general.log","a");
+	fwrite($myfile,"IP " . $_SERVER['REMOTE_ADDR'] . " tried to access page " . basename($_SERVER['PHP_SELF']) . " on " . date('Y-m-d') . " at " . date('H:i:s') . "\n");
+	fclose($myfile);
+	echo "Error - You aren't authorized to enter data.";
+	return 0;
+}
 if ( isset($_POST['delete']) ) {
-	if ( $GLOBALS['CanUserEdit'] != 1 ) {
-		$myfile = fopen("/var/log/forensics/general.log","a");
-		fwrite($myfile,"IP " . $_SERVER['REMOTE_ADDR'] . " tried to access page " . basename($_SERVER['PHP_SELF']) . " on " . date('Y-m-d') . " at " . date('H:i:s') . "\n");
-		fclose($myfile);
-		echo "Error - You aren't authorized to enter data.";
-		return 0;
-	}
 	$RID = $_POST['RID'];
 	$query = mysqli_query($DBConn, "delete from Results where RID='" . $RID . "';");
 	if ( !$query ) {
@@ -22,16 +22,9 @@ if ( isset($_POST['delete']) ) {
 	echo "true";
 	return 0;
 } elseif ( isset($_POST['create']) ) {
-	echo "true|meow";
+	
 	return 0;
 } elseif ( isset($_POST['RID']) ) {
-	if ( $GLOBALS['CanUserEdit'] != 1 ) {
-		$myfile = fopen("/var/log/forensics/general.log","a");
-		fwrite($myfile,"IP " . $_SERVER['REMOTE_ADDR'] . " tried to access page " . basename($_SERVER['PHP_SELF']) . " on " . date('Y-m-d') . " at " . date('H:i:s') . "\n");
-		fclose($myfile);
-		echo "Error - You aren't authorized to enter data.";
-		return 0;
-	}
 	$RID = $_POST['RID'];
 	$tbl = "Tournaments";
 	if (( ! isset($_POST['TID']) )) {
@@ -138,13 +131,6 @@ if ( isset($_POST['delete']) ) {
 	echo "true";
 	return 0;
 } elseif ( isset($_POST['TID']) ) {
-	if ( $GLOBALS['CanUserEdit'] != 1 ) {
-		$myfile = fopen("/var/log/forensics/general.log","a");
-		fwrite($myfile,"IP " . $_SERVER['REMOTE_ADDR'] . " tried to enter a partner on page " . basename($_SERVER['PHP_SELF']) . " on " . date('Y-m-d') . " at " . date('H:i:s') . "\n");
-		fclose($myfile);
-		echo "Error - You aren't authorized to enter data.";
-		return 0;
-	}
 	$WString = " where TID='" . $_POST['TID'] . "' and Results.SID = Students.SID and Results.EID = Events.EID order by EName, LName, FName";
 	$NumRoundQuery = mysqli_query($DBConn, "SELECT NumRounds, NumFinalsJudges FROM Tournaments where TID = '" . $_POST['TID'] . "';");
 	if ( !$NumRoundQuery ) {
@@ -361,6 +347,7 @@ function CreateEntry(RowID) {
 				RReg = new RegExp(RowID, 'g');
 				response = response.split("|");
 				document.getElementById(RowID).innerHTML = document.getElementById(RowID).innerHTML.replace(RReg,response[1]);
+				document.getElementById(response[1] + "B").innerHTML = document.getElementById(response[1] + "B").innerHTML.replace("CreateEntry","EditEntry") + '<input type="button" onclick="DeleteRID(\'' + response[1] + '\');" value="Delete">';
 			} else {
 				document.getElementById(RowID + "M").innerHTML = "Error: " + response;
 			}
