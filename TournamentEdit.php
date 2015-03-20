@@ -22,7 +22,7 @@ if ( isset($_POST['delete']) ) {
 	echo "true";
 	return 0;
 } elseif ( isset($_POST['create']) ) {
-	
+	echo "true|meow";
 	return 0;
 } elseif ( isset($_POST['RID']) ) {
 	$RID = $_POST['RID'];
@@ -77,16 +77,6 @@ if ( isset($_POST['delete']) ) {
 		$FRanks = $FRanks + $_POST['J' . ($Judges + 1) . 'R'];
 		$Judges++;
 	}
-	if ( $_POST['broke'] == "on" ) {
-		$broke = 1;
-	} else {
-		$broke = 0;
-	}
-	if ( $_POST['State'] == "on" ) {
-		$State = 1;
-	} else {
-		$State = 0;
-	}
 	$SID2 = ", SID2=null";
 	if ( isset($_POST['SID2']) && $_POST['SID2'] != "" ) {
 		$SID2 = ", SID2='" . $_POST['SID2'] . "'";
@@ -95,7 +85,7 @@ if ( isset($_POST['delete']) ) {
 	if ( $_POST['broke'] == "on" && isset($_POST['place']) && $_POST['place'] != "") {
 		$place = ", place='" . $_POST['place'] . "'";
 	}
-	$IString = "SID='" . $_POST['SID'] ."', EID='" . $_POST['EID'] . "', NumberRounds='" . $Rounds . "', NumberJudges='" . $Judges . "', PRanks='" . $PRanks . "', PQuals='" . $PQuals . "', FRanks='" . $FRanks . "', broke='" . $broke . "', State='" . $State . "'" . $place . $SID2;
+	$IString = "SID='" . $_POST['SID'] ."', EID='" . $_POST['EID'] . "', NumberRounds='" . $Rounds . "', NumberJudges='" . $Judges . "', PRanks='" . $PRanks . "', PQuals='" . $PQuals . "', FRanks='" . $FRanks . "', broke='" . $_POST['broke'] . "', State='" . $_POST['State'] . "'" . $place . $SID2;
 	$query = mysqli_query($DBConn, "update Results set " . $IString . " where RID='" . $RID . "';");
 	if ( !$query ) {
 		echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
@@ -161,13 +151,13 @@ if ( isset($_POST['delete']) ) {
 	while ( $z <= $MasterNumRows ) {
 		$Data = mysqli_fetch_assoc($query);
 		$RID = $Data['RID'];
-		echo '<tr><td>' . Students(0,NULL,$Data['SID'],"SID[" . $RID . "]");
+		echo '<tr id="' . $RID . '"><td>' . Students(0,NULL,$Data['SID'],"SID[" . $RID . "]","StateChange('SID[" . $RID . "]');");
 		if ( $Data['SID2'] != NULL ) {
-			echo '<br>' . Students(0,NULL,$Data['SID2'],"SID2[" . $RID . "]");
+			echo '<br>' . Students(0,NULL,$Data['SID2'],"SID2[" . $RID . "]","StateChange('SID2[" . $RID . "]');");
 		} elseif ( $Data['Partner'] == 1 ) {
-			echo '<br>' . Students(0,NULL,NULL,"SID2[" . $RID . "]");
+			echo '<br>' . Students(0,NULL,NULL,"SID2[" . $RID . "]","StateChange('SID2[" . $RID . "]');");
 		}
-		echo '</td><td>' . Events(0,$Data['EID'],"EID[" . $RID . "]") . '</td>';
+		echo '</td><td>' . Events(0,$Data['EID'],"EID[" . $RID . "]","StateChange('EID[" . $RID . "]');") . '</td>';
 		$RQuery = mysqli_query($DBConn, "select Rank, Qual from Ballots where RID='" . $RID . "' and Round is not null order by Round;");
 		if ( !$query ) {
 			echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
@@ -177,23 +167,23 @@ if ( isset($_POST['delete']) ) {
 		$CurrentRow = 1;
 		while ( $CurrentRow <= $NumRows ) {
 			$RData = mysqli_fetch_assoc($RQuery);
-			echo '<td><input type="number" name="R' . $CurrentRow . 'R[' . $RID . ']" value="' . $RData['Rank'] . '"><input type="number" name="R' . $CurrentRow . 'Q[' . $RID . ']" value="' . $RData['Qual'] . '"></td>';
+			echo '<td><input type="number" name="R' . $CurrentRow . 'R[' . $RID . ']" value="' . $RData['Rank'] . '" onchange="StateChange(\'R' . $CurrentRow . 'R[' . $RID . ']\');"><input type="number" name="R' . $CurrentRow . 'Q[' . $RID . ']" value="' . $RData['Qual'] . '" onchange="StateChange(\'R' . $CurrentRow . 'Q[' . $RID . ']\');"></td>';
 			$CurrentRow++;
 		}
 		if ( $NumRows < $NumRounds ) {
 			for ( $x = $NumRows; $x < $NumRounds; $x++ ) {
-				echo '<td><input type="number" name="R' . $x . 'R[' . $RID . ']"><input type="number" name="R' . $x . 'Q[' . $RID . ']"></td>';
+				echo '<td><input type="number" name="R' . $x . 'R[' . $RID . ']" onchange="StateChange(\'R' . $x . 'R[' . $RID . ']\');"><input type="number" name="R' . $x . 'Q[' . $RID . ']" onchange="StateChange(\'R' . $x . 'Q[' . $RID . ']\');"></td>';
 			}
 		}
 		if ( $Data['broke'] == "1" ) {
-			echo '<td style="text-align: center;"><input type="checkbox" name="broke[' . $RID . ']" checked></td>';
+			echo '<td style="text-align: center;"><input type="checkbox" name="broke[' . $RID . ']" onchange="StateChange(\'broke[' . $RID . ']\');" checked></td>';
 		} else {
-			echo '<td style="text-align: center;"><input type="checkbox" name="broke[' . $RID . ']"></td>';
+			echo '<td style="text-align: center;"><input type="checkbox" name="broke[' . $RID . ']" onchange="StateChange(\'broke[' . $RID . ']\');"></td>';
 		}
 		if ( $Data['State'] == "1" ) {
-			echo '<td style="text-align: center;"><input type="checkbox" name="State[' . $RID . ']" checked></td>';
+			echo '<td style="text-align: center;"><input type="checkbox" name="State[' . $RID . ']" onchange="StateChange(\'State[' . $RID . ']\');" checked></td>';
 		} else {
-			echo '<td style="text-align: center;"><input type="checkbox" name="State[' . $RID . ']"></td>';
+			echo '<td style="text-align: center;"><input type="checkbox" name="State[' . $RID . ']" onchange="StateChange(\'State[' . $RID . ']\');"></td>';
 		}
 		$JQuery = mysqli_query($DBConn, "select Rank, Qual from Ballots where RID='" . $RID . "' and Judge is not null order by Round;");
 		if ( !$JQuery ) {
@@ -204,27 +194,27 @@ if ( isset($_POST['delete']) ) {
 		$CurrentRow = 1;
 		while ( $CurrentRow <= $NumRows ) {
 			$JData = mysqli_fetch_assoc($JQuery);
-			echo '<td><input type="number" name="J' . $CurrentRow . 'R[' . $RID . ']" value="' . $JData['Rank'] . '"></td>';
+			echo '<td><input type="number" name="J' . $CurrentRow . 'R[' . $RID . ']" value="' . $JData['Rank'] . '" onchange="StateChange(\'J' . $CurrentRow . 'R[' . $RID . ']\');"></td>';
 			$CurrentRow++;
 		}
 		if ( $CurrentRow <= $NumRounds ) {
 			for ( $x = $CurrentRow; $x <= $NumRounds; $x++ ) {
-				echo '<td><input type="number" name="J' . $x . 'R[' . $RID . ']"></td>';
+				echo '<td><input type="number" name="J' . $x . 'R[' . $RID . ']" onchange="StateChange(\'J' . $x . 'R[' . $RID . ']\');"></td>';
 			}
 		}
-		echo '<td><input type="number" name="place[' . $RID . ']" value="' . $Data['place'] . '"></td><td><input type="button" onclick="EditEntry(' . $RID . ');" value="Save"><input type="button" onclick="DeleteRID(' . $RID . ');" value="Delete"></td><td id="' . $RID . 'M" style="display: none;"></td></tr>
+		echo '<td><input type="number" name="place[' . $RID . ']" value="' . $Data['place'] . '" onchange="StateChange(\'place[' . $RID . ']\');"></td><td><input type="button" onclick="EditEntry(' . $RID . ');" value="Save"><input type="button" onclick="DeleteRID(' . $RID . ');" value="Delete"></td><td id="' . $RID . 'M" style="display: none;"></td></tr>
 ';
 		$z++;
 	}
-	echo '<tr id="CloneRow" style="display: none;"><td>' . Students(0,NULL,NULL,"SID[ROW]") . '</td><td>' . Events(0,NULL,"EID[ROW]") . '</td>';
+	echo '<tr id="CloneRow" style="display: none;"><td>' . Students(0,NULL,NULL,"SID[ROW]","StateChange(\'SID[ROW]\');") . '</td><td>' . Events(0,NULL,"EID[ROW]","StateChange(\'[ROW]\');") . '</td>';
 	for ( $x = $NumRows; $x < $NumRounds; $x++ ) {
-		echo '<td><input type="number" name="R' . $x . 'R[ROW]"><input type="number" name="R' . $x . 'Q[ROW]"></td>';
+		echo '<td><input type="number" name="R' . $x . 'R[ROW]" onchange="StateChange(\'[ROW]\');"><input type="number" name="R' . $x . 'Q[ROW]" onchange="StateChange(\'[ROW]\');"></td>';
 	}
-	echo '<td style="text-align: center;"><input type="checkbox" name="broke[ROW]"></td><td style="text-align: center;"><input type="checkbox" name="State[ROW]"></td>';
+	echo '<td style="text-align: center;"><input type="checkbox" name="broke[ROW]" onchange="StateChange(\'[ROW]\');"></td><td style="text-align: center;"><input type="checkbox" name="State[ROW]" onchange="StateChange(\'[ROW]\');"></td>';
 	for ( $x = $CurrentRow; $x <= $NumRounds; $x++ ) {
-		echo '<td><input type="number" name="J' . $x . 'R[ROW]"></td>';
+		echo '<td><input type="number" name="J' . $x . 'R[ROW]" onchange="StateChange(\'[ROW]\');"></td>';
 	}
-	echo '<td><input type="number" name="place[ROW]"></td><td id="NROWNB"><input type="button" onclick="CreateEntry(\'NROWN\');" value="Save"></td><td id="NROWNM" style="display: none;"></td></tr></table></form><input type="button" value="Add Row" onclick="AddRow();">';
+	echo '<td><input type="number" name="place[ROW]" onchange="StateChange(\'[ROW]\');"></td><td id="NROWNB"><input type="button" onclick="CreateEntry(\'NROWN\');" value="Save"></td><td id="NROWNM" style="display: none;"></td></tr></table></form><input type="button" value="Add Row" onclick="AddRow();"><br><input type="button" value="Show Changed" onclick="ShowChange();">';
 	return 0;
 }
 ?>
@@ -256,6 +246,7 @@ Select Tournament
 <script>
 TID = "";
 NewNum = 0;
+ChangedValues = new Array();
 function DeleteRID(RID) {
 	RID = RID || "asdf";
 	if ( RID == "asdf" ) {
@@ -290,11 +281,36 @@ function EditEntry(RID) {
 		window.alert("No result ID selected");
 		return 0;
 	}
-	Elms = document.getElementById("TEdit").elements;
+	Elms1 = document.getElementById(RID).getElementsByTagName('select');
+	Elms2 = document.getElementById(RID).getElementsByTagName('input');
 	FString = "TID=" + TID + "&RID=" + RID;
-	for ( x = 0; x < Elms.length; x++ ) {
-		if ( Elms[x].name.indexOf("[" + RID + "]") != '-1' ) {
-			FString = FString + "&" + Elms[x].name.replace("[" + RID + "]","") + "=" + Elms[x].value;
+	ChangedArray = new Array();
+	for ( x = 0; x < Elms1.length; x++ ) {
+		FString = FString + "&" + Elms1[x].name.replace("[" + RID + "]","") + "=" + Elms1[x].value;
+		if ( typeof ChangedValues[RID] !== 'undefined' ) {
+			ChangedValues[RID]['Default'] = Elms1[x].value;
+			ChangedArray.push(Elms1[x].name);
+		}
+	}
+	for ( x = 0; x < Elms2.length; x++ ) {
+		if ( Elms2[x].type != "checkbox" ) {
+			FString = FString + "&" + Elms2[x].name.replace("[" + RID + "]","") + "=" + Elms2[x].value;
+			if ( typeof ChangedValues[RID] !== 'undefined' ) {
+				ChangedValues[RID]['Default'] = Elms2[x].value;
+				ChangedArray.push(Elms2[x].name);
+			}
+		} else if ( Elms2[x].type == "checkbox" && !Elms2[x].checked ) {
+			FString = FString + "&" + Elms2[x].name.replace("[" + RID + "]","") + "=0";
+			if ( typeof ChangedValues[RID] !== 'undefined' ) {
+				ChangedValues[RID]['Default'] = Elms1[x].checked;
+				ChangedArray.push(Elms1[x].name);
+			}
+		} else if ( Elms2[x].type == "checkbox" && Elms2[x].checked ) {
+			FString = FString + "&" + Elms2[x].name.replace("[" + RID + "]","") + "=1";
+			if ( typeof ChangedValues[RID] !== 'undefined' ) {
+				ChangedValues[RID]['Default'] = Elms1[x].checked;
+				ChangedArray.push(Elms1[x].name);
+			}
 		}
 	}
 	document.getElementById(RID + "M").innerHTML = "Submitting...";
@@ -312,11 +328,67 @@ function EditEntry(RID) {
 			response = xmlhttp.responseText;
 			if ( response == "true" ) {
 				document.getElementById(RID + "M").innerHTML = "Saved";
+				for ( x in ChangedArray ) {
+					ChangedValues[ChangedArray[x]]['Saved'] = true;
+				}
 			} else {
 				document.getElementById(RID + "M").innerHTML = response;
 			}
 		}
     }
+}
+function ShowChange() {
+	DString = ""
+	for ( x in ChangedValues ) {
+		DString = DString + x + ":" + ChangedValues[x]['Default'] + "->" + ChangedValues[x]['New'] + ":" + ChangedValues[x]['Saved'] + '\n';
+	}
+	window.alert(DString);
+}
+function StateChange(RID) {
+	RIDM = RID.substring(RID.indexOf("[")+1,RID.indexOf("]")) + "M";
+	Element = document.getElementsByName(RID);
+	HTMLElement = Element[0];
+	if ( HTMLElement.type == "checkbox" ) {
+		value = HTMLElement.checked;
+	} else if ( HTMLElement.type == "select-one" ) {
+		value = HTMLElement.selectedIndex;
+	} else {
+		value = HTMLElement.value;
+	}
+	if ( typeof ChangedValues[RID] !== 'undefined' ) {
+		ChangedValues[RID]['New'] = value;
+	} else {
+		if ( HTMLElement.type == "checkbox" ) {
+			defaultVal = HTMLElement.defaultChecked;
+		} else if ( HTMLElement.type == "select-one" ) {
+			DefaultIndex = 0;
+			while ( !HTMLElement.options[DefaultIndex].defaultSelected ){
+				DefaultIndex = DefaultIndex + 1;
+			}
+			defaultVal = DefaultIndex;
+		} else {
+			defaultVal = HTMLElement.defaultValue;
+		}
+		ChangedValues[RID] = {'Default': defaultVal, 'New': value, 'Saved': false};
+	}
+	if ( ChangedValues[RID]['New'] == ChangedValues[RID]['Default'] ) {
+		ChangedValues[RID]['Saved'] = true;
+		document.getElementById(RIDM).style.display = 'none';
+	} else {
+		document.getElementById(RIDM).style.display = 'inline';
+		document.getElementById(RIDM).innerHTML = "Unsaved changes";
+	}
+}
+function ChangeValues() {
+	for ( x in ChangedValues ) {
+		if ( document.getElementById(x).type == "select" ) {
+			document.getElementById(x).selectedIndex = ChangedValues[x]['New'];
+		} else if ( document.getElementById(x).type == "checkbox" ) {
+			document.getElementById(x).checked = ChangedValues[x]['New'];
+		} else {
+			document.getElementById(x).value = ChangedValues[x]['New'];
+		}
+	}
 }
 function CreateEntry(RowID) {
 	RowID = RowID || "asdf";
@@ -329,6 +401,7 @@ function CreateEntry(RowID) {
 	for ( x = 0; x < Elms.length; x++ ) {
 		if ( Elms[x].name.indexOf("[" + RowID + "]") != '-1' ) {
 			FString = FString + "&" + Elms[x].name.replace("[" + RowID + "]","") + "=" + Elms[x].value;
+			Elms[x].defaultValue = Elms[x].value;
 		}
 	}
 	document.getElementById(RowID + "M").innerHTML = "Submitting...";
@@ -350,6 +423,7 @@ function CreateEntry(RowID) {
 				response = response.split("|");
 				document.getElementById(RowID).innerHTML = document.getElementById(RowID).innerHTML.replace(RReg,response[1]);
 				document.getElementById(response[1] + "B").innerHTML = document.getElementById(response[1] + "B").innerHTML.replace("CreateEntry","EditEntry") + '<input type="button" onclick="DeleteRID(\'' + response[1] + '\');" value="Delete">';
+				ChangeValues();
 			} else {
 				document.getElementById(RowID + "M").innerHTML = "Error: " + response;
 			}
@@ -362,6 +436,7 @@ function AddRow(){
 	RowHTML = RowHTML.replace(/NROWN/g,"00" + NewNum);
 	document.getElementById("TEdit-Table").innerHTML = document.getElementById("TEdit-Table").innerHTML + '<tr id="00' + NewNum + '">' + RowHTML + '</tr>';
 	NewNum = NewNum + 1;
+	ChangeValues();
 }
 function MakePage() {
 	document.getElementById("TourneyEdit").innerHTML = "Loading...";
