@@ -65,31 +65,35 @@ function EditEntry(RID) {
 	Elms2 = document.getElementById(RID).getElementsByTagName('input');
 	FString = "TID=" + TID + "&RID=" + RID;
 	ChangedArray = new Array();
+	//ChangedArray.push(1);
 	for ( x = 0; x < Elms1.length; x++ ) {
 		FString = FString + "&" + Elms1[x].name.replace("[" + RID + "]","") + "=" + Elms1[x].value;
-		if ( typeof ChangedValues[RID] !== 'undefined' ) {
-			ChangedValues[RID]['Default'] = Elms1[x].value;
+		if ( typeof ChangedValues[Elms1[x].name] !== 'undefined' ) {
+			ChangedValues[Elms1[x].name]['Default'] = Elms1[x].value;
 			ChangedArray.push(Elms1[x].name);
 		}
 	}
 	for ( x = 0; x < Elms2.length; x++ ) {
 		if ( Elms2[x].type != "checkbox" ) {
 			FString = FString + "&" + Elms2[x].name.replace("[" + RID + "]","") + "=" + Elms2[x].value;
-			if ( typeof ChangedValues[RID] !== 'undefined' ) {
-				ChangedValues[RID]['Default'] = Elms2[x].value;
+			if ( typeof ChangedValues[Elms2[x].name] !== 'undefined' ) {
+				ChangedValues[Elms2[x].name]['Default'] = Elms2[x].value;
 				ChangedArray.push(Elms2[x].name);
+				//window.alert(Elms2[x].name);
 			}
 		} else if ( Elms2[x].type == "checkbox" && !Elms2[x].checked ) {
 			FString = FString + "&" + Elms2[x].name.replace("[" + RID + "]","") + "=0";
-			if ( typeof ChangedValues[RID] !== 'undefined' ) {
-				ChangedValues[RID]['Default'] = Elms1[x].checked;
-				ChangedArray.push(Elms1[x].name);
+			if ( typeof ChangedValues[Elms2[x].name] !== 'undefined' ) {
+				ChangedValues[Elms2[x].name]['Default'] = Elms2[x].checked;
+				ChangedArray.push(Elms2[x].name);
+				//window.alert(Elms2[x].name);
 			}
 		} else if ( Elms2[x].type == "checkbox" && Elms2[x].checked ) {
 			FString = FString + "&" + Elms2[x].name.replace("[" + RID + "]","") + "=1";
-			if ( typeof ChangedValues[RID] !== 'undefined' ) {
-				ChangedValues[RID]['Default'] = Elms1[x].checked;
-				ChangedArray.push(Elms1[x].name);
+			if ( typeof ChangedValues[Elms2[x].name] !== 'undefined' ) {
+				ChangedValues[Elms2[x].name]['Default'] = Elms2[x].checked;
+				ChangedArray.push(Elms2[x].name);
+				window.alert(Elms2[x].name);
 			}
 		}
 	}
@@ -127,6 +131,7 @@ function ShowChange() {
 function StateChange(RID) {
 	RIDM = RID.substring(RID.indexOf("[")+1,RID.indexOf("]")) + "M";
 	Element = document.getElementsByName(RID);
+	UnsavedChanges = true;
 	HTMLElement = Element[0];
 	if ( HTMLElement.type == "checkbox" ) {
 		value = HTMLElement.checked;
@@ -137,6 +142,32 @@ function StateChange(RID) {
 	}
 	if ( typeof ChangedValues[RID] !== 'undefined' ) {
 		ChangedValues[RID]['New'] = value;
+		if ( ChangedValues[RID]['New'] == ChangedValues[RID]['Default'] ) {
+			ChangedValues[RID]['Saved'] = true;
+		} else {
+			ChangedValues[RID]['Saved'] = false;
+		}
+		if ( HTMLElement.type == "checkbox" && ChangedValues[RID]['Saved'] && ChangedValues[RID]['Default'] == HTMLElement.defaultChecked ) {
+			delete ChangedValues[RID];
+			UnsavedChanges = false;
+			defaultVal = HTMLElement.defaultChecked;
+		} else if ( HTMLElement.type == "select-one" ) {
+			DefaultIndex = 0;
+			while ( !HTMLElement.options[DefaultIndex].defaultSelected ){
+				DefaultIndex = DefaultIndex + 1;
+			}
+			defaultVal = DefaultIndex;
+			if ( ChangedValues[RID]['Saved'] && ChangedValues[RID]['Default'] == DefaultIndex ) {
+				delete ChangedValues[RID];
+				UnsavedChanges = false;
+			}
+		} else {
+			defaultVal = HTMLElement.defaultValue;
+			if ( ChangedValues[RID]['Saved'] && ChangedValues[RID]['Default'] == defaultVal ) {
+				delete ChangedValues[RID];
+				UnsavedChanges = false;
+			}
+		}
 	} else {
 		if ( HTMLElement.type == "checkbox" ) {
 			defaultVal = HTMLElement.defaultChecked;
@@ -151,10 +182,13 @@ function StateChange(RID) {
 		}
 		ChangedValues[RID] = {'Default': defaultVal, 'New': value, 'Saved': false};
 	}
-	if ( ChangedValues[RID]['New'] == ChangedValues[RID]['Default'] ) {
+	if ( typeof ChangedValuse[RID] !== 'undefined' && ChangedValues[RID]['New'] == ChangedValues[RID]['Default'] ) {
+		
+	}
+	if ( typeof ChangedValues[RID] !== 'undefined' && ChangedValues[RID]['New'] == ChangedValues[RID]['Default'] ) {
 		ChangedValues[RID]['Saved'] = true;
 		document.getElementById(RIDM).style.display = 'none';
-	} else {
+	} else if ( typeof ChangedValues[RID] !== 'undefined' ) {
 		document.getElementById(RIDM).style.display = 'inline';
 		document.getElementById(RIDM).innerHTML = "Unsaved changes";
 	}
@@ -162,6 +196,7 @@ function StateChange(RID) {
 function ChangeValues() {
 	for ( x in ChangedValues ) {
 		if ( document.getElementById(x).type == "select" ) {
+			
 			document.getElementById(x).selectedIndex = ChangedValues[x]['New'];
 		} else if ( document.getElementById(x).type == "checkbox" ) {
 			document.getElementById(x).checked = ChangedValues[x]['New'];
@@ -219,7 +254,8 @@ function AddRow(){
 	ChangeValues();
 }
 function MakePage() {
-	document.getElementById("TourneyEdit").innerHTML = "Loading...";
+	ChangedValues = new Array();
+	document.getElementById("TourneyEdit").innerHTML = "Loading Tournament...";
 	TID = document.getElementById("Tournament").options[document.getElementById("Tournament").selectedIndex].value;
 	if ( window.XMLHttpRequest ) {
         xmlhttp = new XMLHttpRequest();

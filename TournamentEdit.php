@@ -1,6 +1,6 @@
 <?php
 include 'CommonFunctions.php';
-if ( isset($_POST) && $GLOBALS['CanUserEdit'] != 1 ) {
+if ( !empty($_POST) && $GLOBALS['CanUserEdit'] != 1 ) {
 	$myfile = fopen("/var/log/forensics/general.log","a");
 	fwrite($myfile,"IP " . $_SERVER['REMOTE_ADDR'] . " tried to access page " . basename($_SERVER['PHP_SELF']) . " on " . date('Y-m-d') . " at " . date('H:i:s') . "\n");
 	fclose($myfile);
