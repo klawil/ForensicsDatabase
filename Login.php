@@ -6,10 +6,10 @@ if ( isset($_POST['UName']) ) {
 		echo "Error - MySQL error: " . mysqli_error() . ".";
 		return 0;
 	} elseif ( mysqli_num_rows($query) == 0 ) {
-		echo "No user with that name";
+		echo "Incorrect UserName/Password";
 		return 0;
 	} elseif ( mysqli_num_rows($query) > 1 ) {
-		echo "More than one user with that name";
+		echo "Username error - contact William";
 		return 0;
 	}
 	$data = mysqli_fetch_assoc($query);
@@ -21,7 +21,7 @@ if ( isset($_POST['UName']) ) {
 			fclose($myfile);
 		}
 	} else {
-		echo "Incorrect password";
+		echo "Incorrect UserName/Password";
 	}
 	return 0;
 }
