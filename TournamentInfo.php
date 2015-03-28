@@ -579,7 +579,9 @@ if ( isset($_POST['FileType']) ) {
 <script>
 function SubmitInfo(FileType) {
 	FileType = FileType || "";
-    document.getElementById("Results").innerHTML = "Loading...";
+	if ( FileType == "" ) {
+    	document.getElementById("Results").innerHTML = "Loading...";
+    }
     OrderBy = document.getElementById("OrderBy").options[document.getElementById("OrderBy").selectedIndex].value;
     PostString = "OrderBy=" + OrderBy;
     if ( FileType != "" ) {
