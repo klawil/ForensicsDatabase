@@ -78,6 +78,7 @@ function Events($IncludeAll, $DefaultEID = NULL) {
 	return $EventString;
 }
 function MakeHeader() {
+	include_once("google-analytics.php");
 	echo '<nav>
 	<ul>
 	<a href="."><li>Index</li></a>
