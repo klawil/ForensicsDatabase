@@ -4,6 +4,37 @@ $GLOBALS['CookieName'] = "forensics_db_auth_token";
 $GLOBALS['SecretWord'] = "ForensicsSECRET";
 $GLOBALS['UserName'] = "";
 $GLOBALS['CanUserEdit'] = 0;
+$GLOBALS['DBName'] = "kmc";
+function InsertBallots($Ballots, $DBConn, $Insert = NULL) {
+	foreach ($Ballots as $Ballot) {
+		if ( ! isset($Ballot['RID']) ) {
+			return 'Error - No RID for one of the ballots.';
+		} elseif ( ! (string)(int)$Ballot['RID'] == $Ballot['RID'] ) {
+			return 'Error - Invalid RID for one of the ballots.';
+		} elseif ( ! isset($Ballot['ElimLevel']) ) {
+			return 'Error - No level set for one of the ballots.';
+		} elseif ( ! (string)(int)$Ballot['ElimLevel'] == $Ballot['ElimLevel'] ) {
+			return 'Error - Invald level for one of the ballots.';
+		} elseif ( ! isset($Ballot['Rank']) ) {
+			return 'Error - No rank given for one of the ballots.';
+		} elseif ( ! (string)(int)$Ballot['Rank'] == $Ballot['Rank'] ) {
+			return 'Error - Invalid rank given for one of the ballots.';
+		} elseif ( ! isset($Ballot['Judge']) ) {
+			return 'Error - No judge given for one of the ballots.';
+		} elseif ( ! isset($Ballot['Round']) ) {
+			return 'Error - No round given for one of the ballots.';
+		} elseif ( ! (string)(int)$Ballot['Round'] == $Ballot['Round'] ) {
+			return 'Error - Invalid round given for one of the ballots.';
+		} elseif ( ! (string)(int)$Ballot['Judge'] == $Ballot['Judge'] ) {
+			return 'Error - Invalid judge given for one of the ballots.';
+		} elseif ( isset($Ballot['Qual']) && ! is_numeric($Ballot['Qual'])) {
+			return 'Error - Invalid quality points given for one of the ballots.';
+		}
+		if ( $Insert == NULL ) {
+			return true;
+		}
+	}
+}
 function Tournaments($IncludeAll, $DefaultTID = NULL) {
 	$query = mysqli_query($GLOBALS['DBConn'], "select TName, TID from Tournaments order by Date desc, TName;");
 	if ( !$query ) {
