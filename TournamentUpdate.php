@@ -125,12 +125,16 @@ if ( isset($_POST['RID']) ) {
 	$PQuals = 0;
 	for ( $x = 1; $x <= $NumRounds; $x++ ) {
 		if (( ! isset($_POST['R' . $x . 'R']) || ! isset($_POST['R' . $x . 'Q']) )) {
-			echo "Error - Either quals or ranks for round " . $x . " are missing.";
+			echo "Error - Ranks for round " . $x . " are missing.";
 			return 0;
 		}
 		$PRanks = $PRanks + $_POST['R' . $x . 'R'];
-		$PQuals = $PQuals + $_POST['R' . $x . 'Q'];
-		$query = mysqli_query($DBConn, "insert into Ballots set RID='" . $RID . "', Round='" . $x . "', Rank='" . $_POST['R' . $x . 'R'] . "', Qual='" . $_POST['R' . $x . 'Q'] . "';");
+		if ( isset($_POST['R' . $x . 'Q']) ) {
+			$PQuals = $PQuals + $_POST['R' . $x . 'Q'];
+			$query = mysqli_query($DBConn, "insert into Ballots set RID='" . $RID . "', Round='" . $x . "', Rank='" . $_POST['R' . $x . 'R'] . "', Qual='" . $_POST['R' . $x . 'Q'] . "';");
+		} else {
+			$query = mysqli_query($DBConn, "insert into Ballots set RID='" . $RID . "', Round='" . $x . "', Rank='" . $_POST['R' . $x . 'R'] . "';");
+		}
 		if ( !$query ) {
 			echo "Error - MySQL error: " . mysqli_error($DBConn) . " on Round " . $x . ".";
 			return 0;
