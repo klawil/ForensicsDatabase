@@ -523,7 +523,6 @@ if ( isset($_POST['FileType']) ) {
 	echo $Result;
 	return 0;
 } elseif ( isset($_POST['TID']) ) {
-	echo "Test";
 	$query = mysqli_query($DBConn, "select NumRounds, NumFinalsJudges from Tournaments where TID=" . $_POST['TID'] . ";");
 	$data = mysqli_fetch_assoc($query);
 	echo $data['NumRounds'] . "|" . $data['NumFinalsJudges'];
