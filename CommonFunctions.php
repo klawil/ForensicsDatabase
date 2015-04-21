@@ -7,6 +7,7 @@ $GLOBALS['CanUserEdit'] = 0;
 $GLOBALS['DBName'] = "kmc";
 function InsertBallots($Ballots, $DBConn = NULL, $Insert = NULL) {
 	$ReturnValue = "true";
+	$Queries = "";
 	foreach ($Ballots as $key=>$Ballot) {
 		if ( ! isset($Ballot['RID']) ) {
 			if ( $ReturnValue == "true" ) {
@@ -115,6 +116,11 @@ function InsertBallots($Ballots, $DBConn = NULL, $Insert = NULL) {
 			} else {
 				$QueryString = 'update Ballots set Rank="'.mysqli_real_escape_string($ConnectVar,$Ballot['Rank']).'", Qual="'.mysqli_real_escape_string($ConnectVar,$Ballot['Qual']).'", ElimLevel="'.mysqli_real_escape_string($ConnectVar,$Ballot['ElimLevel']).'" where RID="'.mysqli_real_escape_string($ConnectVar,$Ballot['RID']).'" and Round="'.mysqli_real_escape_string($ConnectVar,$Ballot['Round']).'" and Judge="'.mysqli_real_escape_string($ConnectVar,$Ballot['Judge']).'";';
 			}
+			$Queries[$key] = $QueryString;
+		}
+	}
+	if ( $ReturnValue == "true" && $Insert != NULL ) {
+		foreach ( $Queries as $key=>$QueryString ) {
 			$InsertQuery = mysqli_query($DBConn,$QueryString);
 			if ( !$InsertQuery ) {
 				if ( $ReturnValue == "true" ) {
@@ -127,27 +133,27 @@ function InsertBallots($Ballots, $DBConn = NULL, $Insert = NULL) {
 	}
 	return $ReturnValue;
 }
-function Tournaments($IncludeAll, $DefaultTID = NULL) {
-	$query = mysqli_query($GLOBALS['DBConn'], "select TName, TID from Tournaments order by Date desc, TName;");
-	if ( !$query ) {
-		return "Error - MySQL error: " . mysqli_error($DBConn) . ".";
+function CreateTournamentList($IncludeAll, $DBConn = NULL, $DefaultTID = NULL) {
+	$TQuery = mysqli_query($DBConn, 'select TName, TID from Tournaments order by Date desc, TName;');
+	if ( !$TQuery ) {
+		return 'Error - MySQL error: ' . mysqli_error($DBConn) . '.';
 	}
-	$NumRows = mysqli_num_rows($query);
+	$NumRows = mysqli_num_rows($TQuery);
 	$CurrentRow = 0;
 	$TournamentString = '<select id="Tournament" name="TID">';
 	if ( $IncludeAll == 1 ) {
-		$TournamentString = $TournamentString . "<option value='-1'>All Tournaments</option>";
+		$TournamentString = $TournamentString . '<option value="-1">All Tournaments</option>';
 	}
 	while ( $CurrentRow < $NumRows ) {
-		$results = mysqli_fetch_assoc($query);
-		if ( $results['TID'] == $DefaultTID ) {
-			$TournamentString = $TournamentString . '<option selected="selected" value="' . $results['TID'] . '">' . $results['TName'] . "</option>";
+		$Tournament = mysqli_fetch_assoc($TQuery);
+		if ( $Tournament['TID'] == $DefaultTID ) {
+			$TournamentString = $TournamentString . '<option selected="selected" value="' . $Tournament['TID'] . '">' . $Tournament['TName'] . '</option>';
 		} else {
-			$TournamentString = $TournamentString . '<option value="' . $results['TID'] . '">' . $results['TName'] . "</option>";
+			$TournamentString = $TournamentString . '<option value="' . $Tournament['TID'] . '">' . $Tournament['TName'] . '</option>';
 		}
 		$CurrentRow++;
 	}
-	$TournamentString = $TournamentString . "</select>";
+	$TournamentString = $TournamentString . '</select>';
 	return $TournamentString;
 }
 function Students($IncludeAll, $FormName = NULL, $DefaultSID = NULL, $SelectName = NULL, $OnChange = NULL) {
