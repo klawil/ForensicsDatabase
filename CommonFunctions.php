@@ -105,9 +105,9 @@ function InsertBallots($Ballots, $DBConn = NULL, $Insert = NULL) {
 			$ExistsQuery = mysqli_query($DBConn,'select * from Ballots where RID="'.mysqli_real_escape_string($ConnectVar,$Ballot['RID']).'" and Round="'.mysqli_real_escape_string($ConnectVar,$Ballot['Round']).'" and Judge="'.mysqli_real_escape_string($ConnectVar,$Ballot['Judge']).'";');
 			if ( !$ExistsQuery ) {
 				if ( $ReturnValue == "true" ) {
-					$ReturnValue = $key.': Error - MySQL Exists error: '.mysqli_error($DBConn);
+					$ReturnValue = $key . ': ' . ReturnMySQLError($DBConn,'Exists Query Error: ');
 				} else {
-					$ReturnValue = $ReturnValue.";".$key.': Error - MySQL Exists error: '.mysqli_error($DBConn);
+					$ReturnValue = $ReturnValue . '; ' . $key . ': ' . ReturnMySQLError($DBConn,'Exists Query Error: ');
 				}
 				continue;
 			}
@@ -124,19 +124,19 @@ function InsertBallots($Ballots, $DBConn = NULL, $Insert = NULL) {
 			$InsertQuery = mysqli_query($DBConn,$QueryString);
 			if ( !$InsertQuery ) {
 				if ( $ReturnValue == "true" ) {
-					$ReturnValue = $key.': Error - MySQL Insert error: '.mysqli_error($DBConn);
+					$ReturnValue = $key . ': ' . ReturnMySQLError($DBConn,'Insert Query Error: ');
 				} else {
-					$ReturnValue = $ReturnValue.";".$key.': Error - MySQL Insert error: '.mysqli_error($DBConn);
+					$ReturnValue = $ReturnValue . '; ' . $key . ': ' . ReturnMySQLError($DBConn,'Insert Query Error: ');
 				}
 			}
 		}
 	}
 	return $ReturnValue;
 }
-function CreateTournamentList($IncludeAll, $DBConn = NULL, $DefaultTID = NULL) {
+function CreateTournamentList($IncludeAll, $DBConn, $DefaultTID = NULL) {
 	$TQuery = mysqli_query($DBConn, 'select TName, TID from Tournaments order by Date desc, TName;');
 	if ( !$TQuery ) {
-		return 'Error - MySQL error: ' . mysqli_error($DBConn) . '.';
+		return ReturnMySQLError($DBConn);
 	}
 	$NumRows = mysqli_num_rows($TQuery);
 	$CurrentRow = 0;
@@ -156,15 +156,15 @@ function CreateTournamentList($IncludeAll, $DBConn = NULL, $DefaultTID = NULL) {
 	$TournamentString = $TournamentString . '</select>';
 	return $TournamentString;
 }
-function Students($IncludeAll, $FormName = NULL, $DefaultSID = NULL, $SelectName = NULL, $OnChange = NULL) {
-	$query = mysqli_query($GLOBALS['DBConn'], "select FName, LName, SID from Students order by LName, FName;");
-	if ( !$query ) {
-		return "Error - MySQL error: " . mysqli_error($DBConn) . ".";
+function CreateStudentList($IncludeAll, $DBConn, $FormName = NULL, $DefaultSID = NULL, $SelectName = NULL, $OnChange = NULL) {
+	$SQuery = mysqli_query($DBConn, "select FName, LName, SID from Students order by LName, FName;");
+	if ( !$SQuery ) {
+		return ReturnMySQLError($DBConn);
 	}
-	$NumRows = mysqli_num_rows($query);
+	$NumRows = mysqli_num_rows($SQuery);
 	$CurrentRow = 0;
 	if ( $SelectName == NULL ) {
-		$Name = "SID";
+		$Name = 'SID';
 	} else {
 		$Name = $SelectName;
 	}
@@ -180,7 +180,7 @@ function Students($IncludeAll, $FormName = NULL, $DefaultSID = NULL, $SelectName
 		$StudentString = $StudentString . "<option value='-1'>All Students</option>";
 	}
 	while ( $CurrentRow < $NumRows ) {
-		$results = mysqli_fetch_assoc($query);
+		$results = mysqli_fetch_assoc($SQuery);
 		if ( $results['SID'] == $DefaultSID ) {
 			$StudentString = $StudentString . '<option selected="selected" value="' . $results['SID'] . '">' . $results['LName'] . ", " . $results['FName'] . "</option>";
 		} else {
@@ -374,6 +374,15 @@ function SetAuthCookie($UN) {
 	}
 	setcookie($GLOBALS['CookieName'], $Cookie, $ExpDate, "/");
 	return 1;
+}
+function ReturnMySQLError($DBConn, $CustomText = NULL) {
+	if ( $CustomText != NULL ) {
+		$ReturnString = $CustomText;
+	} else {
+		$ReturnString = 'Error - MySQL error: ';
+	}
+	$ReturnString = $ReturnString . mysqli_error($DBConn) . '.';
+	return $ReturnString;
 }
 Authorize();
 ?>
