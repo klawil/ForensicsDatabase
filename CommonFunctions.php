@@ -6,88 +6,88 @@ $GLOBALS['UserName'] = "";
 $GLOBALS['CanUserEdit'] = 0;
 $GLOBALS['DBName'] = "kmc";
 function InsertBallots($Ballots, $DBConn = NULL, $Insert = NULL) {
-	$ReturnValue = "true";
+	$ReturnValue = 'true';
 	$Queries = "";
 	foreach ($Ballots as $key=>$Ballot) {
 		if ( ! isset($Ballot['RID']) ) {
-			if ( $ReturnValue == "true" ) {
+			if ( $ReturnValue == 'true' ) {
 				$ReturnValue = 'Error - No RID for one of the ballots - '.$key;
 			} else {
 				$ReturnValue = $ReturnValue.';Error - No RID for one of the ballots - '.$key;
 			}
 			continue;
 		} elseif ( ! isset($Ballot['Round']) ) {
-			if ( $ReturnValue == "true" ) {
+			if ( $ReturnValue == 'true' ) {
 				$ReturnValue = 'Error - No round given for one of the ballots - '.$key;
 			} else {
 				$ReturnValue = $ReturnValue.';Error - No round given for one of the ballots - '.$key;
 			}
 			continue;
 		} elseif ( ! isset($Ballot['Judge']) ) {
-			if ( $ReturnValue == "true" ) {
+			if ( $ReturnValue == 'true' ) {
 				$ReturnValue = 'Error - No judge given for one of the ballots - '.$key;
 			} else {
 				$ReturnValue = $ReturnValue.';Error - No judge given for one of the ballots - '.$key;
 			}
 			continue;
 		} elseif ( ! (string)(int)$Ballot['RID'] == $Ballot['RID'] ) {
-			if ( $ReturnValue == "true" ) {
+			if ( $ReturnValue == 'true' ) {
 				$ReturnValue = 'Error - Invalid RID for one of the ballots - '.$key;
 			} else {
 				$ReturnValue = $ReturnValue.';Error - Invalid RID for one of the ballots - '.$key;
 			}
 			continue;
 		} elseif ( ! (string)(int)$Ballot['Round'] == $Ballot['Round'] ) {
-			if ( $ReturnValue == "true" ) {
+			if ( $ReturnValue == 'true' ) {
 				$ReturnValue = 'Error - Invalid round given for one of the ballots - '.$key;
 			} else {
 				$ReturnValue = $ReturnValue.';Error - Invalid round given for one of the ballots - '.$key;
 			}
 			continue;
 		} elseif ( ! (string)(int)$Ballot['Judge'] == $Ballot['Judge'] ) {
-			if ( $ReturnValue == "true" ) {
+			if ( $ReturnValue == 'true' ) {
 				$ReturnValue = 'Error - Invalid judge given for one of the ballots - '.$key;
 			} else {
 				$ReturnValue = $ReturnValue.';Error - Invalid judge given for one of the ballots - '.$key;
 			}
 			continue;
 		} elseif ( ! isset($Ballot['ElimLevel']) ) {
-			if ( $ReturnValue == "true" ) {
+			if ( $ReturnValue == 'true' ) {
 				$ReturnValue = 'Error - No level set for one of the ballots - '.$key;
 			} else {
 				$ReturnValue = $ReturnValue.';Error - No level set for one of the ballots - '.$key;
 			}
 			continue;
 		} elseif ( ! (string)(int)$Ballot['ElimLevel'] == $Ballot['ElimLevel'] ) {
-			if ( $ReturnValue == "true" ) {
+			if ( $ReturnValue == 'true' ) {
 				$ReturnValue = 'Error - Invald level for one of the ballots - '.$key;
 			} else {
 				$ReturnValue = $ReturnValue.';Error - Invald level for one of the ballots - '.$key;
 			}
 			continue;
 		} elseif ( ! isset($Ballot['Rank']) ) {
-			if ( $ReturnValue == "true" ) {
+			if ( $ReturnValue == 'true' ) {
 				$ReturnValue = 'Error - No rank given for one of the ballots - '.$key;
 			} else {
 				$ReturnValue = $ReturnValue.';Error - No rank given for one of the ballots - '.$key;
 			}
 			continue;
 		} elseif ( ! (string)(int)$Ballot['Rank'] == $Ballot['Rank'] ) {
-			if ( $ReturnValue == "true" ) {
+			if ( $ReturnValue == 'true' ) {
 				$ReturnValue = 'Error - Invalid rank given for one of the ballots - '.$key;
 			} else {
 				$ReturnValue = $ReturnValue.';Error - Invalid rank given for one of the ballots - '.$key;
 			}
 			continue;
 		} elseif ( isset($Ballot['Qual']) && ! is_numeric($Ballot['Qual'])) {
-			if ( $ReturnValue == "true" ) {
+			if ( $ReturnValue == 'true' ) {
 				$ReturnValue = 'Error - Invalid quality points given for one of the ballots - '.$key;
 			} else {
 				$ReturnValue = $ReturnValue.';Error - Invalid quality points given for one of the ballots - '.$key;
 			}
 			continue;
 		} elseif ( isset($Ballot['ElimLevel']) && ! (string)(int)$Ballot['ElimLevel'] == $Ballot['ElimLevel'] ) {
-			if ( $ReturnValue == "true" ) {
+			if ( $ReturnValue == 'true' ) {
 				$ReturnValue = 'Error - Invalid elimination round level - '.$key;
 			} else {
 				$ReturnValue = $ReturnValue.';Error - Invalid elimination round level - '.$key;
@@ -104,7 +104,7 @@ function InsertBallots($Ballots, $DBConn = NULL, $Insert = NULL) {
 			$ConnectVar = mysqli_connect();
 			$ExistsQuery = mysqli_query($DBConn,'select * from Ballots where RID="'.mysqli_real_escape_string($ConnectVar,$Ballot['RID']).'" and Round="'.mysqli_real_escape_string($ConnectVar,$Ballot['Round']).'" and Judge="'.mysqli_real_escape_string($ConnectVar,$Ballot['Judge']).'";');
 			if ( !$ExistsQuery ) {
-				if ( $ReturnValue == "true" ) {
+				if ( $ReturnValue == 'true' ) {
 					$ReturnValue = $key . ': ' . ReturnMySQLError($DBConn,'Exists Query Error: ');
 				} else {
 					$ReturnValue = $ReturnValue . '; ' . $key . ': ' . ReturnMySQLError($DBConn,'Exists Query Error: ');
@@ -119,11 +119,11 @@ function InsertBallots($Ballots, $DBConn = NULL, $Insert = NULL) {
 			$Queries[$key] = $QueryString;
 		}
 	}
-	if ( $ReturnValue == "true" && $Insert != NULL ) {
+	if ( $ReturnValue == 'true' && $Insert != NULL ) {
 		foreach ( $Queries as $key=>$QueryString ) {
 			$InsertQuery = mysqli_query($DBConn,$QueryString);
 			if ( !$InsertQuery ) {
-				if ( $ReturnValue == "true" ) {
+				if ( $ReturnValue == 'true' ) {
 					$ReturnValue = $key . ': ' . ReturnMySQLError($DBConn,'Insert Query Error: ');
 				} else {
 					$ReturnValue = $ReturnValue . '; ' . $key . ': ' . ReturnMySQLError($DBConn,'Insert Query Error: ');
@@ -157,18 +157,16 @@ function CreateTournamentList($IncludeAll, $DBConn, $DefaultTID = NULL) {
 	return $TournamentString;
 }
 function CreateStudentList($IncludeAll, $DBConn, $FormName = NULL, $DefaultSID = NULL, $SelectName = NULL, $OnChange = NULL) {
-	$SQuery = mysqli_query($DBConn, "select FName, LName, SID from Students order by LName, FName;");
+	$SQuery = mysqli_query($DBConn, 'select FName, LName, SID from Students order by LName, FName;');
 	if ( !$SQuery ) {
 		return ReturnMySQLError($DBConn);
 	}
 	$NumRows = mysqli_num_rows($SQuery);
 	$CurrentRow = 0;
 	if ( $SelectName == NULL ) {
-		$Name = 'SID';
-	} else {
-		$Name = $SelectName;
+		$SelectName = 'SID';
 	}
-	$StudentString = '<select id="' . $Name . '" name="' . $Name . '"';
+	$StudentString = '<select id="' . $SelectName . '" name="' . $SelectName . '"';
 	if ( $FormName != NULL ) {
 		$StudentString = $StudentString . ' form="' . $FormName . '"';
 	}
@@ -191,32 +189,30 @@ function CreateStudentList($IncludeAll, $DBConn, $FormName = NULL, $DefaultSID =
 	$StudentString = $StudentString . '</select>';
 	return $StudentString;
 }
-function Events($IncludeAll, $DefaultEID = NULL, $SelectName = NULL) {
-	$query = mysqli_query($GLOBALS['DBConn'], "select * from Events order by EName;");
-	if ( !$query ) {
-		return "Error - MySQL error: " . mysqli_error($DBConn) . ".";
+function CreateEventList($IncludeAll, $DBConn, $DefaultEID = NULL, $SelectName = NULL) {
+	$EQuery = mysqli_query($DBConn, 'select * from Events order by EName;');
+	if ( !$EQuery ) {
+		return ReturnMySQLError($DBConn);
 	}
-	$NumRows = mysqli_num_rows($query);
+	$NumRows = mysqli_num_rows($EQuery);
 	$CurrentRow = 0;
 	if ( $SelectName == NULL ) {
-		$Name = "EID";
-	} else {
-		$Name = $SelectName;
+		$SelectName = 'EID';
 	}
-	$EventString = '<select id="Event" name="' . $Name . '">';
+	$EventString = '<select id="' . $SelectName . '" name="' . $SelectName . '">';
 	if ( $IncludeAll == 1 ) {
 		$EventString = $EventString . "<option value='-1'>All Events</option>";
 	}
 	while ( $CurrentRow < $NumRows ) {
-		$results = mysqli_fetch_assoc($query);
+		$results = mysqli_fetch_assoc($EQuery);
 		if ( $results['EID'] == $DefaultEID ) {
-			$EventString = $EventString . '<option selected="selected" value="' . $results['EID'] . '">' . $results['EName'] . "</option>";
+			$EventString = $EventString . '<option selected="selected" value="' . $results['EID'] . '">' . $results['EName'] . '</option>';
 		} else {
-			$EventString = $EventString . '<option value="' . $results['EID'] . '">' . $results['EName'] . "</option>";
+			$EventString = $EventString . '<option value="' . $results['EID'] . '">' . $results['EName'] . '</option>';
 		}
 		$CurrentRow++;
 	}
-	$EventString = $EventString . "</select>";
+	$EventString = $EventString . '</select>';
 	return $EventString;
 }
 function MakeHeader() {
@@ -277,7 +273,7 @@ function UserLogout() {
 	document.getElementById("login_message").innerHTML = "Logging Out...";
 	xmlhttp.onreadystatechange=function() {
 		response = xmlhttp.responseText;
-		if ( response == "true" ) {
+		if ( response == 'true' ) {
 			location.reload();
 		} else {
 			document.getElementById("login_message").innerHTML = response;
@@ -322,7 +318,7 @@ function LoginUser() {
 	document.getElementById("login_message").innerHTML = "Checking Credentials...";
 	xmlhttp.onreadystatechange = function() {
 		response = xmlhttp.responseText;
-		if ( response == "true" ) {
+		if ( response == 'true' ) {
 			location.reload();
 		} else {
 			document.getElementById("LoginForm").reset();
