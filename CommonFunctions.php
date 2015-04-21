@@ -1,10 +1,10 @@
 <?php
-include 'MySQLAuth.php';
-$GLOBALS['CookieName'] = "forensics_db_auth_token";
-$GLOBALS['SecretWord'] = "ForensicsSECRET";
-$GLOBALS['UserName'] = "";
-$GLOBALS['CanUserEdit'] = 0;
-$GLOBALS['DBName'] = "kmc";
+$GLOBALS['DBName'] = 'kmc'; //Name of the database
+include 'MySQLAuth.php'; //File that connects to MySQL database
+$GLOBALS['CookieName'] = 'forensics_db_auth_token'; //Name of the cookie used to make login persistent
+$GLOBALS['SecretWord'] = 'ForensicsSECRET'; //MD5'd with username to cookie name
+$GLOBALS['UserName'] = ''; //Stores the username
+$GLOBALS['CanUserEdit'] = 0; //Stores the admin ability of the user
 function InsertBallots($Ballots, $DBConn = NULL, $Insert = NULL) {
 	$ReturnValue = 'true';
 	$Queries = "";
