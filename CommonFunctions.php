@@ -215,7 +215,7 @@ function CreateEventList($IncludeAll, $DBConn, $DefaultEID = NULL, $SelectName =
 	$EventString = $EventString . '</select>';
 	return $EventString;
 }
-function Authorize() {
+function CheckAuthorization() {
 	if ( isset($_COOKIE[$GLOBALS['CookieName']]) ) { do {
 		$Array = explode(',',$_COOKIE[$GLOBALS['CookieName']],2);
 		$GLOBALS['UserName'] = $Array[0];
@@ -264,6 +264,17 @@ function ReturnMySQLError($DBConn, $CustomText = NULL) {
 	}
 	$ReturnString = $ReturnString . mysqli_error($DBConn) . '.';
 	return $ReturnString;
+}
+function WriteToLog($LogString = Null) {
+	if ( $LogString == Null ) {
+		$LogString = '';
+		if ( $GLOBALS['UserName'] != '' ) {
+			$LogString = 'User ' . $GLOBALS['UserName'] . ' from ';
+		}
+		$LogString = $LogString . 'IP ' . $_SERVER['REMOTE_ADDR'] . ' accessed ' . basename($_SERVER['PHP_SELF']);
+	}
+	$LogFile = fopen("/var/log/forensics/general.log","a");
+	fwrite($LogFile,$LogString . ' on ' . date('Y-m-d') . ' at ' . date('H:i:s') . "\n");
 }
 Authorize();
 ?>
