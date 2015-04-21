@@ -140,7 +140,7 @@ function CreateTournamentList($IncludeAll, $DBConn, $DefaultTID = NULL) {
 	}
 	$NumRows = mysqli_num_rows($TQuery);
 	$CurrentRow = 0;
-	$TournamentString = '<select id="Tournament" name="TID">';
+	$TournamentString = '<select id="TID" name="TID">';
 	if ( $IncludeAll == 1 ) {
 		$TournamentString = $TournamentString . '<option value="-1">All Tournaments</option>';
 	}
@@ -168,7 +168,7 @@ function CreateStudentList($IncludeAll, $DBConn, $FormName = NULL, $DefaultSID =
 	} else {
 		$Name = $SelectName;
 	}
-	$StudentString = '<select id="Student" name="' . $Name . '"';
+	$StudentString = '<select id="' . $Name . '" name="' . $Name . '"';
 	if ( $FormName != NULL ) {
 		$StudentString = $StudentString . ' form="' . $FormName . '"';
 	}
@@ -177,18 +177,18 @@ function CreateStudentList($IncludeAll, $DBConn, $FormName = NULL, $DefaultSID =
 	}
 	$StudentString = $StudentString . '>';
 	if ( $IncludeAll == 1 ) {
-		$StudentString = $StudentString . "<option value='-1'>All Students</option>";
+		$StudentString = $StudentString . '<option value='-1'>All Students</option>';
 	}
 	while ( $CurrentRow < $NumRows ) {
 		$results = mysqli_fetch_assoc($SQuery);
 		if ( $results['SID'] == $DefaultSID ) {
-			$StudentString = $StudentString . '<option selected="selected" value="' . $results['SID'] . '">' . $results['LName'] . ", " . $results['FName'] . "</option>";
+			$StudentString = $StudentString . '<option selected="selected" value="' . $results['SID'] . '">' . $results['LName'] . ', ' . $results['FName'] . '</option>';
 		} else {
-			$StudentString = $StudentString . '<option value="' . $results['SID'] . '">' . $results['LName'] . ", " . $results['FName'] . "</option>";
+			$StudentString = $StudentString . '<option value="' . $results['SID'] . '">' . $results['LName'] . ', ' . $results['FName'] . '</option>';
 		}
 		$CurrentRow++;
 	}
-	$StudentString = $StudentString . "</select>";
+	$StudentString = $StudentString . '</select>';
 	return $StudentString;
 }
 function Events($IncludeAll, $DefaultEID = NULL, $SelectName = NULL) {
