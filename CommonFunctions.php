@@ -307,8 +307,8 @@ function ReturnMySQLError($DBConn, $CustomText = NULL) {
 	if ( $CustomText == NULL ) {
 		$CustomText = 'Error - MySQL error: ';
 	}
-	$ReturnString = $ReturnString . mysqli_error($DBConn) . '.';
-	return $ReturnString;
+	$CustomText = $CustomText . mysqli_error($DBConn) . '.';
+	return $CustomText;
 }
 function WriteToLog($LogString = Null) {
 	// Writes a log file
