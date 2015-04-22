@@ -1,15 +1,26 @@
 <?php
-$GLOBALS['DBName'] = 'kmc'; //Name of the database
-include 'MySQLAuth.php'; //File that connects to MySQL database
-$GLOBALS['CookieName'] = 'forensics_db_auth_token'; //Name of the cookie used to make login persistent
-$GLOBALS['SecretWord'] = 'ForensicsSECRET'; //MD5'd with username to cookie name
-$GLOBALS['UserName'] = ''; //Stores the username
-$GLOBALS['CanUserEdit'] = 0; //Stores the admin ability of the user
+$GLOBALS['DBName'] = 'kmc'; // Name of the database
+include 'MySQLAuth.php'; // File that connects to MySQL database
+$GLOBALS['CookieName'] = 'forensics_db_auth_token'; // Name of the cookie used to make login persistent
+$GLOBALS['SecretWord'] = 'ForensicsSECRET'; // MD5'd with username to cookie name
+$GLOBALS['UserName'] = ''; // Stores the username
+$GLOBALS['CanUserEdit'] = 0; // Stores the admin ability of the user
 function InsertBallots($Ballots, $DBConn = NULL, $Insert = NULL) {
-	$ReturnValue = 'true';
-	$Queries = "";
+	// Inserts Ballots from an array
+	// $Ballots: [RID: RID,
+	//  Round: Round,
+	//  Judge: Judge,
+	//  ElimLevel: ElimLevel,
+	//  Rank: Rank,
+	//  Qual: Qual]
+	// $DBConn - connection to MySQL database
+	// $Insert - if set, insert/updates the ballots
+	$ReturnValue = 'true'; // Value to return at the end
+	$Queries = ''; // List of queries to execute at the end
 	foreach ($Ballots as $key=>$Ballot) {
+		// Loop through all the ballots
 		if ( ! isset($Ballot['RID']) ) {
+			// Check if RID is set
 			if ( $ReturnValue == 'true' ) {
 				$ReturnValue = 'Error - No RID for one of the ballots - '.$key;
 			} else {
@@ -17,6 +28,7 @@ function InsertBallots($Ballots, $DBConn = NULL, $Insert = NULL) {
 			}
 			continue;
 		} elseif ( ! isset($Ballot['Round']) ) {
+			// Check if a Round is set
 			if ( $ReturnValue == 'true' ) {
 				$ReturnValue = 'Error - No round given for one of the ballots - '.$key;
 			} else {
@@ -24,6 +36,7 @@ function InsertBallots($Ballots, $DBConn = NULL, $Insert = NULL) {
 			}
 			continue;
 		} elseif ( ! isset($Ballot['Judge']) ) {
+			// Check if a Judge is set
 			if ( $ReturnValue == 'true' ) {
 				$ReturnValue = 'Error - No judge given for one of the ballots - '.$key;
 			} else {
@@ -31,6 +44,7 @@ function InsertBallots($Ballots, $DBConn = NULL, $Insert = NULL) {
 			}
 			continue;
 		} elseif ( ! (string)(int)$Ballot['RID'] == $Ballot['RID'] ) {
+			// Check if RID is an int
 			if ( $ReturnValue == 'true' ) {
 				$ReturnValue = 'Error - Invalid RID for one of the ballots - '.$key;
 			} else {
@@ -38,6 +52,7 @@ function InsertBallots($Ballots, $DBConn = NULL, $Insert = NULL) {
 			}
 			continue;
 		} elseif ( ! (string)(int)$Ballot['Round'] == $Ballot['Round'] ) {
+			// Check if Round is an int
 			if ( $ReturnValue == 'true' ) {
 				$ReturnValue = 'Error - Invalid round given for one of the ballots - '.$key;
 			} else {
@@ -45,6 +60,7 @@ function InsertBallots($Ballots, $DBConn = NULL, $Insert = NULL) {
 			}
 			continue;
 		} elseif ( ! (string)(int)$Ballot['Judge'] == $Ballot['Judge'] ) {
+			// Check if Judge is an int
 			if ( $ReturnValue == 'true' ) {
 				$ReturnValue = 'Error - Invalid judge given for one of the ballots - '.$key;
 			} else {
@@ -52,6 +68,7 @@ function InsertBallots($Ballots, $DBConn = NULL, $Insert = NULL) {
 			}
 			continue;
 		} elseif ( ! isset($Ballot['ElimLevel']) ) {
+			// Check if an ElimLevel is set
 			if ( $ReturnValue == 'true' ) {
 				$ReturnValue = 'Error - No level set for one of the ballots - '.$key;
 			} else {
@@ -59,6 +76,7 @@ function InsertBallots($Ballots, $DBConn = NULL, $Insert = NULL) {
 			}
 			continue;
 		} elseif ( ! (string)(int)$Ballot['ElimLevel'] == $Ballot['ElimLevel'] ) {
+			// Check if ElimLevel is an int
 			if ( $ReturnValue == 'true' ) {
 				$ReturnValue = 'Error - Invald level for one of the ballots - '.$key;
 			} else {
@@ -66,6 +84,7 @@ function InsertBallots($Ballots, $DBConn = NULL, $Insert = NULL) {
 			}
 			continue;
 		} elseif ( ! isset($Ballot['Rank']) ) {
+			// Check if Rank is set
 			if ( $ReturnValue == 'true' ) {
 				$ReturnValue = 'Error - No rank given for one of the ballots - '.$key;
 			} else {
@@ -73,6 +92,7 @@ function InsertBallots($Ballots, $DBConn = NULL, $Insert = NULL) {
 			}
 			continue;
 		} elseif ( ! (string)(int)$Ballot['Rank'] == $Ballot['Rank'] ) {
+			// Check if Rank is an int
 			if ( $ReturnValue == 'true' ) {
 				$ReturnValue = 'Error - Invalid rank given for one of the ballots - '.$key;
 			} else {
@@ -80,21 +100,16 @@ function InsertBallots($Ballots, $DBConn = NULL, $Insert = NULL) {
 			}
 			continue;
 		} elseif ( isset($Ballot['Qual']) && ! is_numeric($Ballot['Qual'])) {
+			// Check if Qual is set and if so if Qual is numeric
 			if ( $ReturnValue == 'true' ) {
 				$ReturnValue = 'Error - Invalid quality points given for one of the ballots - '.$key;
 			} else {
 				$ReturnValue = $ReturnValue.';Error - Invalid quality points given for one of the ballots - '.$key;
 			}
 			continue;
-		} elseif ( isset($Ballot['ElimLevel']) && ! (string)(int)$Ballot['ElimLevel'] == $Ballot['ElimLevel'] ) {
-			if ( $ReturnValue == 'true' ) {
-				$ReturnValue = 'Error - Invalid elimination round level - '.$key;
-			} else {
-				$ReturnValue = $ReturnValue.';Error - Invalid elimination round level - '.$key;
-			}
-			continue;
 		}
 		if ( $Insert != NULL ) {
+			// If insert is to be done
 			if ( ! isset($Ballot['Qual']) ) {
 				$Ballot['Qual'] = '';
 			}
@@ -102,6 +117,7 @@ function InsertBallots($Ballots, $DBConn = NULL, $Insert = NULL) {
 				$Ballot['ElimLevel'] = 0;
 			}
 			$ConnectVar = mysqli_connect();
+			// Check if ballot already exists
 			$ExistsQuery = mysqli_query($DBConn,'select * from Ballots where RID="'.mysqli_real_escape_string($ConnectVar,$Ballot['RID']).'" and Round="'.mysqli_real_escape_string($ConnectVar,$Ballot['Round']).'" and Judge="'.mysqli_real_escape_string($ConnectVar,$Ballot['Judge']).'";');
 			if ( !$ExistsQuery ) {
 				if ( $ReturnValue == 'true' ) {
@@ -112,15 +128,19 @@ function InsertBallots($Ballots, $DBConn = NULL, $Insert = NULL) {
 				continue;
 			}
 			if ( mysqli_num_rows($ExistsQuery) == 0 ) {
+				// Update query if exists
 				$QueryString = 'insert into Ballots set RID="'.mysqli_real_escape_string($ConnectVar,$Ballot['RID']).'", Round="'.mysqli_real_escape_string($ConnectVar,$Ballot['Round']).'", Judge="'.mysqli_real_escape_string($ConnectVar,$Ballot['Judge']).'", Rank="'.mysqli_real_escape_string($ConnectVar,$Ballot['Rank']).'", Qual="'.mysqli_real_escape_string($ConnectVar,$Ballot['Qual']).'", ElimLevel="'.mysqli_real_escape_string($ConnectVar,$Ballot['ElimLevel']).'";';
 			} else {
+				// Insert query if doesn't exist
 				$QueryString = 'update Ballots set Rank="'.mysqli_real_escape_string($ConnectVar,$Ballot['Rank']).'", Qual="'.mysqli_real_escape_string($ConnectVar,$Ballot['Qual']).'", ElimLevel="'.mysqli_real_escape_string($ConnectVar,$Ballot['ElimLevel']).'" where RID="'.mysqli_real_escape_string($ConnectVar,$Ballot['RID']).'" and Round="'.mysqli_real_escape_string($ConnectVar,$Ballot['Round']).'" and Judge="'.mysqli_real_escape_string($ConnectVar,$Ballot['Judge']).'";';
 			}
-			$Queries[$key] = $QueryString;
+			$Queries[$key] = $QueryString; // Save queries
 		}
 	}
 	if ( $ReturnValue == 'true' && $Insert != NULL ) {
+		// Only perform queries if no errors and Insert is set
 		foreach ( $Queries as $key=>$QueryString ) {
+			// Loop through all queries
 			$InsertQuery = mysqli_query($DBConn,$QueryString);
 			if ( !$InsertQuery ) {
 				if ( $ReturnValue == 'true' ) {
@@ -133,7 +153,11 @@ function InsertBallots($Ballots, $DBConn = NULL, $Insert = NULL) {
 	}
 	return $ReturnValue;
 }
-function CreateTournamentList($IncludeAll, $DBConn, $DefaultTID = NULL) {
+function CreateTournamentList($DBConn, $IncludeAll = NULL, $DefaultTID = NULL) {
+	// Creates an html list of all the tournaments sorted by date
+	// $DBConn - connection to MySQL database
+	// $IncludeAll - Include an option that is "All Tournaments"
+	// $DefaultTID - the TID to set as the default value
 	$TQuery = mysqli_query($DBConn, 'select TName, TID from Tournaments order by Date desc, TName;');
 	if ( !$TQuery ) {
 		return ReturnMySQLError($DBConn);
@@ -156,7 +180,14 @@ function CreateTournamentList($IncludeAll, $DBConn, $DefaultTID = NULL) {
 	$TournamentString = $TournamentString . '</select>';
 	return $TournamentString;
 }
-function CreateStudentList($IncludeAll, $DBConn, $FormName = NULL, $DefaultSID = NULL, $SelectName = NULL, $OnChange = NULL) {
+function CreateStudentList($DBConn, $IncludeAll = NULL, $DefaultSID = NULL, $SelectName = NULL, $OnChange = NULL, $FormName = NULL) {
+	// Creates an html list of all the Students sorted by last name
+	// $DBConn - connection to MySQL database
+	// $IncludeAll - Include an option that is "All Tournaments"
+	// $DefaultSID - the SID to set as the default value
+	// $SelectName - What to set the "id" and "name" attributes
+	// $OnChange - What function to call when the value changes
+	// $FormName - What to set the "form" attribute
 	$SQuery = mysqli_query($DBConn, 'select FName, LName, SID from Students order by LName, FName;');
 	if ( !$SQuery ) {
 		return ReturnMySQLError($DBConn);
@@ -189,7 +220,13 @@ function CreateStudentList($IncludeAll, $DBConn, $FormName = NULL, $DefaultSID =
 	$StudentString = $StudentString . '</select>';
 	return $StudentString;
 }
-function CreateEventList($IncludeAll, $DBConn, $DefaultEID = NULL, $SelectName = NULL) {
+function CreateEventList($DBConn, $IncludeAll = NULL, $DefaultEID = NULL, $SelectName = NULL, $OnChange = NULL) {
+	// Creates an html list of all the Events sorted by name
+	// $DBConn - connection to MySQL database
+	// $IncludeAll - Include an option that is "All Tournaments"
+	// $DefaultEID - the EID to set as the default value
+	// $SelectName - What to set the "id" and "name" attributes
+	// $OnChange - What function to call when the value changes
 	$EQuery = mysqli_query($DBConn, 'select * from Events order by EName;');
 	if ( !$EQuery ) {
 		return ReturnMySQLError($DBConn);
@@ -199,7 +236,11 @@ function CreateEventList($IncludeAll, $DBConn, $DefaultEID = NULL, $SelectName =
 	if ( $SelectName == NULL ) {
 		$SelectName = 'EID';
 	}
-	$EventString = '<select id="' . $SelectName . '" name="' . $SelectName . '">';
+	$EventString = '<select id="' . $SelectName . '" name="' . $SelectName . '"';
+	if ( $OnChange != NULL ) {
+		$EventString = $EventString . ' onchange="' . $OnChange . '"';
+	}
+	$EventString = $EventString . '>';
 	if ( $IncludeAll == 1 ) {
 		$EventString = $EventString . "<option value='-1'>All Events</option>";
 	}
@@ -216,6 +257,7 @@ function CreateEventList($IncludeAll, $DBConn, $DefaultEID = NULL, $SelectName =
 	return $EventString;
 }
 function CheckAuthorization() {
+	// Checks if the user has cookie authorization
 	if ( isset($_COOKIE[$GLOBALS['CookieName']]) ) { do {
 		$Array = explode(',',$_COOKIE[$GLOBALS['CookieName']],2);
 		$GLOBALS['UserName'] = $Array[0];
@@ -245,6 +287,8 @@ function CheckAuthorization() {
 	fclose($myfile);
 }
 function SetAuthCookie($UN) {
+	// Sets an authoriztion cookie
+	// $UN - the username to set the cookie for
 	$ExpDate = time() + (86400 * 7);
 	$MD5 = md5($UN . $GLOBALS['SecretWord'] . $ExpDate);
 	$Cookie = $UN . "," . $MD5;
@@ -257,15 +301,18 @@ function SetAuthCookie($UN) {
 	return 1;
 }
 function ReturnMySQLError($DBConn, $CustomText = NULL) {
-	if ( $CustomText != NULL ) {
-		$ReturnString = $CustomText;
-	} else {
-		$ReturnString = 'Error - MySQL error: ';
+	// Returns a MySQL error string
+	// $DBConn - connection to MySQL database
+	// $CustomText - Custom text to put in the error string
+	if ( $CustomText == NULL ) {
+		$CustomText = 'Error - MySQL error: ';
 	}
 	$ReturnString = $ReturnString . mysqli_error($DBConn) . '.';
 	return $ReturnString;
 }
 function WriteToLog($LogString = Null) {
+	// Writes a log file
+	// $LogString - String to use for the log file
 	if ( $LogString == Null ) {
 		$LogString = '';
 		if ( $GLOBALS['UserName'] != '' ) {
