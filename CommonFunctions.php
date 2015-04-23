@@ -1,5 +1,4 @@
 <?php
-$GLOBALS['DBName'] = 'kmc'; // Name of the database
 include 'MySQLAuth.php'; // File that connects to MySQL database
 $GLOBALS['CookieName'] = 'forensics_db_auth_token'; // Name of the cookie used to make login persistent
 $GLOBALS['SecretWord'] = 'ForensicsSECRET'; // MD5'd with username to cookie name
