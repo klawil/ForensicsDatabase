@@ -322,5 +322,8 @@ function WriteToLog($LogString = Null) {
 	$LogFile = fopen("/var/log/forensics/general.log","a");
 	fwrite($LogFile,$LogString . ' on ' . date('Y-m-d') . ' at ' . date('H:i:s') . "\n");
 }
+function MySQLEscape($String) {
+	return mysqli_real_escape_string($GLOBALS['DBName'],$String);
+}
 Authorize();
 ?>
