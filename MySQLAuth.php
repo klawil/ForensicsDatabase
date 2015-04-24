@@ -8,8 +8,10 @@ if ( !$DBPermCon ) {
 	echo 'Connection failed: ' . mysqli_connect_error();
 	return 0;
 }
-$ConnectVar = mysqli_connect();
-$PermQuery = mysqli_query($DBPermCon,'select * from Subdomains where Subdomain="' . mysqli_real_escape_string($ConnectVar,$GLOBALS['DBNAME']) . '";');
+$PermQuery = mysqli_query($DBPermCon,'select * from Subdomains where Subdomain="' . MySQLEscape($GLOBALS['DBNAME']) . '";');
+if ( !$PerQuery ) {
+	ReturnMySQLError($DBPermCon);
+}
 $GLOBALS['DBConn'] = mysqli_connect($HOST, $UN, $PW, $GLOBALS['DBName']);
 if ( !$GLOBALS['DBConn'] ) {
 	echo 'Connection failed: ' . mysqli_connect_error();
