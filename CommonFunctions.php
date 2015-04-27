@@ -6,148 +6,71 @@ $GLOBALS['UserName'] = ''; // Stores the username
 $GLOBALS['CanUserEdit'] = 0; // Stores the admin ability of the user
 function InsertBallots($Ballots, $DBConn = NULL, $Insert = NULL) {
 	// Inserts Ballots from an array
-	// $Ballots: [RID: RID,
+	// @param $Ballots: [RID: RID,
 	//  Round: Round,
 	//  Judge: Judge,
 	//  ElimLevel: ElimLevel,
 	//  Rank: Rank,
 	//  Qual: Qual]
-	// $DBConn - connection to MySQL database
-	// $Insert - if set, insert/updates the ballots
-	$ReturnValue = 'true'; // Value to return at the end
+	// @param $DBConn - connection to MySQL database
+	// @param $Insert - if set, insert/updates the ballots
+	$ReturnValue = ''; // Value to return at the end
 	$Queries = ''; // List of queries to execute at the end
+	function IsInt($String){
+		return (string)(int)$String == $String;
+	}
+	
+	// Array of variables and values to check
+	$CheckArray = [['variable' => 'RID', 'IsSet' => 1, 'Validate' => function($var){return IsInt($var);}, 'Error' => 'RID not valid'],
+	['variable' => 'Round', 'IsSet' => 1, 'Validate' => function($var){return IsInt($var);}, 'Error' => 'Round not valid'],
+	['variable' => 'Judge', 'IsSet' => 1, 'Validate' => function($var){return IsInt($var);}, 'Error' => 'Judge not valid'],
+	['variable' => 'ElimLevel', 'IsSet' => 1, 'Validate' => function($var){return IsInt($var);}, 'Error' => 'Elimination level not valid'],
+	['variable' => 'Rank', 'IsSet' => 1, 'Validate' => function($var){return IsInt($var);}, 'Error' => 'Rank not valid'],
+	['variable' => 'Qual', 'IsSet' => 0, 'Validate' => function($var){return is_numeric($var);}, 'Error' => 'Qual not valid']];
+	
+	// Loop through all ballots
 	foreach ($Ballots as $key=>$Ballot) {
-		// Loop through all the ballots
-		if ( ! isset($Ballot['RID']) ) {
-			// Check if RID is set
-			if ( $ReturnValue == 'true' ) {
-				$ReturnValue = 'Error - No RID for one of the ballots - '.$key;
-			} else {
-				$ReturnValue = $ReturnValue.';Error - No RID for one of the ballots - '.$key;
+		// Check variables
+		foreach ( $CheckArray as $Check) {
+			if ( !isset($Ballot[$Check['variable']]) ) {
+				if ( $Check['IsSet'] == 1 ) {
+					$ReturnValue[$key] = $Check['variable'] . ' not set';
+					continue 2;
+				}
+			} elseif ( !$Check['Validate']($Ballot[$Check['variable']]) ) {
+				$ReturnValue[$key] = $Check['Error'];
+				continue 2;
 			}
-			continue;
-		} elseif ( ! isset($Ballot['Round']) ) {
-			// Check if a Round is set
-			if ( $ReturnValue == 'true' ) {
-				$ReturnValue = 'Error - No round given for one of the ballots - '.$key;
-			} else {
-				$ReturnValue = $ReturnValue.';Error - No round given for one of the ballots - '.$key;
-			}
-			continue;
-		} elseif ( ! isset($Ballot['Judge']) ) {
-			// Check if a Judge is set
-			if ( $ReturnValue == 'true' ) {
-				$ReturnValue = 'Error - No judge given for one of the ballots - '.$key;
-			} else {
-				$ReturnValue = $ReturnValue.';Error - No judge given for one of the ballots - '.$key;
-			}
-			continue;
-		} elseif ( ! (string)(int)$Ballot['RID'] == $Ballot['RID'] ) {
-			// Check if RID is an int
-			if ( $ReturnValue == 'true' ) {
-				$ReturnValue = 'Error - Invalid RID for one of the ballots - '.$key;
-			} else {
-				$ReturnValue = $ReturnValue.';Error - Invalid RID for one of the ballots - '.$key;
-			}
-			continue;
-		} elseif ( ! (string)(int)$Ballot['Round'] == $Ballot['Round'] ) {
-			// Check if Round is an int
-			if ( $ReturnValue == 'true' ) {
-				$ReturnValue = 'Error - Invalid round given for one of the ballots - '.$key;
-			} else {
-				$ReturnValue = $ReturnValue.';Error - Invalid round given for one of the ballots - '.$key;
-			}
-			continue;
-		} elseif ( ! (string)(int)$Ballot['Judge'] == $Ballot['Judge'] ) {
-			// Check if Judge is an int
-			if ( $ReturnValue == 'true' ) {
-				$ReturnValue = 'Error - Invalid judge given for one of the ballots - '.$key;
-			} else {
-				$ReturnValue = $ReturnValue.';Error - Invalid judge given for one of the ballots - '.$key;
-			}
-			continue;
-		} elseif ( ! isset($Ballot['ElimLevel']) ) {
-			// Check if an ElimLevel is set
-			if ( $ReturnValue == 'true' ) {
-				$ReturnValue = 'Error - No level set for one of the ballots - '.$key;
-			} else {
-				$ReturnValue = $ReturnValue.';Error - No level set for one of the ballots - '.$key;
-			}
-			continue;
-		} elseif ( ! (string)(int)$Ballot['ElimLevel'] == $Ballot['ElimLevel'] ) {
-			// Check if ElimLevel is an int
-			if ( $ReturnValue == 'true' ) {
-				$ReturnValue = 'Error - Invald level for one of the ballots - '.$key;
-			} else {
-				$ReturnValue = $ReturnValue.';Error - Invald level for one of the ballots - '.$key;
-			}
-			continue;
-		} elseif ( ! isset($Ballot['Rank']) ) {
-			// Check if Rank is set
-			if ( $ReturnValue == 'true' ) {
-				$ReturnValue = 'Error - No rank given for one of the ballots - '.$key;
-			} else {
-				$ReturnValue = $ReturnValue.';Error - No rank given for one of the ballots - '.$key;
-			}
-			continue;
-		} elseif ( ! (string)(int)$Ballot['Rank'] == $Ballot['Rank'] ) {
-			// Check if Rank is an int
-			if ( $ReturnValue == 'true' ) {
-				$ReturnValue = 'Error - Invalid rank given for one of the ballots - '.$key;
-			} else {
-				$ReturnValue = $ReturnValue.';Error - Invalid rank given for one of the ballots - '.$key;
-			}
-			continue;
-		} elseif ( isset($Ballot['Qual']) && ! is_numeric($Ballot['Qual'])) {
-			// Check if Qual is set and if so if Qual is numeric
-			if ( $ReturnValue == 'true' ) {
-				$ReturnValue = 'Error - Invalid quality points given for one of the ballots - '.$key;
-			} else {
-				$ReturnValue = $ReturnValue.';Error - Invalid quality points given for one of the ballots - '.$key;
-			}
-			continue;
 		}
+		
+		// Insert data if desired
 		if ( $Insert != NULL ) {
-			// If insert is to be done
 			if ( ! isset($Ballot['Qual']) ) {
 				$Ballot['Qual'] = '';
 			}
-			if ( ! isset($Ballot['ElimLevel']) ) {
-				$Ballot['ElimLevel'] = 0;
-			}
-			$ConnectVar = mysqli_connect();
+			
 			// Check if ballot already exists
-			$ExistsQuery = mysqli_query($DBConn,'select * from Ballots where RID="'.mysqli_real_escape_string($ConnectVar,$Ballot['RID']).'" and Round="'.mysqli_real_escape_string($ConnectVar,$Ballot['Round']).'" and Judge="'.mysqli_real_escape_string($ConnectVar,$Ballot['Judge']).'";');
-			if ( !$ExistsQuery ) {
-				if ( $ReturnValue == 'true' ) {
-					$ReturnValue = $key . ': ' . ReturnMySQLError($DBConn,'Exists Query Error: ');
-				} else {
-					$ReturnValue = $ReturnValue . '; ' . $key . ': ' . ReturnMySQLError($DBConn,'Exists Query Error: ');
-				}
-				continue;
+			$ExistsString = 'select * from Ballots where RID="' . MySQLEscape($DBConn,$Ballot['RID']) . '" and Round="' . MySQLEscape($DBConn,$Ballot['Round']) . '" and Judge="' . MySQLEscape($DBConn,$Ballot['Judge']) . '";';
+			$ExistsQuery = MySQLQuery($DBConn,$ExistsString);
+			if ( ! $ExistsQuery ) {
+				$ReturnValue[$key] = $ExistsQuery;
+				continue
 			}
 			if ( mysqli_num_rows($ExistsQuery) == 0 ) {
 				// Update query if exists
-				$QueryString = 'insert into Ballots set RID="'.mysqli_real_escape_string($ConnectVar,$Ballot['RID']).'", Round="'.mysqli_real_escape_string($ConnectVar,$Ballot['Round']).'", Judge="'.mysqli_real_escape_string($ConnectVar,$Ballot['Judge']).'", Rank="'.mysqli_real_escape_string($ConnectVar,$Ballot['Rank']).'", Qual="'.mysqli_real_escape_string($ConnectVar,$Ballot['Qual']).'", ElimLevel="'.mysqli_real_escape_string($ConnectVar,$Ballot['ElimLevel']).'";';
+				$QueryString = 'insert into Ballots set RID="' . MySQLEscape($DBConn,$Ballot['RID']) . '", Round="' . MySQLEscape($DBConn,$Ballot['Round']) . '", Judge="' . MySQLEscape($DBConn,$Ballot['Judge']) . '", Rank="' . MySQLEscape($DBConn,$Ballot['Rank']) . '", Qual="' . MySQLEscape($DBConn,$Ballot['Qual']) . '", ElimLevel="' . MySQLEscape($DBConn,$Ballot['ElimLevel']) . '";';
 			} else {
 				// Insert query if doesn't exist
-				$QueryString = 'update Ballots set Rank="'.mysqli_real_escape_string($ConnectVar,$Ballot['Rank']).'", Qual="'.mysqli_real_escape_string($ConnectVar,$Ballot['Qual']).'", ElimLevel="'.mysqli_real_escape_string($ConnectVar,$Ballot['ElimLevel']).'" where RID="'.mysqli_real_escape_string($ConnectVar,$Ballot['RID']).'" and Round="'.mysqli_real_escape_string($ConnectVar,$Ballot['Round']).'" and Judge="'.mysqli_real_escape_string($ConnectVar,$Ballot['Judge']).'";';
+				$QueryString = 'update Ballots set Rank="' . MySQLEscape($DBConn,$Ballot['Rank']) . '", Qual="' . MySQLEscape($DBConn,$Ballot['Qual']) . '", ElimLevel="' . MySQLEscape($DBConn,$Ballot['ElimLevel']) . '" where RID="' . MySQLEscape($DBConn,$Ballot['RID']) . '" and Round="' . MySQLEscape($DBConn,$Ballot['Round']) . '" and Judge="' . MySQLEscape($DBConn,$Ballot['Judge']) . '";';
 			}
-			$Queries[$key] = $QueryString; // Save queries
-		}
-	}
-	if ( $ReturnValue == 'true' && $Insert != NULL ) {
-		// Only perform queries if no errors and Insert is set
-		foreach ( $Queries as $key=>$QueryString ) {
-			// Loop through all queries
-			$InsertQuery = mysqli_query($DBConn,$QueryString);
-			if ( !$InsertQuery ) {
-				if ( $ReturnValue == 'true' ) {
-					$ReturnValue = $key . ': ' . ReturnMySQLError($DBConn,'Insert Query Error: ');
-				} else {
-					$ReturnValue = $ReturnValue . '; ' . $key . ': ' . ReturnMySQLError($DBConn,'Insert Query Error: ');
-				}
+			$Query = MySQLQuery($DBConn,$QueryString);
+			if ( $Query ) {
+				$ReturnValue[$key] = true;
+			} else {
+				$ReturnValue[$key] = $Query;
 			}
+		} else {
+			$ReturnValue[$key] = true;
 		}
 	}
 	return $ReturnValue;
@@ -205,7 +128,7 @@ function CreateStudentList($DBConn, $IncludeAll = NULL, $DefaultSID = NULL, $Sel
 	}
 	$StudentString = $StudentString . '>';
 	if ( $IncludeAll == 1 ) {
-		$StudentString = $StudentString . '<option value='-1'>All Students</option>';
+		$StudentString = $StudentString . '<option value="-1">All Students</option>';
 	}
 	while ( $CurrentRow < $NumRows ) {
 		$results = mysqli_fetch_assoc($SQuery);
@@ -299,16 +222,6 @@ function SetAuthCookie($UN) {
 	setcookie($GLOBALS['CookieName'], $Cookie, $ExpDate, "/");
 	return 1;
 }
-function ReturnMySQLError($DBConn, $CustomText = NULL) {
-	// Returns a MySQL error string
-	// $DBConn - connection to MySQL database
-	// $CustomText - Custom text to put in the error string
-	if ( $CustomText == NULL ) {
-		$CustomText = 'Error - MySQL error: ';
-	}
-	$CustomText = $CustomText . mysqli_error($DBConn) . '.';
-	return $CustomText;
-}
 function WriteToLog($LogString = Null) {
 	// Writes a log file
 	// $LogString - String to use for the log file
@@ -325,5 +238,23 @@ function WriteToLog($LogString = Null) {
 function MySQLEscape($DBConn,$String) {
 	return mysqli_real_escape_string($DBConn,$String);
 }
-Authorize();
+function MySQLQuery($DBConn,$QueryString) {
+	$Query = mysqli_query($DBConn,$QueryString);
+	if ( !$Query ) {
+		return mysqli_error($DBConn);
+	} else {
+		return $Query;
+	}
+}
+function ReturnMySQLError($DBConn, $CustomText = NULL) {
+	// Returns a MySQL error string
+	// $DBConn - connection to MySQL database
+	// $CustomText - Custom text to put in the error string
+	if ( $CustomText == NULL ) {
+		$CustomText = 'Error - MySQL error: ';
+	}
+	$CustomText = $CustomText . mysqli_error($DBConn) . '.';
+	return $CustomText;
+}
+CheckAuthorization();
 ?>
