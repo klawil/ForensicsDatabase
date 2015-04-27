@@ -15,6 +15,18 @@ Make setup.sh executable and then run it. On Linux:
 sudo chmod +x setup.sh
 ./setup.sh
 ````
+<h4>Setting up the Apache Server</h4>
+Because some of the files aren't meant to be served, put the following information in the configuration file for your apache server (for me this is located in '/etc/apache2/sites-available/000-default.conf'):
+````
+<VirtualHost *:80>
+  ServerName $ServerName
+  DocumentRoot $AbsolutePathToGitFolder
+  <Files ~ "^(CommonFunctions\.php|MySQLAuth\.php|README\.md|google-analytics\.php|setup\.sh)$">
+    Order allow,deny
+    Deny from all
+  </Files>
+</VirtualHost>
+````
 <h2>Description</h2>
 This is an organization of php web pages that allow the access and organization of results from Forensics tournaments.
 There is a specific description of each of the pages below.
