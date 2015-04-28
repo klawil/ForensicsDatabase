@@ -21,12 +21,21 @@ Because some of the files aren't meant to be served, put the following informati
 <VirtualHost *:80>
   ServerName $ServerName
   DocumentRoot $AbsolutePathToGitFolder
-  <Files ~ "^(CommonFunctions\.php|MySQLAuth\.php|README\.md|google-analytics\.php|setup\.sh)$">
+  <Files ~ "^\*(\.inc|\.md|\.sh)$">
     Order allow,deny
     Deny from all
   </Files>
 </VirtualHost>
 ````
+
+Open the Apache main configuration and find the directory the website is in (for me, it's /var/www/ForensicsDatabase). It should look like:
+````
+<Directory /var/www/>
+	AllowOverride All
+	# Your other options here
+</Directory>
+````
+The line "AllowOverride All" allows the .htaccess to redirect to the custom error pages.
 <h2>Description</h2>
 This is an organization of php web pages that allow the access and organization of results from Forensics tournaments.
 There is a specific description of each of the pages below.
