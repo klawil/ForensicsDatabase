@@ -1,4 +1,32 @@
 <?php
+$GLOBALS['LogFile'] = '/var/log/forensics/general.log'; // Location of the log file
+$GLOBALS['CookieName'] = 'forensics_db_auth_token'; // Name of the cookie used to make login persistent
+$GLOBALS['SecretWord'] = 'ForensicsSECRET'; // MD5'd with username to cookie name
+$GLOBALS['UserName'] = ''; // Stores the username
+$GLOBALS['CanUserEdit'] = 0; // Stores the editing ability of the user
+function WriteLog($LogString = NULL) {
+	// Write to a log file
+	// @param $LogString - string to use if default is not wanted
+	// @return - boolean of success
+	
+	// Build log string if none is sent
+	if ( $LogString == NULL ) {
+		$LogString = '';
+		if ( $GLOBALS['UserName'] != '' ) {
+			$LogString = 'User ' . $GLOBALS['UserName'] . ' from ';
+		}
+		$LogString = $LogString . 'IP ' . $_SERVER['REMOTE_ADDR'] . ' accessed ' . basename($_SERVER['PHP_SELF']);
+	}
+	
+	// Open and write to the log file
+	$LogFile = fopen($GLOBALS['LogFile'],'a');
+	if ( !$LogFile ) {
+		return false;
+	}
+	fwrite($LogFile,$LogString . ' Stamp: ' . date('Y-m-d') . ' at ' . date('H:i:s') . "\n");
+	fclose($LogFile);
+	return true;
+}
 function CheckCookieAuth($DBConn) {
 	// Check's a user's cookie authentication
 	// @param $DBConn - connection to a MySQL database
@@ -43,8 +71,4 @@ function CheckCookieAuth($DBConn) {
 	}
 	return 0;
 }
-$GLOBALS['CookieName'] = 'forensics_db_auth_token'; // Name of the cookie used to make login persistent
-$GLOBALS['SecretWord'] = 'ForensicsSECRET'; // MD5'd with username to cookie name
-$GLOBALS['UserName'] = ''; // Stores the username
-$GLOBALS['CanUserEdit'] = 0; // Stores the editing ability of the user
 ?>
