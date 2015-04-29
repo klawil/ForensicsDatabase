@@ -29,10 +29,29 @@ function IsInt($String){
 	return (string)(int)$String == $String;
 }
 function IsBool($String){
-	// Determines whetehr parameter represents an boolean 1 or 0
+	// Determines whetehr parameter represents an boolean (1 or 0)
 	// @param $String - string to check
 	// @return boolean - whether the string is a boolean or not
 	return ((string)(int)$String == 1 || (string)(int)$String == 0);
+}
+function IsID($DBConn, $ID, $Type) {
+	// Determines whether the ID is valid
+	// @param $DBConn - connection to MySQL database
+	// @param $ID - the ID to check
+	// @param $Type - the type of ID (TID, SID, EID)
+	// @return boolean - whether the ID is valid
+	
+	// Set the correct tables
+	if ( $Type == 'TID' ) {
+		$Table = 'Tournaments';
+	} elseif ( $Type == 'SID' ) {
+		$Table = 'Students';
+	} elseif ( $Type == 'EID' ) {
+		$Table = 'Events';
+	} else {
+		return false;
+	}
+	return true;
 }
 function InsertBallots($Ballots, $DBConn = NULL, $Insert = NULL) {
 	// Inserts Ballots from an array
@@ -96,8 +115,9 @@ function InsertBallots($Ballots, $DBConn = NULL, $Insert = NULL) {
 	}
 	return $ReturnValue;
 }
-function InsertResult($DBConn, $SID, $EID, $TID, $broke, $State, $PID = NULL, $place = NULL) {
+function InsertResult($DBConn, $SID, $EID, $TID, $broke, $State, $PID = NULL, $place = NULL, $Update = NULL) {
 	// Inserts a result into the results table
+	// @param $DBConn - connection to MySQL database
 	// @param $SID - the ID of the student participating
 	// @param $EID - the event ID
 	// @param $TID - the tournament ID
@@ -120,7 +140,12 @@ function InsertResult($DBConn, $SID, $EID, $TID, $broke, $State, $PID = NULL, $p
 		$Parameters['place'] = $place;
 	}
 	
-	// Array of variables and values to check
+	// Escape all the parameters
+	foreach ( $Parameters as $key => $Param ) {
+		$Parameters[$key] = MySQLEscape($Param,$DBConn);
+	}
+	
+	// Validate parameters format
 	$CheckArray = [['variable' => 'SID', 'IsSet' => 1, 'Validate' => function($var){return IsInt($var);}, 'Error' => 'Student not valid'],
 	['variable' => 'EID', 'IsSet' => 1, 'Validate' => function($var){return IsInt($var);}, 'Error' => 'Event not valid'],
 	['variable' => 'TID', 'IsSet' => 1, 'Validate' => function($var){return IsInt($var);}, 'Error' => 'Tournament not valid'],
@@ -128,18 +153,21 @@ function InsertResult($DBConn, $SID, $EID, $TID, $broke, $State, $PID = NULL, $p
 	['variable' => 'State', 'IsSet' => 1, 'Validate' => function($var){return IsBool($var);}, 'Error' => 'State value not valid'],
 	['variable' => 'PID', 'IsSet' => 0, 'Validate' => function($var){return IsInt($var);}, 'Error' => 'Partner not valid'],
 	['variable' => 'place', 'IsSet' => 0, 'Validate' => function($var){return IsInt($var);}, 'Error' => 'Place not valid']];
-	
-	// Validate variables
 	$Valid = ValidateArray($Parameters,$CheckArray);
-	if ( !$Valid['Pass'] ) {
-		$ReturnValue['Done'] = false;
-		$ReturnValue['Error'] = $Valid['Error'];
-		return $ReturnValue;
-	}
 	
-	// Escape all the parameters
-	foreach ( $Parameters as $key => $Param ) {
-		$Parameters[$key] = MySQLEscape($Param,$DBConn);
+	// Validate IDs
+	$IDArray = [['variable' => 'SID', 'ID' => 'SID', 'Error' => 'Invalid student'],
+	['variable' => 'TID', 'ID' => 'TID', 'Error' => 'Invalid tournament'],
+	['variable' => 'EID', 'ID' => 'EID', 'Error' => 'Invalid event']];
+	if ( isset($Parameters['PID']) ) {
+		array_push($IDArray,['variable' => 'PID', 'ID' => 'SID', 'Error' => 'Invalid partner']);
+	}
+	foreach ( $IDArray as $ID ) {
+		if ( !IsId($DBConn,$IDArray[$ID['variable']], $ID['ID']) ) {
+			$ReturnValue['Done'] = false;
+			$ReturnValue['Error'] = $ID['Error'];
+			return $ReturnValue;
+		}
 	}
 	
 	// Get event's partner status
@@ -174,5 +202,69 @@ function InsertResult($DBConn, $SID, $EID, $TID, $broke, $State, $PID = NULL, $p
 		$ReturnValue['Error'] = 'Partner must be a different student';
 		return $ReturnValue;
 	}
+	
+	// Check if RID already exists
+	$ExistsString = '';
+	foreach ( $IDArray as $ID ) {
+		if ( $ExstsString == '' ) {
+			$ExistsString = 'select RID from Results where ' . $ID['variable'] . '="' . $Parameters[$ID['variable']] . '"';
+		} else {
+			$ExistsString = $ExistsString . ' and ' . $ID['variable'] . '="' . $Parameters[$ID['variable']] . '"';
+		}
+	}
+	$ExistsString = $ExistsString . ';';
+	$EQuery = MySQLQuery($DBConn,$ExistsString);
+	if ( !$EQuery['Result'] ){
+		$ReturnValue['Done'] = false;
+		$ReturnValue['Error'] = $EQuery['Query'];
+		return $ReturnValue;
+	} elseif ( mysqli_num_rows($EQuery['Query']) == 1 && $Update == NULL ) {
+		$ReturnValue['Done'] = false;
+		$ReturnValue['Error'] = 'That result already exists';
+		return $ReturnValue;
+	}
+	
+	// Create and execute query
+	$QueryString = '';
+	if ( $Update == NULL ) {
+		$BaseString = 'insert into';
+	} else {
+		$BaseString = 'update';
+	}
+	foreach ( $Parameters as $Name => $Value ) {
+		if ( $QueryString == '' ) {
+			$QueryString = $BaseString . ' Results set ' . $Name . '="' . $Value . '"';
+		} else {
+			$QueryString = $QueryString . ', ' . $Name . '="' . $Value . '"';
+		}
+	}
+	$QueryString = $QueryString . ';';
+	$Query = MySQLQuery($DBConn,$QueryString);
+	if ( !$Query['Result'] ) {
+		$ReturnValue['Done'] = false;
+		$ReturnValue['Error'] = $Query['Query'];
+		return $ReturnValue;
+	}
+	
+	// Get RID
+	$RIDString = '';
+	foreach ( $IDArray as $ID ) {
+		if ( $RIDString == '' ) {
+			$RIDString = 'select RID from Results where ' . $ID['variable'] . '="' . $Parameters[$ID['variable']] . '"';
+		} else {
+			$RIDString = $RIDString . ' and ' . $ID['variable'] . '="' . $Parameters[$ID['variable']] . '"';
+		}
+	}
+	$RIDString = $RIDString . ';';
+	$RIDQuery = MySQLQuery($DBConn,$RIDString);
+	if ( !$RIDQuery['Result'] ){
+		$ReturnValue['Done'] = false;
+		$ReturnValue['Error'] = $RIDQuery['Query'];
+		return $ReturnValue;
+	}
+	$RID = mysqli_fetch_assoc($RIDQuery['Query']);
+	$ReturnValue['Done'] = true;
+	$ReturnValue['Error'] = $RID['RID'];
+	return $ReturnValue;
 }
 ?>
