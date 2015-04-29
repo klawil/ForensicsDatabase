@@ -33,21 +33,26 @@ function MySQLQuery($DBConn,$QueryString) {
 }
 function CreateTournamentList($DBConn, $IncludeAll = NULL, $DefaultTID = NULL) {
 	// Creates an html list of all the tournaments sorted by date
-	// $DBConn - connection to MySQL database
-	// $IncludeAll - Include an option that is "All Tournaments"
-	// $DefaultTID - the TID to set as the default value
-	$TQuery = mysqli_query($DBConn, 'select TName, TID from Tournaments order by Date desc, TName;');
-	if ( !$TQuery ) {
-		return ReturnMySQLError($DBConn);
+	// @param $DBConn - connection to MySQL database
+	// @param $IncludeAll - Include an option that is "All Tournaments"
+	// @param $DefaultTID - the TID to set as the default value
+	// @return String - html code for tournament select
+	
+	// Get list of tournaments
+	$TQuery = MySQLQuery($DBConn, 'select TName, TID from Tournaments order by Date desc, TName;');
+	if ( !$TQuery['Result'] ) {
+		return $TQuery['Query'];
 	}
-	$NumRows = mysqli_num_rows($TQuery);
+	
+	// Loop through all tournaments
+	$NumRows = mysqli_num_rows($TQuery['Query']);
 	$CurrentRow = 0;
 	$TournamentString = '<select id="TID" name="TID">';
 	if ( $IncludeAll == 1 ) {
 		$TournamentString = $TournamentString . '<option value="-1">All Tournaments</option>';
 	}
 	while ( $CurrentRow < $NumRows ) {
-		$Tournament = mysqli_fetch_assoc($TQuery);
+		$Tournament = mysqli_fetch_assoc($TQuery['Query']);
 		if ( $Tournament['TID'] == $DefaultTID ) {
 			$TournamentString = $TournamentString . '<option selected="selected" value="' . $Tournament['TID'] . '">' . $Tournament['TName'] . '</option>';
 		} else {
@@ -60,17 +65,22 @@ function CreateTournamentList($DBConn, $IncludeAll = NULL, $DefaultTID = NULL) {
 }
 function CreateStudentList($DBConn, $IncludeAll = NULL, $DefaultSID = NULL, $SelectName = NULL, $OnChange = NULL, $FormName = NULL) {
 	// Creates an html list of all the Students sorted by last name
-	// $DBConn - connection to MySQL database
-	// $IncludeAll - Include an option that is "All Tournaments"
-	// $DefaultSID - the SID to set as the default value
-	// $SelectName - What to set the "id" and "name" attributes
-	// $OnChange - What function to call when the value changes
-	// $FormName - What to set the "form" attribute
-	$SQuery = mysqli_query($DBConn, 'select FName, LName, SID from Students order by LName, FName;');
-	if ( !$SQuery ) {
-		return ReturnMySQLError($DBConn);
+	// @param $DBConn - connection to MySQL database
+	// @param $IncludeAll - Include an option that is "All Tournaments"
+	// @param $DefaultSID - the SID to set as the default value
+	// @param $SelectName - What to set the "id" and "name" attributes
+	// @param $OnChange - What function to call when the value changes
+	// @param $FormName - What to set the "form" attribute
+	// @return String - html code for student select
+	
+	// Get student information
+	$SQuery = MySQLQuery($DBConn, 'select FName, LName, SID from Students order by LName, FName;');
+	if ( !$SQuery['Result'] ) {
+		return $SQuery['Query']
 	}
-	$NumRows = mysqli_num_rows($SQuery);
+	
+	// Loop through all students
+	$NumRows = mysqli_num_rows($SQuery['Query']);
 	$CurrentRow = 0;
 	if ( $SelectName == NULL ) {
 		$SelectName = 'SID';
@@ -87,11 +97,11 @@ function CreateStudentList($DBConn, $IncludeAll = NULL, $DefaultSID = NULL, $Sel
 		$StudentString = $StudentString . '<option value="-1">All Students</option>';
 	}
 	while ( $CurrentRow < $NumRows ) {
-		$results = mysqli_fetch_assoc($SQuery);
-		if ( $results['SID'] == $DefaultSID ) {
-			$StudentString = $StudentString . '<option selected="selected" value="' . $results['SID'] . '">' . $results['LName'] . ', ' . $results['FName'] . '</option>';
+		$Student = mysqli_fetch_assoc($SQuery['Query']);
+		if ( $Student['SID'] == $DefaultSID ) {
+			$StudentString = $StudentString . '<option selected="selected" value="' . $Student['SID'] . '">' . $Student['LName'] . ', ' . $Student['FName'] . '</option>';
 		} else {
-			$StudentString = $StudentString . '<option value="' . $results['SID'] . '">' . $results['LName'] . ', ' . $results['FName'] . '</option>';
+			$StudentString = $StudentString . '<option value="' . $Student['SID'] . '">' . $Student['LName'] . ', ' . $Student['FName'] . '</option>';
 		}
 		$CurrentRow++;
 	}
@@ -100,16 +110,21 @@ function CreateStudentList($DBConn, $IncludeAll = NULL, $DefaultSID = NULL, $Sel
 }
 function CreateEventList($DBConn, $IncludeAll = NULL, $DefaultEID = NULL, $SelectName = NULL, $OnChange = NULL) {
 	// Creates an html list of all the Events sorted by name
-	// $DBConn - connection to MySQL database
-	// $IncludeAll - Include an option that is "All Tournaments"
-	// $DefaultEID - the EID to set as the default value
-	// $SelectName - What to set the "id" and "name" attributes
-	// $OnChange - What function to call when the value changes
-	$EQuery = mysqli_query($DBConn, 'select * from Events order by EName;');
-	if ( !$EQuery ) {
-		return ReturnMySQLError($DBConn);
+	// @param $DBConn - connection to MySQL database
+	// @param $IncludeAll - Include an option that is "All Tournaments"
+	// @param $DefaultEID - the EID to set as the default value
+	// @param $SelectName - What to set the "id" and "name" attributes
+	// @param $OnChange - What function to call when the value changes
+	// @return String - html code for event select
+	
+	// Get event information
+	$EQuery = MySQLQuery($DBConn, 'select * from Events order by EName;');
+	if ( !$EQuery['Result'] ) {
+		return $EQuery['Query'];
 	}
-	$NumRows = mysqli_num_rows($EQuery);
+	
+	// Loop through all events
+	$NumRows = mysqli_num_rows($EQuery['Query']);
 	$CurrentRow = 0;
 	if ( $SelectName == NULL ) {
 		$SelectName = 'EID';
@@ -123,11 +138,11 @@ function CreateEventList($DBConn, $IncludeAll = NULL, $DefaultEID = NULL, $Selec
 		$EventString = $EventString . "<option value='-1'>All Events</option>";
 	}
 	while ( $CurrentRow < $NumRows ) {
-		$results = mysqli_fetch_assoc($EQuery);
-		if ( $results['EID'] == $DefaultEID ) {
-			$EventString = $EventString . '<option selected="selected" value="' . $results['EID'] . '">' . $results['EName'] . '</option>';
+		$Event = mysqli_fetch_assoc($EQuery['Query']);
+		if ( $Event['EID'] == $DefaultEID ) {
+			$EventString = $EventString . '<option selected="selected" value="' . $Event['EID'] . '">' . $Event['EName'] . '</option>';
 		} else {
-			$EventString = $EventString . '<option value="' . $results['EID'] . '">' . $results['EName'] . '</option>';
+			$EventString = $EventString . '<option value="' . $Event['EID'] . '">' . $Event['EName'] . '</option>';
 		}
 		$CurrentRow++;
 	}
