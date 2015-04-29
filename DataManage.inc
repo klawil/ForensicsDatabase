@@ -22,6 +22,18 @@ function ValidateArray($Array, $Validation){
 	}
 	return $ReturnValue;
 }
+function IsInt($String){
+	// Determines whetehr parameter represents an integer
+	// @param $String - string to check
+	// @return boolean - whether the string is an integer or not
+	return (string)(int)$String == $String;
+}
+function IsBool($String){
+	// Determines whetehr parameter represents an boolean 1 or 0
+	// @param $String - string to check
+	// @return boolean - whether the string is a boolean or not
+	return ((string)(int)$String == 1 || (string)(int)$String == 0);
+}
 function InsertBallots($Ballots, $DBConn = NULL, $Insert = NULL) {
 	// Inserts Ballots from an array
 	// @param $Ballots: [RID: RID,
@@ -34,9 +46,6 @@ function InsertBallots($Ballots, $DBConn = NULL, $Insert = NULL) {
 	// @param $Insert - if set, insert/updates the ballots
 	$ReturnValue = ''; // Value to return at the end
 	$Queries = ''; // List of queries to execute at the end
-	function IsInt($String){
-		return (string)(int)$String == $String;
-	}
 	
 	// Array of variables and values to check
 	$CheckArray = [['variable' => 'RID', 'IsSet' => 1, 'Validate' => function($var){return IsInt($var);}, 'Error' => 'RID not valid'],
@@ -52,7 +61,7 @@ function InsertBallots($Ballots, $DBConn = NULL, $Insert = NULL) {
 		$Valid = ValidateArray($Ballot,$CheckArray);
 		if ( ! $Valid['Pass'] ) {
 			$ReturnValue[$key] = $Valid['Error'];
-			continue
+			continue;
 		}
 		
 		// Insert data if desired
@@ -66,7 +75,7 @@ function InsertBallots($Ballots, $DBConn = NULL, $Insert = NULL) {
 			$ExistsQuery = MySQLQuery($DBConn,$ExistsString);
 			if ( ! $ExistsQuery ) {
 				$ReturnValue[$key] = $ExistsQuery;
-				continue
+				continue;
 			}
 			if ( mysqli_num_rows($ExistsQuery) == 0 ) {
 				// Update query if exists
@@ -87,7 +96,83 @@ function InsertBallots($Ballots, $DBConn = NULL, $Insert = NULL) {
 	}
 	return $ReturnValue;
 }
-function InsertResult($SID, $EID, $TID, $broke, $State, $place, $PID = NULL) {
-
+function InsertResult($DBConn, $SID, $EID, $TID, $broke, $State, $PID = NULL, $place = NULL) {
+	// Inserts a result into the results table
+	// @param $SID - the ID of the student participating
+	// @param $EID - the event ID
+	// @param $TID - the tournament ID
+	// @param $broke - whether the student(s) broke
+	// @param $State - whether the student(s) qualified for state
+	// @param $PID - student ID of the partner (if required)
+	// @param $place - the place the student attained
+	// @return array ['Done','Error']
+	//  Done - boolean - whether the data was valid and inserted
+	//  Error - string - the error string if the insert was not successful or RID if insert was successful
+	
+	// Get variables set up
+	$ReturnValue['Done'] = true;
+	$Parameters = compact('DBConn','SID','EID','TID','broke','State');
+	unset($Parameters['DBConn']);
+	if ( $PID != NULL ) {
+		$Parameters['PID'] = $PID;
+	}
+	if ( $place != NULL ) {
+		$Parameters['place'] = $place;
+	}
+	
+	// Array of variables and values to check
+	$CheckArray = [['variable' => 'SID', 'IsSet' => 1, 'Validate' => function($var){return IsInt($var);}, 'Error' => 'Student not valid'],
+	['variable' => 'EID', 'IsSet' => 1, 'Validate' => function($var){return IsInt($var);}, 'Error' => 'Event not valid'],
+	['variable' => 'TID', 'IsSet' => 1, 'Validate' => function($var){return IsInt($var);}, 'Error' => 'Tournament not valid'],
+	['variable' => 'broke', 'IsSet' => 1, 'Validate' => function($var){return IsBool($var);}, 'Error' => 'Broke value not valid'],
+	['variable' => 'State', 'IsSet' => 1, 'Validate' => function($var){return IsBool($var);}, 'Error' => 'State value not valid'],
+	['variable' => 'PID', 'IsSet' => 0, 'Validate' => function($var){return IsInt($var);}, 'Error' => 'Partner not valid'],
+	['variable' => 'place', 'IsSet' => 0, 'Validate' => function($var){return IsInt($var);}, 'Error' => 'Place not valid']];
+	
+	// Validate variables
+	$Valid = ValidateArray($Parameters,$CheckArray);
+	if ( !$Valid['Pass'] ) {
+		$ReturnValue['Done'] = false;
+		$ReturnValue['Error'] = $Valid['Error'];
+		return $ReturnValue;
+	}
+	
+	// Escape all the parameters
+	foreach ( $Parameters as $key => $Param ) {
+		$Parameters[$key] = MySQLEscape($Param,$DBConn);
+	}
+	
+	// Get event's partner status
+	$PQuery = MySQLQuery($DBConn,'select Partner from Events where EID="' . $Parameters['EID'] . '";');
+	if ( !$PQuery['Result'] ) {
+		$ReturnValue['Done'] = false;
+		$ReturnValue['Error'] = $PQuery['Error'];
+		return $ReturnValue;
+	} elseif ( mysqli_num_rows($PQuery['Query']) == 0 ) {
+		$ReturnValue['Done'] = false;
+		$ReturnValue['Error'] = 'No such event';
+		return $ReturnValue;
+	} elseif ( mysqli_num_rows($PQuery['Query']) > 1 ) {
+		$ReturnValue['Done'] = false;
+		$ReturnValue['Error'] = 'Impossible error: more than 1 event with that ID';
+		return $ReturnValue;
+	}
+	$EData = mysqli_fetch_assoc($PQuery['Query']);
+	if ( $EData['Partner'] == '1' && $PID == NULL ) {
+		$ReturnValue['Done'] = false;
+		$ReturnValue['Error'] = 'Partner required for that event';
+		return $ReturnValue;
+	} elseif ( $EData['Partner'] != '1' && $PID != NULL ) {
+		$ReturnValue['Done'] = false;
+		$ReturnValue['Error'] = 'That is not a partner event';
+		return $ReturnValue;
+	}
+	
+	// Check if partner and student are the same
+	if ( $PID != NULL && $SID == $PID ) {
+		$ReturnValue['Done'] = false;
+		$ReturnValue['Error'] = 'Partner must be a different student';
+		return $ReturnValue;
+	}
 }
 ?>
