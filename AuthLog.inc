@@ -86,4 +86,27 @@ function CheckCookieAuth($DBConn) {
 	}
 	return 0;
 }
+function SetCookie($UN, $DBConn) {
+	// Sets authorization cookie
+	// @param $UN - username to set the cookie for
+	// @param $DBConn - connection to MySQL database
+	// @return true on success, error string on failure
+	
+	// Set expiration date and create cookie contents
+	$ExpTime = time() + (86400 * 7);
+	$MD5 = md5($UN . $GLOBALS['SecretWord'] . $ExpTime);
+	$MD5 = MySQLEscape($MD5, $DBConn);
+	$Cookie = $UN . "," . $MD5;
+	
+	// Insert the cookie into the users table
+	$CookieString = 'update users set cookie="' . $MD5 '", cookieExp="' . $ExpTime . '" where UName="' . $UN . '";';
+	$CookieQuery = MySQLQuery($DBConn,$CookieString);
+	if ( !$CookieQuery['Result'] ) {
+		return $CookieQuery['Query'];
+	}
+	
+	// Set the cookie
+	setcookie($GLOBALS['CookieName'], $Cookie, $ExpDate, "/");
+	return true;
+}
 ?>
