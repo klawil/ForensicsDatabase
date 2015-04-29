@@ -1,12 +1,12 @@
 <?php
-function ValidateArray($Array, $Validation){
+function ValidateArray($Array, $ValidationArray){
 	// Validates an array's values
 	// @param $Array - the array to validate
-	// @param $Checks - an array of checks to make
+	// @param $ValidationArray - an array of checks to make
 	//  [['variable', 'IsSet', 'Validate', 'Error'], ...]
 	// @return Array - ['Pass', 'Error']
 	$ReturnValue['Pass'] = true;
-	foreach ( $Validation as $Check ) {
+	foreach ( $ValidationArray as $Check ) {
 		if ( !isset($Ballot[$Check['variable']]) ) {
 			if ( $Check['IsSet'] == 1 ) {
 				$ReturnValue['Error'] = $Check['variable'] . ' not set';
