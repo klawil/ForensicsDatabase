@@ -61,26 +61,5 @@ function WriteToLog($LogString = Null) {
 	$LogFile = fopen("/var/log/forensics/general.log","a");
 	fwrite($LogFile,$LogString . ' on ' . date('Y-m-d') . ' at ' . date('H:i:s') . "\n");
 }
-function MySQLEscape($DBConn,$String) {
-	return mysqli_real_escape_string($DBConn,$String);
-}
-function MySQLQuery($DBConn,$QueryString) {
-	$Query = mysqli_query($DBConn,$QueryString);
-	if ( !$Query ) {
-		return mysqli_error($DBConn);
-	} else {
-		return $Query;
-	}
-}
-function ReturnMySQLError($DBConn, $CustomText = NULL) {
-	// Returns a MySQL error string
-	// $DBConn - connection to MySQL database
-	// $CustomText - Custom text to put in the error string
-	if ( $CustomText == NULL ) {
-		$CustomText = 'Error - MySQL error: ';
-	}
-	$CustomText = $CustomText . mysqli_error($DBConn) . '.';
-	return $CustomText;
-}
 CheckAuthorization();
 ?>
