@@ -134,16 +134,20 @@ function CreateEventList($DBConn, $IncludeAll = NULL, $DefaultEID = NULL, $Selec
 	$EventString = $EventString . '</select>';
 	return $EventString;
 }
+
+// Set up connection to MySQL database
 $UN = 'forensics';
 $PW = 'A15j89%%8JsTk991LexzQ#'; // Credentials to connect to MySQL
 $HOST = 'localhost';
 $GLOBALS['DBName'] = array_shift(explode('.',$_SERVER['HTTP_HOST'])); // DB Name - set to the subdomain
-if ( $GLOBALS['DBName'] == 'www' ) {
+if ( $GLOBALS['DBName'] == 'www' ) { // if they use www redirect to the same site minus the www
 	$HostName = explode('.',$_SERVER['HTTP_HOST']);
 	array_shift($HostName);
 	$HostName = implode('.',$HostName);
 	header('Location: ' . $HostName);
 }
+
+// Get information about the subdomain they are using
 $FDBConn = mysqli_connect($HOST,$UN,$PW,'Forensics');
 if ( ! $FDBConn ) {
 	$GLOBALS['ErrorMessage'] = 'Connection failed: ' . mysqli_connect_error();
@@ -156,8 +160,16 @@ if ( ! $Query['Result'] ) {
 } elseif ( mysqli_num_rows($Query['Query']) == 0 ) {
 	include '404.html';
 	return 0;
+} elseif ( mysqli_num_rows($Query['Query']) > 1 ) {
+	$GLOBALS['ErrorMessage'] = 'Impossible error: dulicate primary keys in subdomain table';
+	include 'ErrorPage.inc';
 }
-$Data = mysqli_fetch_assoc($Query);
+$GLOBALS['DBData'] = mysqli_fetch_assoc($Query);
+
+// *********************************************************************
+// Future: Add ability to prevent people from seeing protected subdomain
+// *********************************************************************
+
 mysqli_close($FDBConn);
 $DBConn = mysqli_connect($HOST,$UN,$PW,$GLOBALS['DBName']);
 if ( ! $DBConn ) {
