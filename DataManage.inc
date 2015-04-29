@@ -1,4 +1,27 @@
 <?php
+function ValidateArray($Array, $Validation){
+	// Validates an array's values
+	// @param $Array - the array to validate
+	// @param $Checks - an array of checks to make
+	//  [['variable', 'IsSet', 'Validate', 'Error'], ...]
+	// @return Array - ['Pass', 'Error']
+	$ReturnValue['Pass'] = true;
+	foreach ( $Validation as $Check ) {
+		if ( !isset($Ballot[$Check['variable']]) ) {
+			if ( $Check['IsSet'] == 1 ) {
+				$ReturnValue['Error'] = $Check['variable'] . ' not set';
+				$ReturnValue['Pass'] = false;
+			}
+		} elseif ( !$Check['Validate']($Ballot[$Check['variable']]) ) {
+			$ReturnValue['Error'] = $Check['Error'];
+			$ReturnValue['Pass'] = false;
+		}
+		if ( !$ReturnValue['Pass'] ) {
+			return $ReturnValue;
+		}
+	}
+	return $ReturnValue;
+}
 function InsertBallots($Ballots, $DBConn = NULL, $Insert = NULL) {
 	// Inserts Ballots from an array
 	// @param $Ballots: [RID: RID,
@@ -26,16 +49,10 @@ function InsertBallots($Ballots, $DBConn = NULL, $Insert = NULL) {
 	// Loop through all ballots
 	foreach ($Ballots as $key=>$Ballot) {
 		// Check variables
-		foreach ( $CheckArray as $Check) {
-			if ( !isset($Ballot[$Check['variable']]) ) {
-				if ( $Check['IsSet'] == 1 ) {
-					$ReturnValue[$key] = $Check['variable'] . ' not set';
-					continue 2;
-				}
-			} elseif ( !$Check['Validate']($Ballot[$Check['variable']]) ) {
-				$ReturnValue[$key] = $Check['Error'];
-				continue 2;
-			}
+		$Valid = ValidateArray($Ballot,$CheckArray);
+		if ( ! $Valid['Pass'] ) {
+			$ReturnValue[$key] = $Valid['Error'];
+			continue
 		}
 		
 		// Insert data if desired
@@ -69,5 +86,8 @@ function InsertBallots($Ballots, $DBConn = NULL, $Insert = NULL) {
 		}
 	}
 	return $ReturnValue;
+}
+function InsertResult($SID, $EID, $TID, $broke, $State, $place, $PID = NULL) {
+
 }
 ?>
