@@ -1,5 +1,6 @@
 <?php
 $GLOBALS['LogFile'] = '/var/log/forensics/general.log'; // Location of the log file
+$GLOBALS['ErrorFile'] = '/var/log/forensics/error.log'; // Location of the error log file
 $GLOBALS['CookieName'] = 'forensics_db_auth_token'; // Name of the cookie used to make login persistent
 $GLOBALS['SecretWord'] = 'ForensicsSECRET'; // MD5'd with username to cookie name
 $GLOBALS['UserName'] = ''; // Stores the username
@@ -24,6 +25,20 @@ function WriteLog($LogString = NULL) {
 		return false;
 	}
 	fwrite($LogFile,$LogString . ' Stamp: ' . date('Y-m-d') . ' at ' . date('H:i:s') . "\n");
+	fclose($LogFile);
+	return true;
+}
+function ErrorLog($ErrorString) {
+	// Write to an error log file
+	// @param $ErrorString - string to log
+	// @return - boolean of success
+	
+	// Open and write to the log file
+	$LogFile = fopen($GLOBALS['ErrorFile'],'a');
+	if ( !$LogFile ) {
+		return false;
+	}
+	fwrite($LogFile,$ErrorString . ' Stamp: ' . date('Y-m-d') . ' at ' . date('H:i:s') . "\n");
 	fclose($LogFile);
 	return true;
 }
