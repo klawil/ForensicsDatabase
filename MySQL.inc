@@ -174,6 +174,6 @@ mysqli_close($FDBConn);
 $DBConn = mysqli_connect($HOST,$UN,$PW,$GLOBALS['DBName']);
 if ( ! $DBConn ) {
 	$GLOBALS['ErrorMessage'] = 'Connection failed: ' . mysqli_connect_error();
-	include 'ErrorPage.inc';
+	require-once 'ErrorPage.inc';
 }
 ?>
