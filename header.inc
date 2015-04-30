@@ -20,8 +20,8 @@
 		</ul>
 	</li>
 <?php
-	if ( isset($GLOBALS['CanUserEdit']) && $GLOBALS['CanUserEdit'] == 1 ) {
-		echo '<li>Management
+if ( isset($GLOBALS['CanUserEdit']) && $GLOBALS['CanUserEdit'] == 1 ) {
+	echo '<li>Management
 		<ul>
 		<a href="NewStudent.php"><li>New Student</li></a>
 		<a href="NewTournament.php"><li>New Tournament</li></a>
@@ -30,11 +30,11 @@
 	</li>
 	<a href="https://github.com/klawil/ForensicsDatabase" target="_blank"><li>The Project on Github</li></a>
 	';
-	echo '<a href="IssueReport.php"><li>Report an Issue</li></a>
+echo '<a href="IssueReport.php"><li>Report an Issue</li></a>
 	';
-	}
-	if ( isset($GLOBALS['UserName']) && $GLOBALS['UserName'] != "" ) {
-		echo '<li id="login"><b onclick="ShowLogout();">' . $GLOBALS['UserName'] . '</b>
+}
+if ( isset($GLOBALS['UserName']) && $GLOBALS['UserName'] != "" ) {
+	echo '<li id="login"><b onclick="ShowLogout();">' . $GLOBALS['UserName'] . '</b>
 		<ul id="logoutwin">
 		<li id="login_message" style="display: none;"></li>
 		<li style="text-align: center;"><input type="button" value="Log Out" onclick="UserLogout();"></li>
@@ -42,8 +42,8 @@
 	</li>
 	</ul>
 ';
-	} else {
-		echo '<li id="login"><b onclick="ShowLogin();">Login</b>
+} else {
+	echo '<li id="login"><b onclick="ShowLogin();">Login</b>
 		<ul id="loginwin">
 		<li id="login_message" style="display: none;"></li>
 		<form id="LoginForm">
@@ -55,7 +55,6 @@
 	</li>
 	</ul>
 ';
-	}
 }
 ?>
 </nav>
