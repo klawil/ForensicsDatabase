@@ -229,7 +229,7 @@ Email: ' . $UserInfo['Email'] . '
 	$Mail = mail($UserInfo['Email'],'New User on ForensicsDB',$message,$header);
 	if ( !$Mail ) {
 		$ReturnArray['Done'] = false;
-		$ReturnArray['Error'] = 'Error sending mail to admin';
+		$ReturnArray['Error'] = 'Error sending mail to subdomain admin';
 		return $ReturnArray;
 	}
 	
