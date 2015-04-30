@@ -4,7 +4,7 @@ function MySQLEscape($String,$DBConn = Null) {
 	// @param $String - the string to escape
 	// @param $DBConn - connection to the MySQL database
 	// @return escaped version of the string
-	if ( !is_resource($DBConn) || !$DBConn ) {
+	if ( !$DBConn ) {
 		$DBConn = NULL;
 	}
 	if ( $DBConn == Null ) {
@@ -19,7 +19,7 @@ function MySQLQuery($DBConn,$QueryString) {
 	// @return [Array<Result, Query>]
 	//  Result - boolean indicating whether the query was successful
 	//  Query - either the query object or the error string
-	if ( !is_resource($DBConn) ){
+	if ( !$DBConn ){
 		$ReturnArray['Result'] = false;
 		$ReturnArray['Query'] = 'Invalid DB Connection';
 	} else {
@@ -166,12 +166,12 @@ if ( $GLOBALS['DBName'] == 'www' ) { // if they use www redirect to the same sit
 }
 
 // Get information about the subdomain they are using
-$FDBConn = mysqli_connect($HOST,$UN,$PW,'Forensics');
-if ( ! $FDBConn ) {
+$FDBConn = mysqli_connect($HOST,$UN,$PW,'Schools');
+if ( !$FDBConn ) {
 	$GLOBALS['ErrorMessage'] = 'Connection failed: ' . mysqli_connect_error();
 	include 'ErrorPage.inc';
 }
-$Query = MySQLQuery($FDBConn,"select * from Subdomains where Subdomain='" . $GLOBALS['DBName'] . "';");
+$Query = MySQLQuery($FDBConn,'select * from Subdomains where Subdomain="' . $GLOBALS['DBName'] . '";');
 if ( ! $Query['Result'] ) {
 	$GLOBALS['ErrorMessage'] = $Query['Query'];
 	include 'ErrorPage.inc';
@@ -183,6 +183,7 @@ if ( ! $Query['Result'] ) {
 	include 'ErrorPage.inc';
 }
 $GLOBALS['DBData'] = mysqli_fetch_assoc($Query);
+$GLOBALS['DBName'] = 'TemplateDB'; // *****
 
 // *********************************************************************
 // Future: Add ability to prevent people from seeing protected subdomain
