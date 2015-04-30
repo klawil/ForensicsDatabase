@@ -134,7 +134,9 @@ function CreateUser($UN, $PW, $FName, $LName, $Email, $DBConn) {
 	
 	// Escape variables
 	foreach ( $UserInfo as $Key => $Value ) {
-		$UserInfo[$Key] = MySQLEscape($Value,$DBConn);
+		if ( $Key != 'Password' ) { // Don't escape password
+			$UserInfo[$Key] = MySQLEscape($Value,$DBConn);
+		}
 	}
 	
 	function IsUQ($Key,$Value,$DBConn) {
@@ -181,6 +183,9 @@ function CreateUser($UN, $PW, $FName, $LName, $Email, $DBConn) {
 	$UserInfo['EmailCode'] = $VString;
 	$UserInfo['EmailConf'] = 0;
 	
+	// Hash password
+	$UserInfo['Password'] = password_hash($UserInfo['Password'],PASSWORD_DEFAULT);
+	
 	// Build insert string
 	$QueryString = '';
 	foreach ( $UserInfo as $Key => $Value ) {
@@ -192,6 +197,39 @@ function CreateUser($UN, $PW, $FName, $LName, $Email, $DBConn) {
 	}
 	$QueryString = $QueryString . ';';
 	
+	// Set email paramters
+	$AdminEmail = $GLOBALS['DBData']['AdminEmail'];
+	$header = 'Content-type:text/html;charset=UTF-8' . "\r\n" . 'From: noreply@forensicsdb.com' . "\r\n" . 'BCC: root@forensicsdb.com';
+	
+	// Send email to subdomain admin
+	$message = '<html>
+<h3>A new user has been added to your subdomain</h3><br>
+Name: ' . $UserInfo['FName'] . ' ' . $UserInfo['LName'] . '<br>
+Username: ' . $UserInfo['UName'] . '<br>
+Email: ' . $UserInfo['Email'] . '
+<html>';
+	$Mail = mail('root <root>, Domain Admin <' . $AdminEmail . '>','New User on ForensicsDB',$message,$header);
+	if ( !$Mail ) {
+		$ReturnArray['Done'] = false;
+		$ReturnArray['Error'] = 'Error sending mail to admin';
+		return $ReturnArray;
+	}
+	
+	// Send validation email to user
+	$message = '<html>
+<h3>A new user has been created with this email!</h3><br>
+If this was not you, please click <a href="http://forensicsdb.com/reject.php">this link</a><br>
+Name: ' . $UserInfo['FName'] . ' ' . $UserInfo['LName'] . '<br>
+Username: ' . $UserInfo['UName'] . '<br>
+Email: ' . $UserInfo['Email'] . '
+<html>';
+	$Mail = mail($UserInfo['Email'],'New User on ForensicsDB',$message,$header);
+	if ( !$Mail ) {
+		$ReturnArray['Done'] = false;
+		$ReturnArray['Error'] = 'Error sending mail to admin';
+		return $ReturnArray;
+	}
+	
 	// Insert user into database
 	$InsQuery = MySQLQuery($DBConn,$QueryString);
 	if ( !$InsQuery['Result'] ) {
@@ -199,9 +237,7 @@ function CreateUser($UN, $PW, $FName, $LName, $Email, $DBConn) {
 		$ReturnArray['Error'] = $InsQuery['Query'];
 		return $ReturnArray;
 	}
-	
-	// Send email to subdomain admin
-	
-	// Send validation email to user
+	$ReturnArray['Done'] = true;
+	return $ReturnArray;
 }
 ?>
