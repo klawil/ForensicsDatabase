@@ -4,11 +4,13 @@ function MySQLEscape($String,$DBConn = Null) {
 	// @param $String - the string to escape
 	// @param $DBConn - connection to the MySQL database
 	// @return escaped version of the string
+	if ( !is_resource($DBConn) || !$DBConn ) {
+		$DBConn = NULL;
+	}
 	if ( $DBConn == Null ) {
 		$DBConn = mysqli_connect();
 	}
-	$EscString = mysqli_real_escape_string($DBConn,$String);
-	return $EscString;
+	return mysqli_real_escape_string($DBConn,$String);
 }
 function MySQLQuery($DBConn,$QueryString) {
 	// Executes a query
