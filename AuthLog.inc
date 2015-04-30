@@ -86,7 +86,7 @@ function CheckCookieAuth($DBConn) {
 	}
 	return 0;
 }
-function SetCookie($UN, $DBConn) {
+function SetAuthCookie($UN, $DBConn) {
 	// Sets authorization cookie
 	// @param $UN - username to set the cookie for
 	// @param $DBConn - connection to MySQL database
