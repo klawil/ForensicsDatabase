@@ -109,4 +109,21 @@ function SetCookie($UN, $DBConn) {
 	setcookie($GLOBALS['CookieName'], $Cookie, $ExpDate, "/");
 	return true;
 }
+function CreateUser($UN, $PW, $FName, $LName, $Email, $DBConn) {
+	// Creates a new user and emails the admin of the domain about the creation
+	// @param $UN - username for the new user
+	// @param $PW - password for the new user
+	// @param $FName - First name of the new user
+	// @param $LName - Last name of the new user
+	// @param $Email - Email of the user
+	// @param $DBConn - connection to a MySQL database
+	
+	// Validate variables
+	$UserInfo = compact('UN','PW','FName','LName','Email');
+	$CheckArray = [['variable' => 'UN','IsSet' => 1, 'Validate' => function($var){return IsLength($var,30);}],
+	['variable' => 'FName','IsSet' => 1, 'Validate' => function($var){return IsLength($var,70);}],
+	['variable' => 'LName','IsSet' => 1, 'Validate' => function($var){return IsLength($var,70);}],
+	['variable' => 'Email','IsSet' => 1, 'Validate' => function($var){return IsLength($var,150);}]];
+	
+}
 ?>
