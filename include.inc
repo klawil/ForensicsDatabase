@@ -1,6 +1,6 @@
 <?php
-require-once 'MySQL.inc';
-require-once 'DataManage.inc';
-require-once 'AuthLog.inc';
+require_once 'MySQL.inc';
+require_once 'DataManage.inc';
+require_once 'AuthLog.inc';
 CheckCookieAuth($DBConn);
 ?>
