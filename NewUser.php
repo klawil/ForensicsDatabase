@@ -1,6 +1,6 @@
 <?php
-require-once 'include.inc';
+require_once 'include.inc';
 $GLOBALS['PageName'] = 'New User';
-require-once 'header.inc';
+require_once 'header.inc';
 ?>
 </html>
