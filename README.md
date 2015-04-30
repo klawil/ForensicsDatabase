@@ -32,7 +32,7 @@ Because some of the files aren't meant to be served, put the following informati
 </VirtualHost>
 ````
 
-Open the Apache main configuration and find the directory the website is in (for me, it's /var/www/ForensicsDatabase). It should look like:
+Open the Apache main configuration and find the directory the website is in (for me, it's /var/www/). It should look like:
 ````
 <Directory /var/www/>
 	AllowOverride All
