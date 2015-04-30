@@ -1,11 +1,15 @@
-<html>
+<?php
+$GLOBALS['PageName'] = 'Error Experienced';
+require_once 'header.inc';
+/*<html>
 <head>
 <title>Error Experienced</title>
 <link rel="stylesheet" type="text/css" href="Styles.css">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body>
+<body>*/
+?>
 <center>
 <h1>Well this is embarrassing!</h1>
 <h2>There seems to have been an error with that request</h2><br>
