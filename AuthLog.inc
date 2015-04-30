@@ -56,7 +56,7 @@ function CheckCookieAuth($DBConn) {
 		$Cookie = $CookieArray[1];
 		
 		// Check user existence and get user cookie data
-		$UserQuery = MySQLQuery($DBConn,'select * from users where UName="' . $GLOBALS['UserName'] . '";');
+		$UserQuery = MySQLQuery($DBConn,'select * from Users where UName="' . $GLOBALS['UserName'] . '";');
 		if ( !$UserQuery['Result'] ) {
 			ErrorLog($GLOBALS['DBName'],$GLOBALS['UserName'] . ': ' . $UserQuery['Query']);
 			$GLOBALS['UserName'] = '';
@@ -98,8 +98,8 @@ function SetCookie($UN, $DBConn) {
 	$MD5 = MySQLEscape($MD5, $DBConn);
 	$Cookie = $UN . "," . $MD5;
 	
-	// Insert the cookie into the users table
-	$CookieString = 'update users set cookie="' . $MD5 '", cookieExp="' . $ExpTime . '" where UName="' . $UN . '";';
+	// Insert the cookie into the Users table
+	$CookieString = 'update Users set cookie="' . $MD5 '", cookieExp="' . $ExpTime . '" where UName="' . $UN . '";';
 	$CookieQuery = MySQLQuery($DBConn,$CookieString);
 	if ( !$CookieQuery['Result'] ) {
 		return $CookieQuery['Query'];
@@ -117,13 +117,91 @@ function CreateUser($UN, $PW, $FName, $LName, $Email, $DBConn) {
 	// @param $LName - Last name of the new user
 	// @param $Email - Email of the user
 	// @param $DBConn - connection to a MySQL database
+	// @return Array - ['Done','Error']
 	
 	// Validate variables
-	$UserInfo = compact('UN','PW','FName','LName','Email');
-	$CheckArray = [['variable' => 'UN','IsSet' => 1, 'Validate' => function($var){return IsLength($var,30);}],
-	['variable' => 'FName','IsSet' => 1, 'Validate' => function($var){return IsLength($var,70);}],
-	['variable' => 'LName','IsSet' => 1, 'Validate' => function($var){return IsLength($var,70);}],
-	['variable' => 'Email','IsSet' => 1, 'Validate' => function($var){return IsLength($var,150);}]];
+	$UserInfo = compact('UName','Password','FName','LName','Email');
+	$CheckArray = [['variable' => 'UName','IsSet' => 1, 'Validate' => function($var){return IsLength($var,30);},'Error' => 'Username is too long'],
+	['variable' => 'FName','IsSet' => 1, 'Validate' => function($var){return IsLength($var,70);},'Error' => 'First Name is too long'],
+	['variable' => 'LName','IsSet' => 1, 'Validate' => function($var){return IsLength($var,70);},'Error' => 'Last Name is too long'],
+	['variable' => 'Email','IsSet' => 1, 'Validate' => function($var){return IsLength($var,150);},'Error' => 'Email is too long']];
+	$Validation = ValidateArray($UserInfo,$CheckArray);
+	if ( !$Validation['Pass'] ) {
+		$ReturnArray['Done'] = false;
+		$ReturnArray['Error'] = $Validation['Error'];
+		return $ReturnArray;
+	}
 	
+	// Escape variables
+	foreach ( $UserInfo as $Key => $Value ) {
+		$UserInfo[$Key] = MySQLEscape($Value,$DBConn);
+	}
+	
+	function IsUQ($Key,$Value,$DBConn) {
+		// Checks if a value is unique
+		// @param $Key - the column name 
+		// @param $Value - the value to check
+		// @param $DBConn - connection to a MySQL database
+		// @return Array - ['Unique','Error']
+		
+		// Query database
+		$UNQuery = MySQLQuery($DBConn,'select * from Users where ' . $Key . '="' . $Value . '";');
+		if ( !$UNQuery['Result'] ) {
+			$ReturnArray['Unique'] = false;
+			$ReturnArray['Error'] = $UNQuery['Query'];
+			return $ReturnArray;
+		} elseif ( mysqli_num_rows($UNQuery['Query']) != 0 ) {
+			$ReturnArray['Unique'] = false;
+			$ReturnArray['Error'] = 'That ' . $Key . ' is already in use';
+			return $ReturnArray;
+		}
+		$ReturnArray['Unique'] = true;
+		return $ReturnArray;
+	}
+	
+	// Check username
+	$UNUQ = IsUQ('UName',$UserInfo['UName'],$DBConn);
+	if ( !$UNUQ['Unique'] ) {
+		$ReturnArray['Done'] = false;
+		$ReturnArray['Error'] = $UNUQ['Error'];
+		return $ReturnArray;
+	}
+	
+	// Check email
+	$EmailUQ = IsUQ('Email',$UserInfo['Email'],$DBConn);
+	if ( !$EmailUQ['Unique'] ) {
+		$ReturnArray['Done'] = false;
+		$ReturnArray['Error'] = $EmailUQ['Error'];
+		return $ReturnArray;
+	}
+	
+	// Create validation string
+	$VString = md5($UserInfo['UName'] . $GLOBALS['SecretWord']);
+	$VString = MySQLEscape($MD5, $DBConn);
+	$UserInfo['EmailCode'] = $VString;
+	$UserInfo['EmailConf'] = 0;
+	
+	// Build insert string
+	$QueryString = '';
+	foreach ( $UserInfo as $Key => $Value ) {
+		if ( $QueryString = '' ) {
+			$QueryString = 'insert into Users set ' . $Key . '="' . $Value . '"';
+		} else {
+			$QueryString = $QueryString . ', ' . $Key . '="' . $Value . '"';
+		}
+	}
+	$QueryString = $QueryString . ';';
+	
+	// Insert user into database
+	$InsQuery = MySQLQuery($DBConn,$QueryString);
+	if ( !$InsQuery['Result'] ) {
+		$ReturnArray['Done'] = false;
+		$ReturnArray['Error'] = $InsQuery['Query'];
+		return $ReturnArray;
+	}
+	
+	// Send email to subdomain admin
+	
+	// Send validation email to user
 }
 ?>
