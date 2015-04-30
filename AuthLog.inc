@@ -99,7 +99,7 @@ function SetCookie($UN, $DBConn) {
 	$Cookie = $UN . "," . $MD5;
 	
 	// Insert the cookie into the Users table
-	$CookieString = 'update Users set cookie="' . $MD5 '", cookieExp="' . $ExpTime . '" where UName="' . $UN . '";';
+	$CookieString = 'update Users set cookie="' . $MD5 . '", cookieExp="' . $ExpTime . '" where UName="' . $UN . '";';
 	$CookieQuery = MySQLQuery($DBConn,$CookieString);
 	if ( !$CookieQuery['Result'] ) {
 		return $CookieQuery['Query'];
@@ -185,6 +185,9 @@ function CreateUser($UN, $PW, $FName, $LName, $Email, $DBConn) {
 	
 	// Hash password
 	$UserInfo['Password'] = password_hash($UserInfo['Password'],PASSWORD_DEFAULT);
+	
+	// Set Modification Ability
+	$UserInfo['CanMod'] = 0;
 	
 	// Build insert string
 	$QueryString = '';
