@@ -7,7 +7,8 @@ function MySQLEscape($String,$DBConn = Null) {
 	if ( $DBConn == Null ) {
 		$DBConn = mysqli_connect();
 	}
-	return mysqli_real_escape_string($DBConn,$String);
+	$EscString = mysqli_real_escape_string($DBConn,$String);
+	return $EscString;
 }
 function MySQLQuery($DBConn,$QueryString) {
 	// Executes a query
