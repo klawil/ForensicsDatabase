@@ -53,6 +53,14 @@ function IsID($DBConn, $ID, $Type) {
 	}
 	return true;
 }
+function IsLength($String,$Length) {
+	// Determines whether a string is longer than the length
+	// @param $String - the string to test
+	// @param $Length - the length it must be <=
+	// @return boolean
+	
+	return strlen($String) <= $Length;
+}
 function InsertBallots($Ballots, $DBConn = NULL, $Insert = NULL) {
 	// Inserts Ballots from an array
 	// @param $Ballots: [RID: RID,
