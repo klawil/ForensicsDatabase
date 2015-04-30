@@ -79,7 +79,7 @@ function CreateStudentList($DBConn, $IncludeAll = NULL, $DefaultSID = NULL, $Sel
 	// Get student information
 	$SQuery = MySQLQuery($DBConn, 'select FName, LName, SID from Students order by LName, FName;');
 	if ( !$SQuery['Result'] ) {
-		return $SQuery['Query']
+		return $SQuery['Query'];
 	}
 	
 	// Loop through all students
