@@ -7,7 +7,7 @@ function ValidateArray($Array, $ValidationArray){
 	// @return Array - ['Pass', 'Error']
 	$ReturnValue['Pass'] = true;
 	foreach ( $ValidationArray as $Check ) {
-		if ( !isset($Ballot[$Check['variable']]) ) {
+		if ( !isset($Array[$Check['variable']]) ) {
 			if ( $Check['IsSet'] == 1 ) {
 				$ReturnValue['Error'] = $Check['variable'] . ' not set';
 				$ReturnValue['Pass'] = false;
