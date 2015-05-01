@@ -109,10 +109,10 @@ function SetAuthCookie($UN, $DBConn) {
 	setcookie($GLOBALS['CookieName'], $Cookie, $ExpDate, "/");
 	return true;
 }
-function CreateUser($UN, $PW, $FName, $LName, $Email, $DBConn) {
+function CreateUser($UName, $Password, $FName, $LName, $Email, $DBConn) {
 	// Creates a new user and emails the admin of the domain about the creation
-	// @param $UN - username for the new user
-	// @param $PW - password for the new user
+	// @param $UName - username for the new user
+	// @param $Password - password for the new user
 	// @param $FName - First name of the new user
 	// @param $LName - Last name of the new user
 	// @param $Email - Email of the user
