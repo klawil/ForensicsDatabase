@@ -36,16 +36,16 @@ if ( isset($GLOBALS['CanUserEdit']) && $GLOBALS['CanUserEdit'] == 1 ) {
 ';
 }
 ?>
-	<li class="UserItem" onclick="ShowInOutForm();"><?php
+	<li class="UserItem"><?php
 if ( isset($GLOBALS['UserName']) && $GLOBALS['UserName'] != "" ) {
-	echo $GLOBALS['UserData']['LName'] . ', ' . $GLOBALS['UserData']['LName'] . '
+	echo '<a onclick="ShowInOutForm();">' . $GLOBALS['UserData']['LName'] . ', ' . $GLOBALS['UserData']['LName'] . '</a>
 	<ul id="LogInOut">
 		<li class="Alert" id="UserMessage"></li>
 		<a href="#" onclick="UserLogout();"><li class="SubMenuItem">Log Out</li></a>
 		<a href="ManageSelf.php"><li class="SubMenuItem">Manage Account</li></a>
 ';
 } else {
-	echo 'Login
+	echo '<a onclick="ShowInOutForm();">Login</a>
 		<ul id="LogInOut">
 		<li class="Alert" id="UserMessage"></li>
 		<form id="LoginForm">
