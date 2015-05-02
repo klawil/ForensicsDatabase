@@ -179,15 +179,15 @@ function CreateUser($UName, $Password, $FName, $LName, $Email, $DBConn) {
 	
 	// Create validation string
 	$VString = md5($UserInfo['UName'] . $GLOBALS['SecretWord']);
-	$VString = MySQLEscape($MD5, $DBConn);
+	//$VString = MySQLEscape($MD5, $DBConn);
 	$UserInfo['EmailCode'] = $VString;
-	//$UserInfo['EmailConf'] = false;
+	$UserInfo['EmailConf'] = false;
 	
 	// Hash password
 	$UserInfo['Password'] = password_hash($UserInfo['Password'],PASSWORD_DEFAULT);
 	
 	// Set Modification Ability
-	//$UserInfo['CanMod'] = 0;
+	$UserInfo['CanMod'] = 0;
 	
 	// Build insert string
 	$QueryString = '';
@@ -198,7 +198,7 @@ function CreateUser($UName, $Password, $FName, $LName, $Email, $DBConn) {
 			$QueryString = $QueryString . ', ' . $Key . '="' . $Value . '"';
 		}
 	}
-	$QueryString = $QueryString . ', CanMod=false, EmailConf=false;';
+	$QueryString = $QueryString . ';';
 	
 	// Set email paramters
 	$AdminEmail = $GLOBALS['DBData']['AdminEmail'];
