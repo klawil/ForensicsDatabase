@@ -15,7 +15,7 @@ Or you could just send us an email at ' . $EmailString . '!</h3>';
 	echo '<h3>If you continue to experienc this error, send us an email at ' . $EmailString . ' with as much detail as possible.<br>Thank you!</h3>';
 }
 ?>
-<br><h3>You can head back to the main page for your school's site <a href="<?php echo $_SERVER['HTTP_HOST'] ?>">here</a> or go to the ForensicsDB homeage <a href="http://forensicsdb.com/">here</a>!</h3>
+<br><h3>You can head back to the main page for your school's site <a href="/">here</a> or go to the ForensicsDB homeage <a href="http://forensicsdb.com/">here</a>!</h3>
 </center>
 </body>
 </html>
