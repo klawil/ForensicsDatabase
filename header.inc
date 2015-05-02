@@ -47,7 +47,7 @@ if ( isset($GLOBALS['UserName']) && $GLOBALS['UserName'] != "" ) {
 		<ul id="loginwin">
 		<li id="login_message" style="display: none;"></li>
 		<form id="LoginForm">
-		<li style="text-align: right;">User: <input type="text" name="UName" id="UName"></li>
+		<li style="text-align: right;">User: <input type="text" name="UserName" id="UserName"></li>
 		<li style="text-align: right;">Password: <input type="password" name="PWord" id="PWord"></li>
 		<li style="text-align: center;"><input type="button" value="Log In" onclick="LoginUser();"> <a href="NewUser.php"><input type="button" value="New User"></a></li>
 		</form>
@@ -76,7 +76,7 @@ function ShowLogout() {
 	}
 }
 function LoginUser() {
-	PString = "UName=" + document.getElementById("UName").value + "&PWord=" + document.getElementById("PWord").value;
+	PString = "UName=" + document.getElementById("UserName").value + "&PWord=" + document.getElementById("PWord").value;
 	if ( window.XMLHttpRequest ) {
 		xmlhttp = new XMLHttpRequest();
 	} else {
