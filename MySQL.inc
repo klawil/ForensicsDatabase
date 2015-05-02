@@ -184,7 +184,6 @@ if ( ! $Query['Result'] ) {
 }
 $GLOBALS['DBData'] = mysqli_fetch_assoc($Query);
 $GLOBALS['DBName'] = $GLOBALS['DBData']['DBName'];
-//$GLOBALS['DBName'] = 'TemplateDB'; // *****
 
 // *********************************************************************
 // Future: Add ability to prevent people from seeing protected subdomain
