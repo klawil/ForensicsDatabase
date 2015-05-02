@@ -1,6 +1,6 @@
 <?php
 require_once 'include.inc';
-$GLOBALS['PageName'] = 'New User';
+$GLOBALS['PageName'] = $GLOBALS['DBData']['SchoolName'];
 require_once 'header.inc';
 ?>
 <h1>Site under construction</h1>
