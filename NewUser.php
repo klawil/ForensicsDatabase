@@ -78,6 +78,7 @@ function CheckLength(Name,Max,Min) {
 		HTMLString = '';
 	}
 	document.getElementById(Name + 'Alert').innerHTML = "Hello";
+	window.alert(HTMLString);
 }
 </script>
 </body>
