@@ -81,15 +81,15 @@ function LoginUser() {
 	xmlhttp.open("POST","Login.php",true);
 	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xmlhttp.send(PString);
-	document.getElementById("login_message").style.display = "block";
-	document.getElementById("login_message").innerHTML = "Checking Credentials...";
+	document.getElementById("UserMessage").style.display = "block";
+	document.getElementById("UserMessage").innerHTML = "Checking Credentials...";
 	xmlhttp.onreadystatechange = function() {
 		response = xmlhttp.responseText;
 		if ( response == 'true' ) {
 			location.reload();
 		} else {
 			document.getElementById("LoginForm").reset();
-			document.getElementById("login_message").innerHTML = response;
+			document.getElementById("UserMessage").innerHTML = response;
 		}
 	}
 }
@@ -103,14 +103,14 @@ function UserLogout() {
 	xmlhttp.open("POST","Login.php",true);
 	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xmlhttp.send(PString);
-	document.getElementById("login_message").style.display = "block";
-	document.getElementById("login_message").innerHTML = "Logging Out...";
+	document.getElementById("UserMessage").style.display = "block";
+	document.getElementById("UserMessage").innerHTML = "Logging Out...";
 	xmlhttp.onreadystatechange=function() {
 		response = xmlhttp.responseText;
 		if ( response == 'true' ) {
 			location.reload();
 		} else {
-			document.getElementById("login_message").innerHTML = response;
+			document.getElementById("UserMessage").innerHTML = response;
 		}
 	}
 }
