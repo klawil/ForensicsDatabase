@@ -137,3 +137,10 @@ li:hover ul {
 	float: left;
 	width: 33%;
 }
+
+/***********\
+|*  Other  *|
+\***********/
+.Alert {
+	color: red;
+}
