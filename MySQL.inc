@@ -182,7 +182,7 @@ if ( ! $Query['Result'] ) {
 	$GLOBALS['ErrorMessage'] = 'Impossible error: dulicate primary keys in subdomain table';
 	include 'ErrorPage.inc';
 }
-$GLOBALS['DBData'] = mysqli_fetch_assoc($Query);
+$GLOBALS['DBData'] = mysqli_fetch_assoc($Query['Query']);
 $GLOBALS['DBName'] = $GLOBALS['DBData']['DBName'];
 
 // *********************************************************************
