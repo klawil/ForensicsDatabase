@@ -181,7 +181,7 @@ function CreateUser($UName, $Password, $FName, $LName, $Email, $DBConn) {
 	$VString = md5($UserInfo['UName'] . $GLOBALS['SecretWord']);
 	$VString = MySQLEscape($MD5, $DBConn);
 	$UserInfo['EmailCode'] = $VString;
-	$UserInfo['EmailConf'] = 0;
+	$UserInfo['EmailConf'] = false;
 	
 	// Hash password
 	$UserInfo['Password'] = password_hash($UserInfo['Password'],PASSWORD_DEFAULT);
