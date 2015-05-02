@@ -183,7 +183,7 @@ if ( ! $Query['Result'] ) {
 	include 'ErrorPage.inc';
 }
 $GLOBALS['DBData'] = mysqli_fetch_assoc($Query);
-$GLOBALS['DBName'] = 'TemplateDB'; // *****
+//$GLOBALS['DBName'] = 'TemplateDB'; // *****
 
 // *********************************************************************
 // Future: Add ability to prevent people from seeing protected subdomain
