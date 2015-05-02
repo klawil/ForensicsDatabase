@@ -200,7 +200,7 @@ function CreateUser($UName, $Password, $FName, $LName, $Email, $DBConn) {
 	}
 	$QueryString = $QueryString . ', EmailConf=0, CanMod=0;';
 	
-	// Set email paramters
+	/*// Set email paramters
 	$AdminEmail = $GLOBALS['DBData']['AdminEmail'];
 	$header = 'Content-type:text/html;charset=UTF-8' . "\r\n" . 'From: noreply@forensicsdb.com' . "\r\n" . 'BCC: root@forensicsdb.com';
 	
@@ -231,13 +231,13 @@ Email: ' . $UserInfo['Email'] . '
 		$ReturnArray['Done'] = false;
 		$ReturnArray['Error'] = 'Error sending mail to subdomain admin';
 		return $ReturnArray;
-	}
+	}*/
 	
 	// Insert user into database
 	$InsQuery = MySQLQuery($DBConn,$QueryString);
 	if ( !$InsQuery['Result'] ) {
 		$ReturnArray['Done'] = false;
-		$ReturnArray['Error'] = $InsQuery['Query'];
+		$ReturnArray['Error'] = $InsQuery['Query'] . '<br>' . $QueryString;
 		return $ReturnArray;
 	}
 	$ReturnArray['Done'] = true;
