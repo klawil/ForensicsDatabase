@@ -179,7 +179,6 @@ function CreateUser($UName, $Password, $FName, $LName, $Email, $DBConn) {
 	
 	// Create validation string
 	$VString = md5($UserInfo['UName'] . $GLOBALS['SecretWord']);
-	//$VString = MySQLEscape($MD5, $DBConn);
 	$UserInfo['EmailCode'] = $VString;
 	$UserInfo['EmailConf'] = 0;
 	
@@ -237,7 +236,7 @@ Email: ' . $UserInfo['Email'] . '
 	$InsQuery = MySQLQuery($DBConn,$QueryString);
 	if ( !$InsQuery['Result'] ) {
 		$ReturnArray['Done'] = false;
-		$ReturnArray['Error'] = $InsQuery['Query'] . '<br>' . $QueryString;
+		$ReturnArray['Error'] = $InsQuery['Query'];
 		return $ReturnArray;
 	}
 	$ReturnArray['Done'] = true;
