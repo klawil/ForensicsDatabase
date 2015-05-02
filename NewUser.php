@@ -56,13 +56,22 @@ if ( $ErrorString != '' ) {
 }
 ?>
 <form id="NewUser" action="NewUser.php" method="post">
-First Name: <input type="text" name="FName" value="<?php echo $UserData['FName']; ?>"><br>
-Last Name: <input type="text" name="LName" value="<?php echo $UserData['LName']; ?>"><br>
+First Name: <input type="text" name="FName" onblur="CheckName('FName');" value="<?php echo $UserData['FName']; ?>"><br>
+Last Name: <input type="text" name="LName" onblur="CheckName('LName');" value="<?php echo $UserData['LName']; ?>"><br>
 User Name: <input type="text" name="UName" value="<?php echo $UserData['UName']; ?>"><br>
 Email: <input type="text" name="Email" value="<?php echo $UserData['Email']; ?>"><br>
 Password: <input type="password" name="Password"><br>
 Confirm Password: <input type="password" name="PasswordVerify"><br>
 <input type="submit" value="Create User">
 </form>
+<script>
+// UName: 30, FName: 70, LName: 70, Email: 150, PWord: 5-30
+function CheckUser() {
+	
+}
+function CheckName(Name) {
+	window.alert(Name);
+}
+</script>
 </body>
 </html>
