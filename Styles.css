@@ -48,8 +48,8 @@ input[type="number"] {
 /****************\
 |*  Navigation  *|
 \****************/
-nav ul {
-	background: #0000ff;
+.TopMenu {
+	background: #0000FF;
 	padding: 0 20px;
 	border-radius: 10px;
 	list-style: none;
@@ -57,66 +57,60 @@ nav ul {
 	display: inline-table;
 	width: calc(100% - 40px);
 	z-index: 10;
-	color: #FFFFFF;
 }
-nav ul a {
-	color: #FFFFFF;
+.TopMenu a {
 	text-decoration: none;
 }
-nav ul #login {
-	float: right;
-}
-nav ul li ul {
-	padding-top: 0px;
-	padding-left: 0px;
-	padding-right: 0px;
-	padding-bottom: 0px;
-	border-radius: 0px;
-	width: auto;
-	z-index: 10;
-}
-nav ul li a {
+.TopMenuItem {
 	color: #FFFFFF;
-	text-decoration: none;
+	float: left;
+	padding: 7px;
+	font-size: 17px;
 }
-nav ul li:hover {
+.SubMenuItem:hover, .TopMenuItem:hover {
 	background: #000000;
 }
-nav ul li {
-	float: left;
-	padding: 5px;
-	padding-right: 30px;
-}
-nav ul li ul li {
-	float: none;
-	padding: 5px;
-	padding-right: 30px;
-	z-index: 10;
-}
-li ul {
+.SubMenu {
+	padding: 0;
+	width: auto;
+	z-index: 11;
 	display: none;
 	position: absolute;
-	top: 28px;
+	top: 33px;
+	background: #0000FF;
+	border-radius: 0;
+	list-style: none;
 }
-li #loginwin {
-	right: 0;
-}
-#logoutwin {
-	display: none;
-}
-#logoutwin li {
-	padding-right: 5;
-	padding-left: 5;
-}
-#loginwin li {
-	padding-right: 5;
-	padding-left: 5;
-}
-#loginwin {
-	display: none;
-}
-li:hover ul {
+.TopMenuItem:hover .SubMenu {
 	display: block;
+}
+.SubMenuItem {
+	color: #FFFFFF;
+	padding: 5px;
+	background: #0000FF;
+	font-size: 17px;
+}
+.UserItem {
+	float: right;
+	color: #FFFFFF;
+	padding: 7px;
+	font-size: 17px;
+	font-weight: bold;
+}
+.UserItem:hover {
+	background: #000000;
+}
+#LogInOut {
+	display: none;
+	position: absolute;
+	right: 0px;
+	top: 33px;
+	list-style: none;
+	float: right;
+}
+.LogInOutForm {
+	color: #FFFFFF;
+	background: #0000FF;
 }
 
 /*************\
