@@ -82,6 +82,7 @@ function CheckCookieAuth($DBConn) {
 		
 		// Set administrative access
 		$GLOBALS['CanUserEdit'] = $UserData['CanMod'];
+		$GLOBALS['UserData'] = $UserData;
 		return 1;
 	}
 	return 0;
