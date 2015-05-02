@@ -55,15 +55,6 @@ if ( $ErrorString != '' ) {
 	echo '<h3>' . $ErrorString . '</h3>';
 }
 ?>
-<form id="NewUser" action="NewUser.php" method="post">
-First Name: <input type="text" name="FName" id="FName" onblur="CheckLength('FName',70);" value="<?php echo $UserData['FName']; ?>"><div id="FNameAlert" class="alert"></div><br>
-Last Name: <input type="text" name="LName" id="LName" onblur="CheckLength('LName',70);" value="<?php echo $UserData['LName']; ?>"><div id="LNameAlert" class="alert"></div><br>
-User Name: <input type="text" name="UName" id="UName" onblur="CheckLength('UName',30);" value="<?php echo $UserData['UName']; ?>"><div id="UNameAlert" class="alert"></div><br>
-Email: <input type="text" name="Email" id="Email" onblur="CheckLength('Email',150);" value="<?php echo $UserData['Email']; ?>"><div id="EmailAlert" class="alert"></div><br>
-Password: <input type="password" name="Password" id="Password" onblur="CheckLength('Password',30,5);"><div id="PasswordAlert" class="alert"></div><br>
-Confirm Password: <input type="password" name="PasswordVerify" id="PasswordVerify" onblur="PasswordVerify();"><div id="PasswordVerifyAlert" class="alert"></div><br>
-<input type="submit" value="Create User">
-</form>
 <script>
 // UName: 30, FName: 70, LName: 70, Email: 150, PWord: 5-30
 function CheckLength(Name,Max,Min) {
@@ -81,5 +72,14 @@ function CheckLength(Name,Max,Min) {
 	window.alert(HTMLString);
 }
 </script>
+<form id="NewUser" action="NewUser.php" method="post">
+First Name: <input type="text" name="FName" id="FName" onblur="CheckLength('FName',70);" value="<?php echo $UserData['FName']; ?>"><div id="FNameAlert" class="alert"></div><br>
+Last Name: <input type="text" name="LName" id="LName" onblur="CheckLength('LName',70);" value="<?php echo $UserData['LName']; ?>"><div id="LNameAlert" class="alert"></div><br>
+User Name: <input type="text" name="UName" id="UName" onblur="CheckLength('UName',30);" value="<?php echo $UserData['UName']; ?>"><div id="UNameAlert" class="alert"></div><br>
+Email: <input type="text" name="Email" id="Email" onblur="CheckLength('Email',150);" value="<?php echo $UserData['Email']; ?>"><div id="EmailAlert" class="alert"></div><br>
+Password: <input type="password" name="Password" id="Password" onblur="CheckLength('Password',30,5);"><div id="PasswordAlert" class="alert"></div><br>
+Confirm Password: <input type="password" name="PasswordVerify" id="PasswordVerify" onblur="PasswordVerify();"><div id="PasswordVerifyAlert" class="alert"></div><br>
+<input type="submit" value="Create User">
+</form>
 </body>
 </html>
