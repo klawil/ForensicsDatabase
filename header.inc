@@ -38,7 +38,7 @@ if ( isset($GLOBALS['CanUserEdit']) && $GLOBALS['CanUserEdit'] == 1 ) {
 ?>
 	<li class="UserItem"><?php
 if ( isset($GLOBALS['UserName']) && $GLOBALS['UserName'] != "" ) {
-	echo '<a onclick="ShowInOutForm();">' . $GLOBALS['UserData']['LName'] . ', ' . $GLOBALS['UserData']['LName'] . '</a>
+	echo '<a onclick="ShowInOutForm();">' . $GLOBALS['UserData']['LName'] . ', ' . $GLOBALS['UserData']['FName'] . '</a>
 	<ul id="LogInOut">
 		<li class="Alert" id="UserMessage"></li>
 		<a href="#" onclick="UserLogout();"><li class="SubMenuItem">Log Out</li></a>
