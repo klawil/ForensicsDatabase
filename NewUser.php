@@ -1,6 +1,6 @@
 <?php
 require_once 'include.inc';
-$GLOBALS['PageName'] = 'New User';
+$GLOBALS['PageName'] = 'Create New User';
 require_once 'header.inc';
 $UserData['UName'] = '';
 $UserData['FName'] = '';
