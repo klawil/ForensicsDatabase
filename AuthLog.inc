@@ -181,24 +181,24 @@ function CreateUser($UName, $Password, $FName, $LName, $Email, $DBConn) {
 	$VString = md5($UserInfo['UName'] . $GLOBALS['SecretWord']);
 	//$VString = MySQLEscape($MD5, $DBConn);
 	$UserInfo['EmailCode'] = $VString;
-	//$UserInfo['EmailConf'] = 0;
+	$UserInfo['EmailConf'] = 0;
 	
 	// Hash password
 	$UserInfo['Password'] = password_hash($UserInfo['Password'],PASSWORD_DEFAULT);
 	
 	// Set Modification Ability
-	//$UserInfo['CanMod'] = 0;
+	$UserInfo['CanMod'] = 0;
 	
 	// Build insert string
 	$QueryString = '';
 	foreach ( $UserInfo as $Key => $Value ) {
-		if ( $QueryString = '' ) {
+		if ( $QueryString == '' ) {
 			$QueryString = 'insert into Users set ' . $Key . '="' . $Value . '"';
 		} else {
 			$QueryString = $QueryString . ', ' . $Key . '="' . $Value . '"';
 		}
 	}
-	$QueryString = $QueryString . ', EmailConf=0, CanMod=0;';
+	$QueryString = $QueryString . ';';
 	
 	/*// Set email paramters
 	$AdminEmail = $GLOBALS['DBData']['AdminEmail'];
