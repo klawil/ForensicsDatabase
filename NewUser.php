@@ -61,7 +61,7 @@ Last Name: <input type="text" name="LName" id="LName" onblur="CheckLength('LName
 User Name: <input type="text" name="UName" id="UName" onblur="CheckLength('UName',30);" value="<?php echo $UserData['UName']; ?>"><div id="UNameAlert" class="alert"></div><br>
 Email: <input type="text" name="Email" id="Email" onblur="CheckLength('Email',150);" value="<?php echo $UserData['Email']; ?>"><div id="EmailAlert" class="alert"></div><br>
 Password: <input type="password" name="Password" id="Password" onblur="CheckLength('Password',30,5);"><div id="PasswordAlert" class="alert"></div><br>
-Confirm Password: <input type="password" name="PasswordVerify" id="PasswordVerify" onblur="PasswordVerify();"><div id="PasswordVerify" class="alert"></div><br>
+Confirm Password: <input type="password" name="PasswordVerify" id="PasswordVerify" onblur="PasswordVerify();"><div id="PasswordVerifyAlert" class="alert"></div><br>
 <input type="submit" value="Create User">
 </form>
 <script>
@@ -77,7 +77,7 @@ function CheckLength(Name,Max,Min) {
 	} else {
 		HTMLString = '';
 	}
-	document.getElementById(Name + 'Alert').innerHTML = HTMLString;
+	document.getElementById(Name + 'Alert').innerHTML = "Hello";
 }
 </script>
 </body>
