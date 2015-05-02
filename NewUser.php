@@ -56,21 +56,28 @@ if ( $ErrorString != '' ) {
 }
 ?>
 <form id="NewUser" action="NewUser.php" method="post">
-First Name: <input type="text" name="FName" onblur="CheckName('FName');" value="<?php echo $UserData['FName']; ?>"><br>
-Last Name: <input type="text" name="LName" onblur="CheckName('LName');" value="<?php echo $UserData['LName']; ?>"><br>
-User Name: <input type="text" name="UName" value="<?php echo $UserData['UName']; ?>"><br>
-Email: <input type="text" name="Email" value="<?php echo $UserData['Email']; ?>"><br>
-Password: <input type="password" name="Password"><br>
-Confirm Password: <input type="password" name="PasswordVerify"><br>
+First Name: <input type="text" name="FName" id="FName" onblur="CheckLength('FName',70);" value="<?php echo $UserData['FName']; ?>"><div id="FNameAlert" class="alert"></div><br>
+Last Name: <input type="text" name="LName" id="LName" onblur="CheckLength('LName',70);" value="<?php echo $UserData['LName']; ?>"><div id="LNameAlert" class="alert"></div><br>
+User Name: <input type="text" name="UName" id="UName" onblur="CheckLength('UName',30);" value="<?php echo $UserData['UName']; ?>"><div id="UNameAlert" class="alert"></div><br>
+Email: <input type="text" name="Email" id="Email" onblur="CheckLength('Email',150);" value="<?php echo $UserData['Email']; ?>"><div id="EmailAlert" class="alert"></div><br>
+Password: <input type="password" name="Password" id="Password" onblur="CheckLength('Password',30,5);"><div id="PasswordAlert" class="alert"></div><br>
+Confirm Password: <input type="password" name="PasswordVerify" id="PasswordVerify" onblur="PasswordVerify();"><div id="PasswordVerify" class="alert"></div><br>
 <input type="submit" value="Create User">
 </form>
 <script>
 // UName: 30, FName: 70, LName: 70, Email: 150, PWord: 5-30
-function CheckUser() {
-	
-}
-function CheckName(Name) {
-	window.alert(Name);
+function CheckLength(Name,Max,Min) {
+	Min = Min || 0;
+	if ( document.getElementById(Name).value.length == 0 ) {
+		HTMLString = 'Required';
+	if ( document.getElementById(Name).value.length > Max ) {
+		HTMLString = 'Must be less than ' + Max + ' characters';
+	} else if ( Min == 0 && document.getElementById(Name).value.length < Min ) {
+		HTMLString = 'Must be more than ' + Min + ' characters';
+	} else {
+		HTMLString = '';
+	}
+	document.getElementById(Name + 'Alert').innerHTML = HTMLString;
 }
 </script>
 </body>
