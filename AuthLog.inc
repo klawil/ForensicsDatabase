@@ -181,7 +181,7 @@ function CreateUser($UName, $Password, $FName, $LName, $Email, $DBConn) {
 	$VString = md5($UserInfo['UName'] . $GLOBALS['SecretWord']);
 	$VString = MySQLEscape($MD5, $DBConn);
 	$UserInfo['EmailCode'] = $VString;
-	$UserInfo['EmailConf'] = false;
+	//$UserInfo['EmailConf'] = false;
 	
 	// Hash password
 	$UserInfo['Password'] = password_hash($UserInfo['Password'],PASSWORD_DEFAULT);
@@ -198,7 +198,7 @@ function CreateUser($UName, $Password, $FName, $LName, $Email, $DBConn) {
 			$QueryString = $QueryString . ', ' . $Key . '="' . $Value . '"';
 		}
 	}
-	$QueryString = $QueryString . ', CanMod=0;';
+	$QueryString = $QueryString . ', CanMod=0, EmailConf=0;';
 	
 	// Set email paramters
 	$AdminEmail = $GLOBALS['DBData']['AdminEmail'];
