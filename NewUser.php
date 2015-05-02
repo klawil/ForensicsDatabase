@@ -23,8 +23,12 @@ if ( isset($_POST['UName']) ) {
 		}
 	}
 	
-	// Check passwords
-	if ( $ErrorString == '' && $UserData['Password'] != $UserData['PasswordVerify'] ) {
+	// Check password
+	if ( $ErrorString == '' && $UserData['Password'] == '' ) {
+		$ErrorString = 'You must enter a password';
+	} elseif ( $ErrorString == '' && strlen($UserData['Password']) < 5 ) {
+		$ErrorString = 'Your password must be at least 5 characters';
+	} elseif ( $ErrorString == '' && $UserData['Password'] != $UserData['PasswordVerify'] ) {
 		$ErrorString = 'Passwords do not match';
 	}
 	
