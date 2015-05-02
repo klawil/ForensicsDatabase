@@ -198,7 +198,7 @@ function CreateUser($UName, $Password, $FName, $LName, $Email, $DBConn) {
 			$QueryString = $QueryString . ', ' . $Key . '="' . $Value . '"';
 		}
 	}
-	$QueryString = $QueryString . ', CanMod=0, EmailConf=0;';
+	$QueryString = $QueryString . ', CanMod=false, EmailConf=false;';
 	
 	// Set email paramters
 	$AdminEmail = $GLOBALS['DBData']['AdminEmail'];
