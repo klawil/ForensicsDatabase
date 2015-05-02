@@ -143,4 +143,6 @@ li:hover ul {
 \***********/
 .Alert {
 	color: red;
+	display: none;
+	padding-left: 10;
 }
