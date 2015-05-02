@@ -187,7 +187,7 @@ function CreateUser($UName, $Password, $FName, $LName, $Email, $DBConn) {
 	$UserInfo['Password'] = password_hash($UserInfo['Password'],PASSWORD_DEFAULT);
 	
 	// Set Modification Ability
-	$UserInfo['CanMod'] = 0;
+	//$UserInfo['CanMod'] = 0;
 	
 	// Build insert string
 	$QueryString = '';
@@ -198,7 +198,7 @@ function CreateUser($UName, $Password, $FName, $LName, $Email, $DBConn) {
 			$QueryString = $QueryString . ', ' . $Key . '="' . $Value . '"';
 		}
 	}
-	$QueryString = $QueryString . ';';
+	$QueryString = $QueryString . ', CanMod=0;';
 	
 	// Set email paramters
 	$AdminEmail = $GLOBALS['DBData']['AdminEmail'];
