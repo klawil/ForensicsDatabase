@@ -183,6 +183,7 @@ if ( ! $Query['Result'] ) {
 	include 'ErrorPage.inc';
 }
 $GLOBALS['DBData'] = mysqli_fetch_assoc($Query);
+$GLOBALS['DBName'] = $GLOBALS['DBData']['DBName'];
 //$GLOBALS['DBName'] = 'TemplateDB'; // *****
 
 // *********************************************************************
