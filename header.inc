@@ -10,9 +10,9 @@
 <h1><?php echo $GLOBALS['PageName'];?></h1>
 <nav>
 	<ul>
-	<a href="."><li>Index</li></a>
+	<a href="."><li>Home</li></a>
 	<a href="TournamentInfo.php"><li>Results</li></a>
-	<li>Summary
+	<li>Summaries
 		<ul>
 		<a href="StudentSummary.php"><li>Student</li></a>
 		<a href="TournamentSummary.php"><li>Tournament</li></a>
@@ -23,9 +23,12 @@
 if ( isset($GLOBALS['CanUserEdit']) && $GLOBALS['CanUserEdit'] == 1 ) {
 	echo '<li>Management
 		<ul>
-		<a href="NewStudent.php"><li>New Student</li></a>
-		<a href="NewTournament.php"><li>New Tournament</li></a>
-		<a href="TournamentUpdate.php"><li>Insert Data</li></a>
+		<a href="InsertResult.php"><li>Enter Results</li></a>
+		<a href="EditResult.php"><li>Edit Results</li></a>
+		<a href="ManageStudent.php"><li>Manage Students</li></a>
+		<a href="ManageTournament.php"><li>Manage Tournaments</li></a>
+		<a href="ManageEvents.php"><li>Manage Events</li></a>
+		<a href="ManageUser.php"><li>Manage Users</li></a>
 		</ul>
 	</li>
 	<a href="https://github.com/klawil/ForensicsDatabase" target="_blank"><li>The Project on Github</li></a>
