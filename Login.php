@@ -35,7 +35,7 @@ if ( isset($_POST['UName']) ) {
 	}
 	$Data = mysqli_fetch_assoc($UserQuery['Query']);
 	if ( password_verify($PW,$Data['password']) ) {
-		if ( SetCookie($UN,$DBConn) == true ) {
+		if ( SetAuthCookie($UN,$DBConn) == true ) {
 			echo 'true';
 			WriteLog($UN . ' logged in');
 			return 0;
