@@ -69,7 +69,7 @@ function CreateTournamentList($DBConn, $IncludeAll = NULL, $DefaultTID = NULL) {
 function CreateStudentList($DBConn, $IncludeAll = NULL, $DefaultSID = NULL, $SelectName = NULL, $OnChange = NULL, $FormName = NULL) {
 	// Creates an html list of all the Students sorted by last name
 	// @param $DBConn - connection to MySQL database
-	// @param $IncludeAll - Include an option that is "All Tournaments"
+	// @param $IncludeAll - Include an option that is "All Students"
 	// @param $DefaultSID - the SID to set as the default value
 	// @param $SelectName - What to set the "id" and "name" attributes
 	// @param $OnChange - What function to call when the value changes
@@ -114,7 +114,7 @@ function CreateStudentList($DBConn, $IncludeAll = NULL, $DefaultSID = NULL, $Sel
 function CreateEventList($DBConn, $IncludeAll = NULL, $DefaultEID = NULL, $SelectName = NULL, $OnChange = NULL) {
 	// Creates an html list of all the Events sorted by name
 	// @param $DBConn - connection to MySQL database
-	// @param $IncludeAll - Include an option that is "All Tournaments"
+	// @param $IncludeAll - Include an option that is "All Events"
 	// @param $DefaultEID - the EID to set as the default value
 	// @param $SelectName - What to set the "id" and "name" attributes
 	// @param $OnChange - What function to call when the value changes
@@ -151,6 +151,47 @@ function CreateEventList($DBConn, $IncludeAll = NULL, $DefaultEID = NULL, $Selec
 	}
 	$EventString = $EventString . '</select>';
 	return $EventString;
+}
+function CreateSeasonList($DBConn, $IncludeAll = NULL, $DefaultYID = NULL, $SelectName = NULL, $OnChange = NULL) {
+	// Creates an html list of all the Seasons sorted by year
+	// @param $DBConn - connection to MySQL database
+	// @param $IncludeAll - Include an option that is "All Seasons"
+	// @param $DefaultEID - the YID to set as the default value
+	// @param $SelectName - What to set the "id" and "name" attributes
+	// @param $OnChange - What function to call when the value changes
+	// @return String - html code for season select
+	
+	// Get event information
+	$SQuery = MySQLQuery($DBConn, 'select * from Seasons order by StartYear;');
+	if ( !$SQuery['Result'] ) {
+		return $SQuery['Query'];
+	}
+	
+	// Loop through all events
+	$NumRows = mysqli_num_rows($SQuery['Query']);
+	$CurrentRow = 0;
+	if ( $SelectName == NULL ) {
+		$SelectName = 'YID';
+	}
+	$SeasonString = '<select id="' . $SelectName . '" name="' . $SelectName . '"';
+	if ( $OnChange != NULL ) {
+		$SeasonString = $SeasonString . ' onchange="' . $OnChange . '"';
+	}
+	$SeasonString = $SeasonString . '>';
+	if ( $IncludeAll == 1 ) {
+		$SeasonString = $SeasonString . "<option value='-1'>All Seasons</option>";
+	}
+	while ( $CurrentRow < $NumRows ) {
+		$Season = mysqli_fetch_assoc($SQuery['Query']);
+		if ( $Season['YID'] == $DefaultEID ) {
+			$SeasonString = $SeasonString . '<option selected="selected" value="' . $Season['YID'] . '">' . $Season['StartYear'] . '-' . $Season['EndYear'] . '</option>';
+		} else {
+			$SeasonString = $SeasonString . '<option value="' . $Season['YID'] . '">' . $Season['StartYear'] . '-' . $Season['EndYear'] . '</option>';
+		}
+		$CurrentRow++;
+	}
+	$SeasonString = $SeasonString . '</select>';
+	return $SeasonString;
 }
 
 // Set up connection to MySQL database
