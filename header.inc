@@ -36,16 +36,16 @@ if ( isset($GLOBALS['CanUserEdit']) && $GLOBALS['CanUserEdit'] == 1 ) {
 ';
 }
 ?>
-	<li class="UserItem"><?php
+	<li class="UserItem"><a onclick="ShowInOutForm();"><?php
 if ( isset($GLOBALS['UserName']) && $GLOBALS['UserName'] != "" ) {
-	echo '<a onclick="ShowInOutForm();">' . $GLOBALS['UserData']['LName'] . ', ' . $GLOBALS['UserData']['FName'] . '</a>
+	echo $GLOBALS['UserData']['LName'] . ', ' . $GLOBALS['UserData']['FName'] . '</a>
 	<ul id="LogInOut">
 		<li class="Alert" id="UserMessage"></li>
 		<a href="#" onclick="UserLogout();"><li class="SubMenuItem">Log Out</li></a>
 		<a href="ManageSelf.php"><li class="SubMenuItem">Manage Account</li></a>
 ';
 } else {
-	echo '<a onclick="ShowInOutForm();">Login</a>
+	echo 'Login</a>
 		<ul id="LogInOut">
 		<li class="Alert" id="UserMessage"></li>
 		<form id="LoginForm">
@@ -53,7 +53,7 @@ if ( isset($GLOBALS['UserName']) && $GLOBALS['UserName'] != "" ) {
 		<table class="LogInOutForm">
 		<tr><td style="text-align: right;">User</td><td><input type="text" name="UserName" id="UserName"></td></tr>
 		<tr><td style="text-align: right;">Password</td><td><input type="password" name="PWord" id="PWord"></td>
-		<tr><td colspan="2" style="text-align: center;"><input type="button" value="Log In" onclick="LoginUser();"> <a href="NewUser.php"><input type="button" value="New User"></a></td></tr>
+		<tr><td colspan="2" style="text-align: center;"><input type="submit" value="Log In" onclick="LoginUser();"> <a href="NewUser.php"><input type="button" value="New User"></a></td></tr>
 		</table>
 		</li>
 		</form>
@@ -72,6 +72,7 @@ function ShowInOutForm() {
 	}
 }
 function LoginUser() {
+	event.preventDefault();
 	PString = "UName=" + document.getElementById("UserName").value + "&PWord=" + document.getElementById("PWord").value;
 	if ( window.XMLHttpRequest ) {
 		xmlhttp = new XMLHttpRequest();
