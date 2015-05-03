@@ -19,11 +19,12 @@ $NumRows = mysqli_num_rows($StudentQuery['Query']);
 $CurrentRow = 1;
 while ( $CurrentRow <= $NumRows ) {
 	$StudentData = mysqli_fetch_assoc($StudentQuery['Query']);
-	echo '<tr><td>' . $StudentData['FName'] . '</td><td>' . $StudentData['LName'] . '</td><td>' . $StudentData['NoviceYear'] . '</td></tr>';
+	echo '<tr><td id="FName' . $StudentData['SID'] . '">' . $StudentData['FName'] . '</td><td id="LName' . $StudentData['SID'] . '">' . $StudentData['LName'] . '</td><td id="NYear' . $StudentData['SID'] . '">' . $StudentData['NoviceYear'] . '</td><td><input type="button" onclick="SubmitStudent(' . $StudentData['SID'] . ')"></td></tr>';
 	$CurrentRow++;
 }
 // LName FName NoviceYear SID
 ?>
+<tr><td><input type="text" id="FName" width="100%"></td><td><input type="text" id="LName" width="100%"></td><td><input type="text" id="NYear" width="100%"></td><td><input type="button" onclick="SubmitStudent()"></td></tr>
 </table>
 </body>
 </html>
