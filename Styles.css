@@ -107,6 +107,8 @@ input[type="number"] {
 	top: 33px;
 	list-style: none;
 	float: right;
+}
+#UserMessage {
 	background: #0000FF;
 }
 .LogInOutForm {
