@@ -28,6 +28,9 @@ th {
 input[type="number"] {
    width:40px;
 }
+.Table {
+	padding: 10px;
+}
 
 /****************\
 |* Results Page *|
