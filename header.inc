@@ -1,13 +1,13 @@
 <html>
 <head>
-<title><?php echo $GLOBALS['PageName'];?> | ForensicsDB.com</title>
+<title><?php if ( isset($GLOBALS['PageName']) ) { echo $GLOBALS['PageName'] . ' | ';}?> ForensicsDB.com</title>
 <link rel="stylesheet" type="text/css" href="Styles.css">
 <link rel="stylesheet" media="(max-width: 850px)" href="MobileStyles.css" />
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-<h1><?php echo $GLOBALS['PageName'];?></h1>
+<h1><?php if ( isset($GLOBALS['PageName']) ) { echo $GLOBALS['PageName']; } else { echo 'ForensicsDB.com'; }?></h1>
 <nav>
 	<ul class="TopMenu">
 	<a href="/"><li class="TopMenuItem">Home</li></a>
