@@ -11,7 +11,7 @@
 <nav>
 	<ul class="TopMenu">
 	<a href="/"><li class="TopMenuItem">Home</li></a>
-	<a href="TournamentInfo.php"><li class="TopMenuItem">Results</li></a>
+	<a href="Results.php"><li class="TopMenuItem">Results</li></a>
 	<li class="TopMenuItem">Summaries
 		<ul class="SubMenu">
 		<a href="StudentSummary.php"><li class="SubMenuItem">Student</li></a>
@@ -32,7 +32,7 @@ if ( isset($GLOBALS['CanUserEdit']) && $GLOBALS['CanUserEdit'] == 1 ) {
 		</ul>
 	</li>
 	<a href="https://github.com/klawil/ForensicsDatabase" target="_blank"><li class="TopMenuItem">The Project on Github</li></a>
-	<a href="IssueReport.php"><li class="TopMenuItem">Report an Issue</li></a>
+	<!--<a href="IssueReport.php"><li class="TopMenuItem">Report an Issue</li></a>-->
 ';
 }
 ?>
@@ -42,7 +42,7 @@ if ( isset($GLOBALS['UserName']) && $GLOBALS['UserName'] != "" ) {
 	<ul id="LogInOut">
 		<li class="Alert" id="UserMessage"></li>
 		<a href="#" onclick="UserLogout();"><li class="SubMenuItem">Log Out</li></a>
-		<a href="ManageSelf.php"><li class="SubMenuItem">Manage Account</li></a>
+		<!--<a href="ManageSelf.php"><li class="SubMenuItem">Manage Account</li></a>-->
 ';
 } else {
 	echo 'Login</a>
