@@ -28,6 +28,7 @@ if ( isset($GLOBALS['CanUserEdit']) && $GLOBALS['CanUserEdit'] == 1 ) {
 		<a href="ManageStudent.php"><li class="SubMenuItem">Manage Students</li></a>
 		<a href="ManageTournament.php"><li class="SubMenuItem">Manage Tournaments</li></a>
 		<a href="ManageEvents.php"><li class="SubMenuItem">Manage Events</li></a>
+		<a href="ManageSeason.php"><li class="SubMenuItem">Manage Seasons</li></a>
 		<a href="ManageUser.php"><li class="SubMenuItem">Manage Users</li></a>
 		</ul>
 	</li>
