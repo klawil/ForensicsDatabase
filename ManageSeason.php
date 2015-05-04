@@ -2,6 +2,17 @@
 require_once 'include.inc';
 $GLOBALS['PageName'] = 'Season Management';
 
+// Handle update
+if ( isset($_POST['YID']) ) {
+
+}
+
+// Handle creation
+if ( isset($_POST['StartYear']) ) {
+	echo 'true';
+	return 0;
+}
+
 // Create query of all seasons
 $SeasonQuery = MySQLQuery($DBConn,'select * from  Seasons order by Seasons.StartYear;');
 if ( !$SeasonQuery['Result'] ) {
@@ -11,10 +22,6 @@ if ( !$SeasonQuery['Result'] ) {
 
 // Create header
 require_once 'header.inc';
-
-if ( isset($_POST['YID']) ) {
-	// Handle if a season is getting updated
-}
 ?>
 <h3>Update, create, and delete seasons</h3>
 <table class="Table">
@@ -43,6 +50,7 @@ function pad (str, max) {
   return str.length < max ? pad("0" + str, max) : str;
 }
 function ShowHideButton(YID) {
+	// Set default YID
 	YID = YID || -1;
 		
 	// Set Element Names
@@ -69,7 +77,49 @@ function ShowHideButton(YID) {
 	}
 }
 function SubmitSeason(YID) {
+	// Set default YID
 	YID = YID || -1;
+	
+	// Declare PostString
+	PostString = "";
+	
+	// Set Element name
+	StartElementName = "StartYear";
+	if ( YID != -1 ) {
+		StartElementName = StartElementName + YID;
+		PostString = "YID=" + YID + "&";
+	}
+	
+	// Get start year and add to PostString
+	StartYear = document.getElementById(StartElementName).value;
+	StartYear = pad(StartYear,4);
+	PostString = PostString + "StartYear=" + StartYear;
+	
+	// Set up post
+	if ( window.XMLHttpRequest ) {
+		xmlhttp = new XMLHttpRequest();
+	} else {
+		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.open("POST","ManageSeason.php",true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send(PostString);
+	xmlhttp.onreadystatechange = function() {
+		if ( xmlhttp.readyState == 4 && xmlhttp.status == 200 ) {
+			// Handle successful response
+			response = xmlhttp.responseText;
+			if ( response == 'true' ) {
+				// Reload page if success
+				location.reload();
+			} else {
+				// Show error if error
+				window.alert(response);
+			}
+		} else if ( xmlhttp.readyState == 4 ) {
+			// Handle unsuccessful response
+			window.alert("Error: Status code " + xmlhttp.status);
+		}
+	}
 }
 </script>
 </body>
