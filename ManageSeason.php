@@ -18,7 +18,7 @@ if ( isset($_POST['YID']) ) {
 ?>
 <h3>Update, create, and delete students</h3>
 <table class="Table">
-<tr><th>First Name</th><th>Last Name</th><th>Novice Season</th><th></th></tr>
+<tr><th>Start Year</th><th>End Year</th><th></th></tr>
 <?php
 // Set up loop variables
 $NumRows = mysqli_num_rows($SeasonQuery['Query']);
@@ -38,20 +38,28 @@ while ( $CurrentRow <= $NumRows ) {
 <tr><td><input type="number" id="StartYear" onchange="ShowHideButton()"></td><td id="EndYear"></td><td class="ChangeCell" id="NewSeason"><input type="button" value="Save Changes" onclick="SubmitSeason()"></td></tr>
 </table>
 <script>
+function pad (str, max) {
+  str = str.toString();
+  return str.length < max ? pad("0" + str, max) : str;
+}
 function ShowHideButton(YID) {
 	YID = YID || -1;
-	
-	// Element of the start year
+		
+	// Set Element Names
 	StartElementName = "StartYear";
-	if ( YID != -1 ) {
-		StartElementName = StartElementName + YID;
-	}
-	
-	// Element of the button cell
+	EndElementName = "EndYear";
 	ButtonElementName = "NewSeason";
 	if ( YID != -1 ) {
+		StartElementName = StartElementName + YID;
+		EndElementName = EndElementName + YID;
 		ButtonElementName = YID;
 	}
+	
+	// Get start year and set end year
+	StartYear = document.getElementById(StartElementName).value;
+	StartYear = pad(StartYear,4);
+	document.getElementById(StartElementName).value = StartYear;
+	document.getElementById(EndElementName).innerHTML = pad(StartYear + 1,4);
 	
 	// Show save button if the value is changed
 	if ( document.getElementById(StartElementName).value != document.getElementById(StartElementName).defaultValue ) {
