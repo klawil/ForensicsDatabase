@@ -31,6 +31,9 @@ input[type="number"] {
 .Table {
 	padding: 10px;
 }
+.ChangeCell {
+	display: none;
+}
 
 /****************\
 |* Results Page *|
