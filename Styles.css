@@ -34,6 +34,9 @@ input[type="number"] {
 .ChangeCell {
 	display: none;
 }
+input[type=number] {
+	width: 40px;
+}
 
 /****************\
 |* Results Page *|
