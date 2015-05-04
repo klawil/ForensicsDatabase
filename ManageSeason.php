@@ -3,7 +3,7 @@ require_once 'include.inc';
 $GLOBALS['PageName'] = 'Season Management';
 
 // Create query of all seasons
-$SeasonQuery = MySQLQuery($DBConn,'select * from  Seasons where Students.NoviceYear = Seasons.StartYear order by Seasons.StartYear;');
+$SeasonQuery = MySQLQuery($DBConn,'select * from  Seasons order by Seasons.StartYear;');
 if ( !$SeasonQuery['Result'] ) {
 	$GLOBALS['ErrorMessage'] = $SeasonQuery['Query'];
 	require_once 'ErrorPage.inc';
