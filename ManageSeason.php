@@ -59,7 +59,7 @@ function ShowHideButton(YID) {
 	StartYear = document.getElementById(StartElementName).value;
 	StartYear = pad(StartYear,4);
 	document.getElementById(StartElementName).value = StartYear;
-	document.getElementById(EndElementName).innerHTML = pad(StartYear + 1,4);
+	document.getElementById(EndElementName).innerHTML = pad(parseInt(StartYear) + 1,4);
 	
 	// Show save button if the value is changed
 	if ( document.getElementById(StartElementName).value != document.getElementById(StartElementName).defaultValue ) {
