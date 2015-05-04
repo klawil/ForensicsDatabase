@@ -16,7 +16,7 @@ if ( isset($_POST['YID']) ) {
 	// Handle if a season is getting updated
 }
 ?>
-<h3>Update, create, and delete students</h3>
+<h3>Update, create, and delete seasons</h3>
 <table class="Table">
 <tr><th>Start Year</th><th>End Year</th><th></th></tr>
 <?php
