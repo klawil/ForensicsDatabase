@@ -23,12 +23,12 @@
 if ( isset($GLOBALS['CanUserEdit']) && $GLOBALS['CanUserEdit'] == 1 ) {
 	echo '	<li class="TopMenuItem">Management
 		<ul class="SubMenu">
-		<a href="InsertResult.php"><li class="SubMenuItem">Enter Results</li></a>
-		<a href="EditResult.php"><li class="SubMenuItem">Edit Results</li></a>
-		<a href="ManageStudent.php"><li class="SubMenuItem">Manage Students</li></a>
-		<a href="ManageTournament.php"><li class="SubMenuItem">Manage Tournaments</li></a>
-		<a href="ManageEvents.php"><li class="SubMenuItem">Manage Events</li></a>
+		<a href="ResultInsert.php"><li class="SubMenuItem">Enter Results</li></a>
+		<a href="ResultEdit.php"><li class="SubMenuItem">Edit Results</li></a>
 		<a href="ManageSeason.php"><li class="SubMenuItem">Manage Seasons</li></a>
+		<a href="ManageStudent.php"><li class="SubMenuItem">Manage Students</li></a>
+		<a href="ManageEvents.php"><li class="SubMenuItem">Manage Events</li></a>
+		<a href="ManageTournament.php"><li class="SubMenuItem">Manage Tournaments</li></a>
 		<a href="ManageUser.php"><li class="SubMenuItem">Manage Users</li></a>
 		</ul>
 	</li>
