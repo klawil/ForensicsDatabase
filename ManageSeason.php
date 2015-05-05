@@ -13,6 +13,7 @@ if ( isset($_POST['StartYear']) || isset($_POST['SeasonName']) || isset($_POST['
 		if ( isset($_POST[$Name]) ) {
 			// URL Decode and MySQL escape
 			$SeasonData[$Name] = urldecode($_POST[$Name]);
+			echo $Name . '=>' . $SeasonData[$Name] . "\n";
 		}
 	}
 	
