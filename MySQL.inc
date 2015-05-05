@@ -186,7 +186,7 @@ function CreateSeasonList($DBConn, $IncludeAll = NULL, $DefaultSeasonID = NULL, 
 		if ( $Season['SeasonID'] == $DefaultSeasonID ) {
 			$SeasonString = $SeasonString . '<option selected="selected" value="' . $Season['SeasonID'] . '">' . $Season['SeasonName'] . '</option>';
 		} else {
-			$SeasonString = $SeasonString . '<option value="' . $Season['SeasonID'] . '">' . $Season['StartYear'] . '-' . $Season['EndYear'] . '</option>';
+			$SeasonString = $SeasonString . '<option value="' . $Season['SeasonID'] . '">' . $Season['SeasonName'] . '</option>';
 		}
 		$CurrentRow++;
 	}
