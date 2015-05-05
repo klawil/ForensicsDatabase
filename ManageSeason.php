@@ -53,7 +53,7 @@ if ( isset($_POST['SeasonID']) ) {
 }
 
 // Handle creation
-if ( isset($_POST['StartYear']) ) {
+if ( !$DoQuery && isset($_POST['StartYear']) ) {
 	// Create query string
 	$SeasonString = '';
 	foreach ( $SeasonData as $Name => $Value ) {
