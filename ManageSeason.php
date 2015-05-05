@@ -25,7 +25,7 @@ if ( isset($_POST['delete']) ) {
 	}
 	
 	// Create query string
-	$SeasonQuery = 'delete from Seasons where SeasonId="' . $SeasonData['SeasonID'] . '";';
+	$SeasonString = 'delete from Seasons where SeasonId="' . $SeasonData['SeasonID'] . '";';
 	
 	// Tell to execute query
 	$DoQuery = true;
