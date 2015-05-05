@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.5.43, for debian-linux-gnu (x86_64)
 --
--- Host: localhost    Database: DemoDB
+-- Host: localhost    Database: TemplateDB
 -- ------------------------------------------------------
 -- Server version	5.5.43-0ubuntu0.14.04.1
 
@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS `Ballots`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Ballots` (
-  `RID` int(11) NOT NULL,
+  `ResultID` int(11) NOT NULL,
   `ElimLevel` int(11) NOT NULL,
   `Round` int(11) NOT NULL,
   `Judge` int(11) NOT NULL,
@@ -49,11 +49,11 @@ DROP TABLE IF EXISTS `Events`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Events` (
-  `EID` int(11) NOT NULL AUTO_INCREMENT,
-  `EName` varchar(50) NOT NULL,
+  `EventID` int(11) NOT NULL AUTO_INCREMENT,
+  `EventName` varchar(50) NOT NULL,
   `Partner` int(11) NOT NULL,
-  `EAbbr` varchar(10) NOT NULL,
-  PRIMARY KEY (`EID`)
+  `EventAbbr` varchar(10) NOT NULL,
+  PRIMARY KEY (`EventID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -75,15 +75,15 @@ DROP TABLE IF EXISTS `Results`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Results` (
-  `RID` int(11) NOT NULL AUTO_INCREMENT,
-  `SID` int(11) NOT NULL,
-  `PID` int(11) DEFAULT NULL,
-  `EID` int(11) NOT NULL,
-  `TID` int(11) NOT NULL,
+  `ResultID` int(11) NOT NULL AUTO_INCREMENT,
+  `StudentID` int(11) NOT NULL,
+  `PartnerID` int(11) DEFAULT NULL,
+  `EventID` int(11) NOT NULL,
+  `TournamentID` int(11) NOT NULL,
   `broke` tinyint(1) NOT NULL,
   `State` tinyint(1) NOT NULL,
   `place` int(11) DEFAULT NULL,
-  PRIMARY KEY (`RID`)
+  PRIMARY KEY (`ResultID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -104,10 +104,10 @@ DROP TABLE IF EXISTS `Seasons`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Seasons` (
-  `YID` int(11) NOT NULL AUTO_INCREMENT,
+  `SeasonID` int(11) NOT NULL AUTO_INCREMENT,
   `StartYear` int(11) NOT NULL,
-  `EndYear` int(11) NOT NULL,
-  PRIMARY KEY (`YID`)
+  `SeasonName` varchar(150) NOT NULL,
+  PRIMARY KEY (`SeasonID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -130,9 +130,9 @@ DROP TABLE IF EXISTS `Students`;
 CREATE TABLE `Students` (
   `LName` varchar(50) NOT NULL,
   `FName` varchar(50) NOT NULL,
-  `SID` int(11) NOT NULL AUTO_INCREMENT,
+  `StudentID` int(11) NOT NULL AUTO_INCREMENT,
   `NoviceYear` int(11) NOT NULL,
-  PRIMARY KEY (`SID`)
+  PRIMARY KEY (`StudentID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -153,8 +153,8 @@ DROP TABLE IF EXISTS `Tournaments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Tournaments` (
-  `TID` int(11) NOT NULL AUTO_INCREMENT,
-  `TName` varchar(50) NOT NULL,
+  `TournamentID` int(11) NOT NULL AUTO_INCREMENT,
+  `TournamentName` varchar(50) NOT NULL,
   `NumRounds` int(11) NOT NULL,
   `NumJudges` int(11) NOT NULL,
   `NumElimRounds` int(11) NOT NULL,
@@ -162,7 +162,7 @@ CREATE TABLE `Tournaments` (
   `StartDate` date NOT NULL,
   `EndDate` date NOT NULL,
   `Season` int(11) NOT NULL,
-  PRIMARY KEY (`TID`)
+  PRIMARY KEY (`TournamentID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -202,8 +202,8 @@ CREATE TABLE `Users` (
 --
 
 LOCK TABLES `Users` WRITE;
+INSERT INTO `Users` VALUES ('admin','William','Klausmeyer','admin@forensicsdb.com','$2y$10$i2PxUObvxbFnyq7UPJgHtuGqD1eAPhQabV908rAtVa39TN8iRpbD.',NULL,NULL,1,1,'2015-05-02');
 /*!40000 ALTER TABLE `Users` DISABLE KEYS */;
-INSERT INTO `Users` VALUES ('admin','William','Klausmeyer','willyk95@gmail.com','$2y$10$i2PxUObvxbFnyq7UPJgHtuGqD1eAPhQabV908rAtVa39TN8iRpbD.',NULL,NULL,1,1,'2015-05-02');
 /*!40000 ALTER TABLE `Users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -215,5 +215,3 @@ UNLOCK TABLES;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2015-05-02 11:32:21
