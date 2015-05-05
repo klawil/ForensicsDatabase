@@ -12,7 +12,7 @@ if ( isset($_POST['StartYear']) || isset($_POST['SeasonName']) || isset($_POST['
 	foreach ( $Variables as $Name ) {
 		if ( isset($_POST[$Name]) ) {
 			// URL Decode and MySQL escape
-			$SeasonData[$Name] = MySQLEscape(urldecode($_POST[$Name]),$DBConn);
+			$SeasonData[$Name] = urldecode($_POST[$Name]);
 		}
 	}
 	
