@@ -53,6 +53,18 @@ function IsID($DBConn, $ID, $Type) {
 	} else {
 		return false;
 	}
+	
+	// Query the table to determine validity
+	$IDQuery = MySQLQuery($DBConn,'select ' . $Type . ' from ' . $Table . ' where ' . $Type . '="' . $ID . '";');
+	if ( !$IDQuery['Result'] ) {
+		ErrorLog($IDQuery['Query']);
+		return false;
+	}
+	
+	// Determine if valid ID
+	if ( mysqli_num_rows($IDQuery['Query']) != 1 ) {
+		return false;
+	}
 	return true;
 }
 function IsLength($String,$Length,$Mode = NULL) {
