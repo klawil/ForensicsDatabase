@@ -33,7 +33,7 @@ if ( isset($_POST['StartYear']) || isset($_POST['SeasonName']) || isset($_POST['
 if ( isset($_POST['SeasonID']) ) {
 	// Pull out SeasonID
 	$SeasonID = $SeasonData['SeasonID'];
-	unset($SeasonData['SeasonID'];
+	unset($SeasonData['SeasonID']);
 	
 	// Create query string
 	$SeasonString = '';
