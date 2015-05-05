@@ -43,7 +43,7 @@ while ( $CurrentRow <= $NumRows ) {
 <tr>
 	<td><input type="text" id="FName"></td>
 	<td><input type="text" id="LName"></td>
-	<td><?php echo CreateSeasonList($DBConn,NULL,NULL,'NoviceSeason',NULL,'ShowHideButton()'); ?></td>
+	<td><?php echo CreateSeasonList($DBConn,NULL,NULL,'NoviceSeason',2,'ShowHideButton()'); ?></td>
 	<td><input type="button" value="Create Student" onclick="SubmitStudent()"></td></tr>
 </table>
 <script>
