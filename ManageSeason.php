@@ -3,6 +3,8 @@ require_once 'include.inc';
 $GLOBALS['PageName'] = 'Season Management';
 require_once 'restrictedpage.inc';
 
+$DoQuery = false;
+
 // Create array of values if POST data
 if ( isset($_POST['StartYear']) || isset($_POST['SeasonName']) || isset($_POST['SeasonID']) ) {
 	// Names of variables to put in array
@@ -46,8 +48,8 @@ if ( isset($_POST['SeasonID']) ) {
 	}
 	$SeasonString = $SeasonString . ' where SeasonID="' . $SeasonID . '";';
 	
-	echo $SeasonString;
-	return 0;
+	// Tell to execute query
+	$DoQuery = true;
 }
 
 // Handle creation
@@ -63,7 +65,12 @@ if ( isset($_POST['StartYear']) ) {
 	}
 	$SeasonString = $SeasonString . ';';
 	
-	// Insert season
+	// Tell to execute query
+	$DoQuery = true;
+}
+
+if ( $DoQuery ) {
+	// Execute query
 	$SeasonQuery = MySQLQuery($DBConn,$SeasonString);
 	if ( !$SeasonQuery['Result'] ) {
 		echo $SeasonQuery['Query'];
