@@ -3,13 +3,57 @@ require_once 'include.inc';
 $GLOBALS['PageName'] = 'Season Management';
 require_once 'restrictedpage.inc';
 
+// Create array of values if POST data
+if ( isset($_POST['StartYear']) || isset($_POST['SeasonName') || isset($_POST['SeasonID']) ) {
+	// Names of variables to put in array
+	$Variables = ['StartYear','SeasonName','SeasonID'];
+	
+	// Set all variables
+	foreach ( $Variables as $Name ) {
+		if ( isset($_POST[$Name]) ) {
+			// URL Decode and MySQL escape
+			$SeasonData[$Name] = MySQLEscape(urldecode($_POST[$Name]),$DBConn);
+		}
+	}
+	
+	// Create testing array
+	$CheckArray = [['variable' => 'StartYear','IsSet' => 1, 'Validate' => function($var){return IsInt($var);},'Error' => 'The year must be an integer'],
+	['variable' => 'SeasonName','IsSet' => 1, 'Validate' => function($var){return IsLength($var,150);},'Error' => 'Season Name is too long'],
+	['variable' => 'SeasonID','IsSet' => 0, 'Validate' => function($var){return IsID($var,'SeasonID');},'Error' => 'Season ID is invalid']];
+	
+	// Validate variables
+	$Validation = ValidateArray($SeasonData,$CheckArray);
+	if ( !$Validation['Pass'] ) {
+		echo $Validation['Error'];
+		return 0;
+	}
+}
+
 // Handle update
 if ( isset($_POST['SeasonID']) ) {
-
+	echo 'false';
+	return 0;
 }
 
 // Handle creation
 if ( isset($_POST['StartYear']) ) {
+	// Create query string
+	$SeasonString = '';
+	foreach ( $SeasonData as $Name => $Value ) {
+		if ( $SeasonString == '' ) {
+			$SeasonString = 'insert into Seasons set ' . $Name . '="' . $Value . '"';
+		} else {
+			$SeasonString = $SeasonString . ', ' . $Name . '="' . $Value . '"';
+		}
+	}
+	$SeasonString = $SeasonString . ';';
+	
+	// Insert season
+	$SeasonQuery = MySQLQuery($DBConn,$SeasonString);
+	if ( !$SeasonQuery['Result'] ) {
+		echo $SeasonQuery['Query'];
+		return 0;
+	}
 	echo 'true';
 	return 0;
 }
