@@ -99,7 +99,7 @@ function SubmitSeason(SeasonID) {
 	}
 	
 	// Get start year and add to PostString
-	StartYear = document.getElementById(StartElementName).value;
+	StartYear = document.getElementById(StartYearElement).value;
 	StartYear = pad(StartYear,4);
 	PostString = PostString + "StartYear=" + StartYear + "&";
 	
