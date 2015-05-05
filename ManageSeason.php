@@ -19,7 +19,7 @@ if ( isset($_POST['StartYear']) || isset($_POST['SeasonName']) || isset($_POST['
 	// Create testing array
 	$CheckArray = [['variable' => 'StartYear','IsSet' => 1, 'Validate' => function($var){return IsInt($var);},'Error' => 'The year must be an integer'],
 	['variable' => 'SeasonName','IsSet' => 1, 'Validate' => function($var){return IsLength($var,150);},'Error' => 'Season Name is too long'],
-	['variable' => 'SeasonID','IsSet' => 0, 'Validate' => function($var){return IsID($var,'SeasonID');},'Error' => 'Season ID is invalid']];
+	['variable' => 'SeasonID','IsSet' => 0, 'Validate' => function($var){return IsID($DBConn,$var,'SeasonID');},'Error' => 'Season ID is invalid']];
 	
 	// Validate variables
 	$Validation = ValidateArray($SeasonData,$CheckArray);
