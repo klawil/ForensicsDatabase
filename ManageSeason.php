@@ -22,7 +22,7 @@ if ( isset($_POST['StartYear']) || isset($_POST['SeasonName']) || isset($_POST['
 	['variable' => 'SeasonID','IsSet' => 0, 'Validate' => function($var){return IsID($DBConn,$var,'SeasonID');},'Error' => 'Season ID is invalid']];
 	
 	// Validate variables
-	$Validation = ValidateArray($SeasonData,$CheckArray);
+	$Validation = ValidateArray($SeasonData,$CheckArray,$DBConn);
 	if ( !$Validation['Pass'] ) {
 		echo $Validation['Error'];
 		return 0;

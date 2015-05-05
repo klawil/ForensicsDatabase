@@ -1,5 +1,5 @@
 <?php
-function ValidateArray($Array, $ValidationArray){
+function ValidateArray($Array, $ValidationArray, $DBConn = NULL){
 	// Validates an array's values
 	// @param $Array - the array to validate
 	// @param $ValidationArray - an array of checks to make
