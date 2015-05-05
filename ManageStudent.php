@@ -43,13 +43,13 @@ while ( $CurrentRow <= $NumRows ) {
 <tr>
 	<td><input type="text" id="FName"></td>
 	<td><input type="text" id="LName"></td>
-	<td><?php echo CreateSeasonList($DBConn,NULL,NULL,'NoviceSeason'); ?></td>
+	<td><?php echo CreateSeasonList($DBConn,NULL,NULL,'NoviceSeason',NULL,'ShowHideButton()'); ?></td>
 	<td><input type="button" value="Create Student" onclick="SubmitStudent()"></td></tr>
 </table>
 <script>
 function ShowHideButton(StudentID) {
 	// See if StudentID is set
-	StudentID = StudentID || -1;
+	StudentID = StudentID || "";
 	if ( StudentID == -1 ) {
 		window.alert("Student ID is missing");
 	}
