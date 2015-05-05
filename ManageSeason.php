@@ -1,6 +1,7 @@
 <?php
 require_once 'include.inc';
 $GLOBALS['PageName'] = 'Season Management';
+require_once 'restrictedpage.inc';
 
 // Handle update
 if ( isset($_POST['SeasonID']) ) {
@@ -88,17 +89,27 @@ function SubmitSeason(SeasonID) {
 	// Declare PostString
 	PostString = "";
 	
-	// Set Element name
-	StartElementName = "StartYear";
+	// Set Element Names
+	StartYearElement = "StartYear";
+	SeasonNameElement = "SeasonName";
 	if ( SeasonID != -1 ) {
-		StartElementName = StartElementName + SeasonID;
+		StartYearElement = StartYearElement + SeasonID;
+		SeasonNameElement = SeasonNameElement + SeasonID;
 		PostString = "SeasonID=" + SeasonID + "&";
 	}
 	
 	// Get start year and add to PostString
 	StartYear = document.getElementById(StartElementName).value;
 	StartYear = pad(StartYear,4);
-	PostString = PostString + "StartYear=" + StartYear;
+	PostString = PostString + "StartYear=" + StartYear + "&";
+	
+	// Get Season name and add to PostString
+	SeasonName = document.getElementById(SeasonNameElement).value;
+	SeasonName = encodeURIComponent(SeasonName);
+	PostString = PostString + "SeasonName=" + SeasonName;
+	
+	// Encode PostString
+	PostString = encodeURI(PostString);
 	
 	// Set up post
 	if ( window.XMLHttpRequest ) {
