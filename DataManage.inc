@@ -73,11 +73,7 @@ function IsLength($String,$Length,$Mode = NULL) {
 	// @param $String - the string to test
 	// @param $Length - the length it must be <=
 	// @return boolean
-	if ( $Mode != NULL ) {
-		return strlen($String) <= $Length;
-	} else {
-		return strlen($String) == $Length;
-	}
+	return strlen($String) <= $Length;
 }
 function InsertBallots($Ballots, $DBConn = NULL, $Insert = NULL) {
 	// Inserts Ballots from an array
