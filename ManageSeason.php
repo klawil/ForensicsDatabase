@@ -13,12 +13,12 @@ if ( isset($_POST['StartYear']) || isset($_POST['SeasonName']) || isset($_POST['
 		if ( isset($_POST[$Name]) ) {
 			// URL Decode and MySQL escape
 			$SeasonData[$Name] = urldecode($_POST[$Name]);
-			echo $Name . '=>' . $SeasonData[$Name] . '<br>';
+			echo $Name . '=>' . $SeasonData[$Name] . "\n";
 		}
 	}
 	
 	// Create testing array
-	$CheckArray = [['variable' => 'StartYear','IsSet' => 1, 'Validate' => function($var){return IsInt($var);},'Error' => 'The year must be an integer'],
+	$CheckArray = [['variable' => 'StartYear','IsSet' => 1, 'Validate' => function($var){return IsInt($var);},'Error' => 'The year must be an integers'],
 	['variable' => 'SeasonName','IsSet' => 1, 'Validate' => function($var){return IsLength($var,150);},'Error' => 'Season Name is too long'],
 	['variable' => 'SeasonID','IsSet' => 0, 'Validate' => function($var){return IsID($var,'SeasonID');},'Error' => 'Season ID is invalid']];
 	
