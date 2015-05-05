@@ -12,7 +12,7 @@ function ValidateArray($Array, $ValidationArray){
 				$ReturnValue['Error'] = $Check['variable'] . ' not set';
 				$ReturnValue['Pass'] = false;
 			}
-		} elseif ( !$Check['Validate']($Ballot[$Check['variable']]) ) {
+		} elseif ( !$Check['Validate']($Check[$Check['variable']]) ) {
 			$ReturnValue['Error'] = $Check['Error'];
 			$ReturnValue['Pass'] = false;
 		}
