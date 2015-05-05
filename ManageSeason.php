@@ -31,7 +31,22 @@ if ( isset($_POST['StartYear']) || isset($_POST['SeasonName']) || isset($_POST['
 
 // Handle update
 if ( isset($_POST['SeasonID']) ) {
-	echo 'false';
+	// Pull out SeasonID
+	$SeasonID = $SeasonData['SeasonID'];
+	unset($SeasonData['SeasonID'];
+	
+	// Create query string
+	$SeasonString = '';
+	foreach ( $SeasonData as $Name => $Value ) {
+		if ( $SeasonString == '' ) {
+			$SeasonString = 'update Seasons set ' . $Name . '="' . $Value . '"';
+		} else {
+			$SeasonString = $SeasonString . ', ' . $Name . '="' . $Value . '"';
+		}
+	}
+	$SeasonString = $SeasonString . ' where SeasonID="' . $SeasonID . '";';
+	
+	echo $SeasonString;
 	return 0;
 }
 
