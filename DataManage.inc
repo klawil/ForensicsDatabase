@@ -26,7 +26,6 @@ function IsInt($String){
 	// Determines whetehr parameter represents an integer
 	// @param $String - string to check
 	// @return boolean - whether the string is an integer or not
-	echo (string)(int)$String . '=>' . $String . "\n";
 	return (string)(int)$String == $String;
 }
 function IsBool($String){
