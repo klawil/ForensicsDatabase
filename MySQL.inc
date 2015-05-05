@@ -184,7 +184,7 @@ function CreateSeasonList($DBConn, $IncludeAll = NULL, $DefaultSeasonID = NULL, 
 	while ( $CurrentRow < $NumRows ) {
 		$Season = mysqli_fetch_assoc($SQuery['Query']);
 		if ( $Season['SeasonID'] == $DefaultSeasonID ) {
-			$SeasonString = $SeasonString . '<option selected="selected" value="' . $Season['SeasonID'] . '">' . $Season['StartYear'] . '-' . $Season['StartYear'] + 1 . '</option>';
+			$SeasonString = $SeasonString . '<option selected="selected" value="' . $Season['SeasonID'] . '">' . $Season['SeasonName'] . '</option>';
 		} else {
 			$SeasonString = $SeasonString . '<option value="' . $Season['SeasonID'] . '">' . $Season['StartYear'] . '-' . $Season['EndYear'] . '</option>';
 		}
