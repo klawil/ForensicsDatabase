@@ -4,7 +4,7 @@ $GLOBALS['PageName'] = 'Season Management';
 require_once 'restrictedpage.inc';
 
 // Create array of values if POST data
-if ( isset($_POST['StartYear']) || isset($_POST['SeasonName') || isset($_POST['SeasonID']) ) {
+if ( isset($_POST['StartYear']) || isset($_POST['SeasonName']) || isset($_POST['SeasonID']) ) {
 	// Names of variables to put in array
 	$Variables = ['StartYear','SeasonName','SeasonID'];
 	
