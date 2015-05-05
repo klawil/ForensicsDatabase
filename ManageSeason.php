@@ -5,8 +5,34 @@ require_once 'restrictedpage.inc';
 
 $DoQuery = false;
 
+// Handle season deletion
+if ( isset($_POST['delete']) ) {
+	// Set SeasonID
+	if ( !isset($_POST['SeasonID']) ) {
+		echo 'Season ID is required';
+		return 0;
+	}
+	$SeasonData['SeasonID'] = MySQLEscape($_POST['SeasonID'],$DBConn);
+	
+	// Check Array
+	$CheckArray = [['variable' => 'SeasonID','IsSet' => 1, 'Validate' => function($var,$DBConn){return IsID($DBConn,$var,'SeasonID');},'Error' => 'Season ID is invalid']];
+	
+	// Validate variables
+	$Validation = ValidateArray($SeasonData,$CheckArray,$DBConn);
+	if ( !$Validation['Pass'] ) {
+		echo $Validation['Error'];
+		return 0;
+	}
+	
+	// Create query string
+	$SeasonQuery = 'delete from Seasons where SeasonId="' . $SeasonData['SeasonID'] . '";';
+	
+	// Tell to execute query
+	$DoQuery = true;
+}
+
 // Create array of values if POST data
-if ( isset($_POST['StartYear']) || isset($_POST['SeasonName']) || isset($_POST['SeasonID']) ) {
+if ( !$DoQuery && (isset($_POST['StartYear']) || isset($_POST['SeasonName']) || isset($_POST['SeasonID'])) ) {
 	// Names of variables to put in array
 	$Variables = ['StartYear','SeasonName','SeasonID'];
 	
@@ -14,7 +40,7 @@ if ( isset($_POST['StartYear']) || isset($_POST['SeasonName']) || isset($_POST['
 	foreach ( $Variables as $Name ) {
 		if ( isset($_POST[$Name]) ) {
 			// URL Decode and MySQL escape
-			$SeasonData[$Name] = urldecode($_POST[$Name]);
+			$SeasonData[$Name] = MySQLEscape(urldecode($_POST[$Name]),$DBConn);
 		}
 	}
 	
@@ -32,7 +58,7 @@ if ( isset($_POST['StartYear']) || isset($_POST['SeasonName']) || isset($_POST['
 }
 
 // Handle update
-if ( isset($_POST['SeasonID']) ) {
+if ( !$DoQuery && isset($_POST['SeasonID']) ) {
 	// Pull out SeasonID
 	$SeasonID = $SeasonData['SeasonID'];
 	unset($SeasonData['SeasonID']);
