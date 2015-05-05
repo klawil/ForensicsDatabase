@@ -92,7 +92,7 @@ require_once 'header.inc';
 ?>
 <h3>Update, create, and delete seasons</h3>
 <table class="Table">
-<tr><th>Season Name</th><th>Start Year</th><th></th></tr>
+<tr><th>Season Name</th><th>Start Year</th></tr>
 <?php
 // Set up loop variables
 $NumRows = mysqli_num_rows($SeasonQuery['Query']);
@@ -104,7 +104,7 @@ while ( $CurrentRow <= $NumRows ) {
 	$SeasonData = mysqli_fetch_assoc($SeasonQuery['Query']);
 	
 	// Add a row to the html table
-	echo '<tr><td><input type="text" id="SeasonName' . $SeasonData['SeasonID'] . '" value="' . $SeasonData['SeasonName'] . '" onchange="ShowHideButton(' . $SeasonData['SeasonID'] . ')"></td><td><input type="number" id="StartYear' . $SeasonData['SeasonID'] . '" value="' . $SeasonData['StartYear'] . '" onchange="ShowHideButton(' . $SeasonData['SeasonID'] . ')"></td><td class="ChangeCell" id="' . $SeasonData['SeasonID'] . '"><input type="button" value="Save Changes" onclick="SubmitSeason(' . $SeasonData['SeasonID'] . ')"></td></tr>';
+	echo '<tr><td><input type="text" id="SeasonName' . $SeasonData['SeasonID'] . '" value="' . $SeasonData['SeasonName'] . '" onchange="ShowHideButton(' . $SeasonData['SeasonID'] . ')"></td><td><input type="number" id="StartYear' . $SeasonData['SeasonID'] . '" value="' . $SeasonData['StartYear'] . '" onchange="ShowHideButton(' . $SeasonData['SeasonID'] . ')"></td><td><input type="button" value="Delete Season" onclick="DeleteSeason(' . $SeasonData['SeasonID'] . ')"></td><td class="ChangeCell" id="' . $SeasonData['SeasonID'] . '"><input type="button" value="Save Changes" onclick="SubmitSeason(' . $SeasonData['SeasonID'] . ')"></td></tr>';
 	$CurrentRow++;
 }
 ?>
@@ -148,33 +148,8 @@ function ShowHideButton(SeasonID) {
 		document.getElementById(ButtonElementName).style.display = "none";
 	}
 }
-function SubmitSeason(SeasonID) {
-	// Set default SeasonID
-	SeasonID = SeasonID || -1;
-	
-	// Declare PostString
-	PostString = "";
-	
-	// Set Element Names
-	StartYearElement = "StartYear";
-	SeasonNameElement = "SeasonName";
-	if ( SeasonID != -1 ) {
-		StartYearElement = StartYearElement + SeasonID;
-		SeasonNameElement = SeasonNameElement + SeasonID;
-		PostString = "SeasonID=" + SeasonID + "&";
-	}
-	
-	// Get start year and add to PostString
-	StartYear = document.getElementById(StartYearElement).value;
-	StartYear = pad(StartYear,4);
-	PostString = PostString + "StartYear=" + StartYear + "&";
-	
-	// Get Season name and add to PostString
-	SeasonName = document.getElementById(SeasonNameElement).value;
-	SeasonName = encodeURIComponent(SeasonName);
-	PostString = PostString + "SeasonName=" + SeasonName;
-	
-	// Encode PostString
+function PostToPage(PostString) {
+	// Encode string
 	PostString = encodeURI(PostString);
 	
 	// Set up post
@@ -202,6 +177,42 @@ function SubmitSeason(SeasonID) {
 			window.alert("Error: Status code " + xmlhttp.status);
 		}
 	}
+}
+function SubmitSeason(SeasonID) {
+	// Set default SeasonID
+	SeasonID = SeasonID || -1;
+	
+	// Declare PostString
+	PostString = "";
+	
+	// Set Element Names
+	StartYearElement = "StartYear";
+	SeasonNameElement = "SeasonName";
+	if ( SeasonID != -1 ) {
+		StartYearElement = StartYearElement + SeasonID;
+		SeasonNameElement = SeasonNameElement + SeasonID;
+		PostString = "SeasonID=" + SeasonID + "&";
+	}
+	
+	// Get start year and add to PostString
+	StartYear = document.getElementById(StartYearElement).value;
+	StartYear = pad(StartYear,4);
+	PostString = PostString + "StartYear=" + StartYear + "&";
+	
+	// Get Season name and add to PostString
+	SeasonName = document.getElementById(SeasonNameElement).value;
+	SeasonName = encodeURIComponent(SeasonName);
+	PostString = PostString + "SeasonName=" + SeasonName;
+	
+	// Execute Post
+	PostToPage(PostString);
+}
+function DeleteSeason(SeasonID) {
+	// Create PostString
+	PostString = "delete=1&SeasonID=" + SeasonID;
+	
+	// Execute Post
+	PostToPage(PostString);
 }
 </script>
 </body>
