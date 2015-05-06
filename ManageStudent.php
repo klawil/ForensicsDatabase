@@ -133,11 +133,11 @@ while ( $CurrentRow <= $NumRows ) {
 	
 	// Echo data as HTML table?>
 <tr>
-	<td><span title="Last Name of the student"><input type="text" id="LName<?php echo $StudentData['StudentID']; ?>" value="<?php echo $StudentData['LName']; ?>" onchange="ShowHideButton(<?php echo $StudentData['StudentID']; ?>)"></span></td>
-	<td><span title="First Name of the student"><input type="text" id="FName<?php echo $StudentData['StudentID']; ?>" value="<?php echo $StudentData['FName']; ?>" onchange="ShowHideButton(<?php echo $StudentData['StudentID']; ?>)"></span></td>
-	<td><span title="The novice season of the student"><?php echo CreateSeasonList($DBConn,NULL,$StudentData['NoviceYear'],'NoviceSeason' . $StudentData['StudentID'],'ShowHideButton(' . $StudentData['StudentID'] . ')'); ?></span></td>
+	<td><span title="Last Name of the student"><input type="text" id="LName<?php echo $StudentData['StudentID']; ?>" value="<?php echo $StudentData['LName']; ?>"></span></td>
+	<td><span title="First Name of the student"><input type="text" id="FName<?php echo $StudentData['StudentID']; ?>" value="<?php echo $StudentData['FName']; ?>"></span></td>
+	<td><span title="The novice season of the student"><?php echo CreateSeasonList($DBConn,NULL,$StudentData['NoviceYear'],'NoviceSeason' . $StudentData['StudentID']); ?></span></td>
 	<td><span title="Delete the student"><input type="button" value="Delete Student" onclick="DeleteStudent(<?php echo $StudentData['StudentID']; ?>)"></span></td>
-	<td class="ChangeCell" id="<?php echo $StudentData['StudentID']; ?>"><span title="Save changes to the student"><input type="button" value="Save Changes" onclick="SubmitStudent(<?php echo $StudentData['StudentID']; ?>)"></span></td>
+	<td><span title="Save changes to the student"><input type="button" value="Save Changes" onclick="SubmitStudent(<?php echo $StudentData['StudentID']; ?>)"></span></td>
 </tr>
 <?php
 	$CurrentRow++;
@@ -150,38 +150,6 @@ while ( $CurrentRow <= $NumRows ) {
 	<td><span title="Create the student"><input type="button" value="Create Student" onclick="SubmitStudent()"></span></td></tr>
 </table>
 <script>
-function ShowHideButton(StudentID) {
-	// See if StudentID is set
-	StudentID = StudentID || "";
-	if ( StudentID == -1 ) {
-		window.alert("Student ID is missing");
-	}
-	
-	// Set Element Names
-	FNameElement = "FName" + StudentID;
-	LNameElement = "LName" + StudentID;
-	NoviceSeasonElement = "NoviceSeason" + StudentID;
-	ButtonElement = StudentID;
-	
-	// Get variables
-	FName = document.getElementById(FNameElement).value;
-	LName = document.getElementById(LNameElement).value;
-	NoviceSeason = document.getElementById(NoviceSeasonElement).value;
-	
-	// Check for changes
-	if ( FName != document.getElementById(FNameElement).defaultValue ) {
-		DisplayType = "inline";
-	} else if ( LName != document.getElementById(LNameElement).defaultValue ) {
-		DisplayType = "inline";
-	} else if ( !document.getElementById(NoviceSeasonElement).options[document.getElementById(NoviceSeasonElement).selectedIndex].defaultSelected ) {
-		DisplayType = "inline";
-	} else {
-		DisplayType = "none";
-	}
-	
-	// Show/hide button accordingly
-	document.getElementById(ButtonElement).style.display = DisplayType;
-}
 function PostToPage(PostString) {
 	// Encode string
 	PostString = encodeURI(PostString);
