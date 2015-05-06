@@ -72,6 +72,7 @@ if ( !$DoQuery && isset($_POST['LName']) ) {
 	
 	// Set flag to execute query
 	$DoQuery = true;
+	return 0;
 }
 
 // Execute query
