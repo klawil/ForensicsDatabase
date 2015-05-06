@@ -162,7 +162,7 @@ function CreateSeasonList($DBConn, $IncludeAll = NULL, $DefaultSeasonID = NULL, 
 	// @return String - html code for season select
 	
 	// Get event information
-	$SQuery = MySQLQuery($DBConn, 'select * from Seasons order by StartYear;');
+	$SQuery = MySQLQuery($DBConn, 'select * from Seasons order by StartYear ascending;');
 	if ( !$SQuery['Result'] ) {
 		return $SQuery['Query'];
 	}
