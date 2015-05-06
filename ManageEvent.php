@@ -214,7 +214,11 @@ function SubmitEvent(EventID) {
 	
 }
 function DeleteEvent(EventID) {
+	// Create PostString
+	PostString = "delete=1&EventID=" + EventID;
 	
+	// Execute Post
+	PostToPage(PostString);
 }
 </script>
 </body>
