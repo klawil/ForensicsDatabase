@@ -158,7 +158,7 @@ while ( $CurrentRow <= $NumRows ) {
 }
 ?>
 <tr>
-	<td><span title="Name of the event"><input type="text" id="EventName"></span></td>
+	<td><span title="Name of the event"><input type="text" id="EventName" autofocus="autofocus"></span></td>
 	<td><span title="Abbreviation of the event"><input type="text" id="EventAbbr"></span></td>
 	<td><span title="Is this a partner event?"><input type="checkbox" id="Partner"></span></td>
 	<td><span title="Create this event"><input type="button" value="Create Event" onclick="SubmitEvent()"></span></td>

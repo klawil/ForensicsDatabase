@@ -155,7 +155,7 @@ while ( $CurrentRow <= $NumRows ) {
 }
 ?>
 <tr>
-	<td><span title="Last Name of the student"><input type="text" id="LName"></span></td>
+	<td><span title="Last Name of the student"><input type="text" id="LName" autofocus="autofocus"></span></td>
 	<td><span title="First Name of the student"><input type="text" id="FName"></span></td>
 	<td><span title="The novice season of the student"><?php echo CreateSeasonList($DBConn,NULL,NULL,'NoviceSeason'); ?></span></td>
 	<td><span title="Create the student"><input type="button" value="Create Student" onclick="SubmitStudent()"></span></td></tr>

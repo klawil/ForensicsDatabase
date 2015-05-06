@@ -156,7 +156,7 @@ while ( $CurrentRow <= $NumRows ) {
 }
 ?>
 <tr>
-	<td><span title="Name to assign to the season (i.e. 2014-2015)"><input type="text" id="SeasonName"></span></td>
+	<td><span title="Name to assign to the season (i.e. 2014-2015)"><input type="text" id="SeasonName" autofocus="autofocus"></span></td>
 	<td><span title="First year of the season (i.e. 2014)"><input type="number" id="StartYear"></span></td>
 	<td><span title="Create this season"><input type="button" value="Create Season" onclick="SubmitSeason()"></span></td>
 </tr>
