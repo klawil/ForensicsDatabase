@@ -1,6 +1,6 @@
 <?php
 require_once 'include.inc';
-$GLOBALS['PageName'] = 'Season Management';
+$GLOBALS['PageName'] = 'Student Management';
 require_once 'restrictedpage.inc';
 
 $DoQuery = false;
@@ -53,6 +53,27 @@ if ( !$DoQuery && (isset($_POST['StudentID']) || isset($_POST['LName']) ) ) {
 		echo $Validation['Error'];
 		return 0;
 	}
+}
+
+// Handle update
+if ( !$DoQuery && isset($_POST['StudentID']) ) {
+	// Pull out StudentID
+	$StudentID = $StudentData['StudentID'];
+	unset($StudentData['StudentID']);
+	
+	// Create query string
+	$StudentString = '';
+	foreach ( $StudentData as $Name => $Value ) {
+		if ( $StudentString == '' ) {
+			$StudentString = 'insert into Students set ' . $Name . '="' . $Value . '"';
+		} else {
+			$StudentString = $StudentString . ', ' . $Name . '="' . $Value . '"';
+		}
+	}
+	$StudentString = $StudentString . ' where StudentID="' . $StudentID . '";';
+	
+	// Set flag to execute query
+	$DoQuery = true;
 }
 
 // Handle creation
