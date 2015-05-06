@@ -1,6 +1,6 @@
 <?php
 require_once 'include.inc';
-$GLOBALS['PageName'] = 'Student Management';
+$GLOBALS['PageName'] = 'Event Management';
 require_once 'restrictedpage.inc';
 
 $DoQuery = false;
@@ -11,7 +11,7 @@ if ( isset($_POST['delete']) ) {
 	if ( !isset($_POST['EventID']) ) {
 		echo 'Event ID is required';
 	}
-	$StudentData['EventID'] = MySQLEscape($_POST['EventID'],$DBConn);
+	$EventData['EventID'] = MySQLEscape($_POST['EventID'],$DBConn);
 	
 	// Validate ID
 	$CheckArray = [['variable' => 'EventID','IsSet' => 1, 'Validate' => function($var,$DBConn){return IsID($DBConn,$var,'EventID');},'Error' => 'Event ID is invalid']];
@@ -61,7 +61,7 @@ if ( !$DoQuery && (isset($_POST['EventID']) || isset($_POST['EventName']) ) ) {
 
 // Handle update
 if ( !$DoQuery && isset($_POST['EventID']) ) {
-	// Pull out StudentID
+	// Pull out EventID
 	$EventID = $EventData['EventID'];
 	unset($EventData['EventID']);
 	
@@ -108,7 +108,7 @@ if ( $DoQuery ) {
 	return 0;
 }
 
-// Create query of all Students
+// Create query of all Events
 $EventQuery = MySQLQuery($DBConn,'select EventName, EventID, Partner, EventAbbr from Events order by Events.EventName;');
 if ( !$EventQuery['Result'] ) {
 	$GLOBALS['ErrorMessage'] = $EventQuery['Query'];
