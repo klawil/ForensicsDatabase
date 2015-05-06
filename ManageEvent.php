@@ -197,9 +197,9 @@ function SubmitEvent(EventID) {
 	PartnerElement = "Partner";
 	if ( EventID != -1 ) {
 		PostString = "EventID=" + EventID + "&";
-		EventNameElement =  + EventID
-		EventAbbrElement =  + EventID
-		PartnerElement =  + EventID
+		EventNameElement = EventNameElement + EventID
+		EventAbbrElement = EventAbbrElement + EventID
+		PartnerElement = PartnerElement + EventID
 	}
 	
 	// Get PostString data
