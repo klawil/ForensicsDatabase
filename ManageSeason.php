@@ -143,7 +143,7 @@ while ( $CurrentRow <= $NumRows ) {
 <tr>
 	<td><span title="Name to assign to the season (i.e. 2014-2015)"><input type="text" id="SeasonName"></span></td>
 	<td><span title="First year of the season (i.e. 2014)"><input type="number" id="StartYear"></span></td>
-	<td class="ChangeCell" id="NewSeason"><span title="Create this season"><input type="button" value="Create Season" onclick="SubmitSeason()"></span></td>
+	<td><span title="Create this season"><input type="button" value="Create Season" onclick="SubmitSeason()"></span></td>
 </tr>
 </table>
 <script>
@@ -152,18 +152,10 @@ function pad (str, max) {
   return str.length < max ? pad("0" + str, max) : str;
 }
 function ShowHideButton(SeasonID) {
-	// Set default SeasonID
-	SeasonID = SeasonID || -1;
-		
 	// Set Element Names
-	StartYearElement = "StartYear";
-	SeasonNameElement = "SeasonName";
-	ButtonElement = "NewSeason";
-	if ( SeasonID != -1 ) {
-		StartYearElement = StartYearElement + SeasonID;
-		SeasonNameElement = SeasonNameElement + SeasonID;
-		ButtonElement = SeasonID;
-	}
+	StartYearElement = "StartYear" + SeasonID;
+	SeasonNameElement = "SeasonName" + SeasonID;
+	ButtonElement = SeasonID;
 	
 	// Get start year
 	StartYear = document.getElementById(StartYearElement).value;
