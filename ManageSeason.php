@@ -135,7 +135,7 @@ while ( $CurrentRow <= $NumRows ) {
 	
 	// Add a row to the html table?>
 <tr>
-	<td><span title="Name to assign to the season (i.e. 2014-2015)"><input type="text" id="SeasonName<?php echo $SeasonData['SeasonID']; ?>" value="<?php echo $SeasonData['SeasonName']; ?>" onchange="ShowHideButton(<?php echo $SeasonData['SeasonID']; ?>)"></span></td>
+	<td><span title="Name to assign to the season (i.e. 2014-2015)"><input type="text" id="SeasonName<?php echo $SeasonData['SeasonID']; ?>" value="<?php echo $SeasonData['SeasonName']; ?>" oninput="ShowHideButton(<?php echo $SeasonData['SeasonID']; ?>)"></span></td>
 	<td><span title="First year of the season (i.e. 2014)"><input type="number" id="StartYear<?php echo $SeasonData['SeasonID']; ?>" value="<?php echo $SeasonData['StartYear']; ?>" onchange="ShowHideButton(<?php echo $SeasonData['SeasonID']; ?>)"></span></td>
 	<td><span title="Delete this season"><input type="button" value="Delete Season" onclick="DeleteSeason(<?php echo $SeasonData['SeasonID']; ?>)"></span></td>
 	<td class="ChangeCell" id="<?php echo $SeasonData['SeasonID']; ?>"><span title="Save changes to the season"><input type="button" value="Save Changes" onclick="SubmitSeason(<?php echo $SeasonData['SeasonID']; ?>)"></span></td>
