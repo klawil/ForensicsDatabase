@@ -166,7 +166,49 @@ function ShowHideButton(EventID) {
 	EventAbbr = document.getElementById(EventAbbrElement).value;
 	Partner = document.getElementById(PartnerElement).checked;
 	
-	window.alert(Partner);
+	// Check for changes
+	if ( EventName != document.getElementById(EventNameElement).defaultValue ) {
+		DisplayType = "inline";
+	} else if ( EventAbbr != document.getElementById(EventAbbrElement).defaultValue ) {
+		DisplayType = "inline";
+	} else if ( Partner != document.getElementById(PartnerElement).defaultChecked ) {
+		DisplayType = "inline";
+	} else {
+		DisplayType = "none";
+	}
+	
+	// Show/hide button accordingly
+	document.getElementById(ButtonElement).style.display = DisplayType;
+}
+function PostToPage(PostString) {
+	// Encode string
+	PostString = encodeURI(PostString);
+	
+	// Set up post
+	if ( window.XMLHttpRequest ) {
+		xmlhttp = new XMLHttpRequest();
+	} else {
+		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.open("POST","ManageEvent.php",true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send(PostString);
+	xmlhttp.onreadystatechange = function() {
+		if ( xmlhttp.readyState == 4 && xmlhttp.status == 200 ) {
+			// Handle successful response
+			response = xmlhttp.responseText;
+			if ( response == 'true' ) {
+				// Reload page if success
+				location.reload();
+			} else {
+				// Show error if error
+				window.alert(response);
+			}
+		} else if ( xmlhttp.readyState == 4 ) {
+			// Handle unsuccessful response
+			window.alert("Error: Status code " + xmlhttp.status);
+		}
+	}
 }
 </script>
 </body>
