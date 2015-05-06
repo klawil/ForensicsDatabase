@@ -68,15 +68,12 @@ if ( !$DoQuery && isset($_POST['LName']) ) {
 	}
 	$StudentString = $StudentString . ';';
 	
-	echo $StudentString;
-	
 	// Set flag to execute query
 	$DoQuery = true;
-	return 0;
 }
 
 // Execute query
-if ( $DoQuery && false ) {
+if ( $DoQuery ) {
 	$StudentQuery = MySQLQuery($DBConn,$StudentString);
 	if ( !$StudentQuery['Result'] ) {
 		echo $StudentQuery['Query'];
