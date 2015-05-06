@@ -148,8 +148,7 @@ function ShowHideButton(StudentID) {
 		DisplayType = "inline";
 	} else if ( LName != document.getElementById(LNameElement).defaultValue ) {
 		DisplayType = "inline";
-	} else if ( document.getElementById(NoviceSeasonElement).options[document.getElementById(NoviceSeasonElement).selectedIndex].defaultSelected ) {
-		window.alert("Test");
+	} else if ( !document.getElementById(NoviceSeasonElement).options[document.getElementById(NoviceSeasonElement).selectedIndex].defaultSelected ) {
 		DisplayType = "inline";
 	} else {
 		DisplayType = "none";
