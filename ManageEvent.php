@@ -132,6 +132,12 @@ require_once 'header.inc';
 <h3>Update, create, and delete events</h3>
 <table class="Table">
 <tr><th>Event Name</th><th>Abbreviation</th><th>Partner</th></tr>
+<tr>
+	<td><span title="Name of the event"><input type="text" id="EventName" autofocus="autofocus"></span></td>
+	<td><span title="Abbreviation of the event"><input type="text" id="EventAbbr"></span></td>
+	<td><span title="Is this a partner event?"><input type="checkbox" id="Partner"></span></td>
+	<td><span title="Create this event"><input type="button" value="Create Event" onclick="SubmitEvent()"></span></td>
+</tr>
 <?php
 // Set up loop
 $NumRows = mysqli_num_rows($EventQuery['Query']);
@@ -157,12 +163,6 @@ while ( $CurrentRow <= $NumRows ) {
 	$CurrentRow++;
 }
 ?>
-<tr>
-	<td><span title="Name of the event"><input type="text" id="EventName" autofocus="autofocus"></span></td>
-	<td><span title="Abbreviation of the event"><input type="text" id="EventAbbr"></span></td>
-	<td><span title="Is this a partner event?"><input type="checkbox" id="Partner"></span></td>
-	<td><span title="Create this event"><input type="button" value="Create Event" onclick="SubmitEvent()"></span></td>
-</tr>
 </table>
 <script>
 function PostToPage(PostString) {

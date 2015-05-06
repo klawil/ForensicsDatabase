@@ -132,6 +132,12 @@ require_once 'header.inc';
 <h3>Update, create, and delete students</h3>
 <table class="Table">
 <tr><th>Last Name</th><th>First Name</th><th>Novice Season</th></tr>
+<tr>
+	<td><span title="Last Name of the student"><input type="text" id="LName" autofocus="autofocus"></span></td>
+	<td><span title="First Name of the student"><input type="text" id="FName"></span></td>
+	<td><span title="The novice season of the student"><?php echo CreateSeasonList($DBConn,NULL,NULL,'NoviceSeason'); ?></span></td>
+	<td><span title="Create the student"><input type="button" value="Create Student" onclick="SubmitStudent()"></span></td>
+</tr>
 <?php
 // Set up loop
 $NumRows = mysqli_num_rows($StudentQuery['Query']);
@@ -154,11 +160,6 @@ while ( $CurrentRow <= $NumRows ) {
 	$CurrentRow++;
 }
 ?>
-<tr>
-	<td><span title="Last Name of the student"><input type="text" id="LName" autofocus="autofocus"></span></td>
-	<td><span title="First Name of the student"><input type="text" id="FName"></span></td>
-	<td><span title="The novice season of the student"><?php echo CreateSeasonList($DBConn,NULL,NULL,'NoviceSeason'); ?></span></td>
-	<td><span title="Create the student"><input type="button" value="Create Student" onclick="SubmitStudent()"></span></td></tr>
 </table>
 <script>
 function PostToPage(PostString) {
