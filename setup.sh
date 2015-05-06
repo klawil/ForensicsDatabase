@@ -1,8 +1,4 @@
 #!/bin/bash
-if [ "$1" == "" ]; then
-	echo "No database name given"
-	exit
-fi
 mysqluser="root" # User to create database with
 echo -en "Enter the password for MySQL user root: "
 read mysqlpass
