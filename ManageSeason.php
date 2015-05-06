@@ -39,6 +39,10 @@ if ( !$DoQuery && (isset($_POST['StartYear']) || isset($_POST['SeasonID'])) ) {
 	// Set all variables
 	foreach ( $Variables as $Name ) {
 		if ( isset($_POST[$Name]) ) {
+			if ( $_POST[$Name] == '' ) {
+				echo $Name . ' is required';
+				return 0;
+			}
 			// URL Decode and MySQL escape
 			$SeasonData[$Name] = MySQLEscape(urldecode($_POST[$Name]),$DBConn);
 		}
@@ -159,7 +163,6 @@ function ShowHideButton(SeasonID) {
 	
 	// Get start year
 	StartYear = document.getElementById(StartYearElement).value;
-	StartYear = pad(StartYear,4);
 	document.getElementById(StartYearElement).value = StartYear;
 	
 	// Get Season name
@@ -224,7 +227,6 @@ function SubmitSeason(SeasonID) {
 	
 	// Get start year and add to PostString
 	StartYear = document.getElementById(StartYearElement).value;
-	StartYear = pad(StartYear,4);
 	PostString = PostString + "StartYear=" + StartYear + "&";
 	
 	// Get Season name and add to PostString
