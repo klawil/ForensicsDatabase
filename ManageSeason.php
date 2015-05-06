@@ -32,7 +32,7 @@ if ( isset($_POST['delete']) ) {
 }
 
 // Create array of values if POST data
-if ( !$DoQuery && (isset($_POST['StartYear']) || isset($_POST['SeasonName']) || isset($_POST['SeasonID'])) ) {
+if ( !$DoQuery && (isset($_POST['StartYear']) || isset($_POST['SeasonID'])) ) {
 	// Names of variables to put in array
 	$Variables = ['StartYear','SeasonName','SeasonID'];
 	
