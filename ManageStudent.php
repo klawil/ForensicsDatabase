@@ -84,7 +84,7 @@ if ( $DoQuery ) {
 }
 
 // Create query of all Students
-$StudentQuery = MySQLQuery($DBConn,'select LName, FName, StudentID, NoviceYear from Students, Seasons where Students.NoviceYear = Seasons.SeasonID order by Seasons.StartYear, LName, FName;');
+$StudentQuery = MySQLQuery($DBConn,'select LName, FName, StudentID, NoviceYear from Students, Seasons where Students.NoviceYear = Seasons.SeasonID order by Seasons.StartYear desc, LName, FName;');
 if ( !$StudentQuery['Result'] ) {
 	$GLOBALS['ErrorMessage'] = $StudentQuery['Query'];
 	require_once 'ErrorPage.inc';
@@ -110,7 +110,7 @@ while ( $CurrentRow <= $NumRows ) {
 <tr>
 	<td><input type="text" id="LName<?php echo $StudentData['StudentID']; ?>" value="<?php echo $StudentData['LName']; ?>"></td>
 	<td><input type="text" id="FName<?php echo $StudentData['StudentID']; ?>" value="<?php echo $StudentData['FName']; ?>"></td>
-	<td><?php echo CreateSeasonList($DBConn,NULL,NULL,'NoviceSeason' . $StudentData['StudentID'],$StudentData['NoviceYear']); ?></td>
+	<td><?php echo CreateSeasonList($DBConn,NULL,$StudentData['NoviceYear'],'NoviceSeason' . $StudentData['StudentID'],'ShowHideButton(' . $StudentData['StudentID'] . ')'); ?></td>
 	<td><input type="button" value="Delete Student" onclick="DeleteStudent(<?php echo $StudentData['StudentID']; ?>)"></td>
 	<td class="ChangeCell" id="<?php echo $StudentData['StudentID']; ?>"><input type="button" value="Save Changes" onclick="SubmitStudent(<?php echo $StudentData['StudentID']; ?>)"></td>
 </tr>
