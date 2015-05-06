@@ -41,7 +41,7 @@ if ( !$DoQuery && (isset($_POST['EventID']) || isset($_POST['EventName']) ) ) {
 				return 0;
 			}
 			// URL Decode and MySQL escape
-			$StudentData[$Name] = MySQLEscape(urldecode($_POST[$Name]),$DBConn);
+			$EventData[$Name] = MySQLEscape(urldecode($_POST[$Name]),$DBConn);
 		}
 	}
 	
