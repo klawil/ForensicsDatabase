@@ -59,6 +59,17 @@ if ( !$DoQuery && (isset($_POST['StartYear']) || isset($_POST['SeasonID'])) ) {
 		echo $Validation['Error'];
 		return 0;
 	}
+	
+	// Check for duplicate entry
+	$DupQuery = MySQLQuery($DBConn,'select SeasonID from Seasons where SeasonName="' . $SeasonData['SeasonName'] . '";');
+	if ( !$DupQuery['Result'] ) {
+		echo $DupQuery['Query'];
+		return 0;
+	}
+	if ( mysqli_num_rows($DupQuery['Query']) != 0 ) {
+		echo 'A season with that name already exists';
+		return 0;
+	}
 }
 
 // Handle update
