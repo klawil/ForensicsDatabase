@@ -217,8 +217,10 @@ if ( ! $Query['Result'] ) {
 	$GLOBALS['ErrorMessage'] = $Query['Query'];
 	include 'ErrorPage.inc';
 } elseif ( mysqli_num_rows($Query['Query']) == 0 ) {
+	header('Location: http://forensicsdb.com/');
+	die();
 	include '404.html';
-	return 0;
+	exit;
 } elseif ( mysqli_num_rows($Query['Query']) > 1 ) {
 	$GLOBALS['ErrorMessage'] = 'Impossible error: dulicate primary keys in subdomain table';
 	include 'ErrorPage.inc';
