@@ -36,6 +36,10 @@ if ( !$DoQuery && (isset($_POST['StudentID']) || isset($_POST['LName']) ) ) {
 	// Set all variables
 	foreach ( $Variables as $Name ) {
 		if ( isset($_POST[$Name]) ) {
+			if ( $_POST[$Name] == '' ) {
+				echo $Name . ' is required';
+				return 0;
+			}
 			// URL Decode and MySQL escape
 			$StudentData[$Name] = MySQLEscape(urldecode($_POST[$Name]),$DBConn);
 		}
