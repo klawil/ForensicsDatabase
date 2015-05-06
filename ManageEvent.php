@@ -196,13 +196,25 @@ function SubmitEvent(EventID) {
 	EventAbbrElement = "EventAbbr";
 	PartnerElement = "Partner";
 	if ( EventID != -1 ) {
+		PostString = "EventID=" + EventID + "&";
 		EventNameElement =  + EventID
 		EventAbbrElement =  + EventID
 		PartnerElement =  + EventID
 	}
 	
 	// Get PostString data
-	EventName = encodeURIComponent();
+	EventName = encodeURIComponent(document.getElementById(EventNameElement).value);
+	EventAbbr = encodeURIComponent(document.getElementById(EventAbbrElement).value);
+	Partner = 0;
+	if ( document.getElementById(PartnerElement).checked ) {
+		Partner = 1;
+	}
+	
+	// Create PostString
+	PostString = PostString + "EventName=" + EventName + "&EventAbbr=" + EventAbbr + "&Partner=" + Partner;
+	
+	// Execute Post
+	PostToPage(PostString);
 }
 function DeleteEvent(EventID) {
 	// Create PostString
