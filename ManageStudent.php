@@ -61,7 +61,7 @@ if ( !$DoQuery && isset($_POST['LName']) ) {
 	$StudentString = '';
 	foreach ( $StudentData as $Name => $Value ) {
 		if ( $StudentString == '' ) {
-			$StudentString = 'insert into Seasons set ' . $Name . '="' . $Value . '"';
+			$StudentString = 'insert into Students set ' . $Name . '="' . $Value . '"';
 		} else {
 			$StudentString = $StudentString . ', ' . $Name . '="' . $Value . '"';
 		}
