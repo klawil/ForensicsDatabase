@@ -74,7 +74,7 @@ if ( !$DoQuery && isset($_POST['EventID']) ) {
 			$EventString = $EventString . ', ' . $Name . '="' . $Value . '"';
 		}
 	}
-	$EventString = $EventString . ' where EventID="' . $StudentID . '";';
+	$EventString = $EventString . ' where EventID="' . $EventID . '";';
 	
 	// Set flag to execute query
 	$DoQuery = true;
