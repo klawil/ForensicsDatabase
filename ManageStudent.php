@@ -129,21 +129,21 @@ while ( $CurrentRow <= $NumRows ) {
 	
 	// Echo data as HTML table?>
 <tr>
-	<td><input type="text" id="LName<?php echo $StudentData['StudentID']; ?>" value="<?php echo $StudentData['LName']; ?>" onchange="ShowHideButton(<?php echo $StudentData['StudentID']; ?>)"></td>
-	<td><input type="text" id="FName<?php echo $StudentData['StudentID']; ?>" value="<?php echo $StudentData['FName']; ?>" onchange="ShowHideButton(<?php echo $StudentData['StudentID']; ?>)"></td>
-	<td><?php echo CreateSeasonList($DBConn,NULL,$StudentData['NoviceYear'],'NoviceSeason' . $StudentData['StudentID'],'ShowHideButton(' . $StudentData['StudentID'] . ')'); ?></td>
-	<td><input type="button" value="Delete Student" onclick="DeleteStudent(<?php echo $StudentData['StudentID']; ?>)"></td>
-	<td class="ChangeCell" id="<?php echo $StudentData['StudentID']; ?>"><input type="button" value="Save Changes" onclick="SubmitStudent(<?php echo $StudentData['StudentID']; ?>)"></td>
+	<td><span title="Last Name of the student"><input type="text" id="LName<?php echo $StudentData['StudentID']; ?>" value="<?php echo $StudentData['LName']; ?>" onchange="ShowHideButton(<?php echo $StudentData['StudentID']; ?>)"></span></td>
+	<td><span title="First Name of the student"><input type="text" id="FName<?php echo $StudentData['StudentID']; ?>" value="<?php echo $StudentData['FName']; ?>" onchange="ShowHideButton(<?php echo $StudentData['StudentID']; ?>)"></span></td>
+	<td><span title="The novice season of the student"><?php echo CreateSeasonList($DBConn,NULL,$StudentData['NoviceYear'],'NoviceSeason' . $StudentData['StudentID'],'ShowHideButton(' . $StudentData['StudentID'] . ')'); ?></span></td>
+	<td><span title="Delete the student"><input type="button" value="Delete Student" onclick="DeleteStudent(<?php echo $StudentData['StudentID']; ?>)"></span></td>
+	<td class="ChangeCell" id="<?php echo $StudentData['StudentID']; ?>"><span title="Save changes to the student"><input type="button" value="Save Changes" onclick="SubmitStudent(<?php echo $StudentData['StudentID']; ?>)"></span></td>
 </tr>
 <?php
 	$CurrentRow++;
 }
 ?>
 <tr>
-	<td><input type="text" id="LName"></td>
-	<td><input type="text" id="FName"></td>
-	<td><?php echo CreateSeasonList($DBConn,NULL,NULL,'NoviceSeason'); ?></td>
-	<td><input type="button" value="Create Student" onclick="SubmitStudent()"></td></tr>
+	<td><span title="Last Name of the student"><input type="text" id="LName"></span></td>
+	<td><span title="First Name of the student"><input type="text" id="FName"></span></td>
+	<td><span title="The novice season of the student"><?php echo CreateSeasonList($DBConn,NULL,NULL,'NoviceSeason'); ?></span></td>
+	<td><span title="Create the student"><input type="button" value="Create Student" onclick="SubmitStudent()"></span></td></tr>
 </table>
 <script>
 function ShowHideButton(StudentID) {

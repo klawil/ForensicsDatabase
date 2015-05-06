@@ -129,12 +129,22 @@ while ( $CurrentRow <= $NumRows ) {
 	// Get data
 	$SeasonData = mysqli_fetch_assoc($SeasonQuery['Query']);
 	
-	// Add a row to the html table
-	echo '<tr><td><input type="text" id="SeasonName' . $SeasonData['SeasonID'] . '" value="' . $SeasonData['SeasonName'] . '" onchange="ShowHideButton(' . $SeasonData['SeasonID'] . ')"></td><td><input type="number" id="StartYear' . $SeasonData['SeasonID'] . '" value="' . $SeasonData['StartYear'] . '" onchange="ShowHideButton(' . $SeasonData['SeasonID'] . ')"></td><td><input type="button" value="Delete Season" onclick="DeleteSeason(' . $SeasonData['SeasonID'] . ')"></td><td class="ChangeCell" id="' . $SeasonData['SeasonID'] . '"><input type="button" value="Save Changes" onclick="SubmitSeason(' . $SeasonData['SeasonID'] . ')"></td></tr>';
+	// Add a row to the html table?>
+<tr>
+	<td><span title="Name to assign to the season (i.e. 2014-2015)"><input type="text" id="SeasonName<?php echo $SeasonData['SeasonID']; ?>'" value="<?php echo $SeasonData['SeasonName']; ?>'" onchange="ShowHideButton(<?php echo $SeasonData['SeasonID']; ?>)"></span></td>
+	<td><span title="First year of the season (i.e. 2014)"><input type="number" id="StartYear<?php echo $SeasonData['SeasonID']; ?>" value="<?php echo $SeasonData['StartYear']; ?>" onchange="ShowHideButton(<?php echo $SeasonData['SeasonID']; ?>)"></span></td>
+	<td><span title="Delete this season"><input type="button" value="Delete Season" onclick="DeleteSeason(<?php echo $SeasonData['SeasonID']; ?>)"></span></td>
+	<td class="ChangeCell" id="<?php echo $SeasonData['SeasonID']; ?>"><span title="Save changes to the season"><input type="button" value="Save Changes" onclick="SubmitSeason(<?php echo $SeasonData['SeasonID']; ?>)"></span></td>
+</tr>
+<?php
 	$CurrentRow++;
 }
 ?>
-<tr><td><input type="text" id="SeasonName" onchange="ShowHideButton()"></td><td><input type="number" id="StartYear" onchange="ShowHideButton()"></td><td class="ChangeCell" id="NewSeason"><input type="button" value="Save Changes" onclick="SubmitSeason()"></td></tr>
+<tr>
+	<td><span title="Name to assign to the season (i.e. 2014-2015)"><input type="text" id="SeasonName"></span></td>
+	<td><span title="First year of the season (i.e. 2014)"><input type="number" id="StartYear"></span></td>
+	<td class="ChangeCell" id="NewSeason"><span title="Create this season"><input type="button" value="Create Season" onclick="SubmitSeason()"></span></td>
+</tr>
 </table>
 <script>
 function pad (str, max) {
