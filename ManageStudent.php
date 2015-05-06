@@ -31,7 +31,7 @@ if ( isset($_POST['delete']) ) {
 // Create array of POST values
 if ( !$DoQuery && (isset($_POST['StudentID']) || isset($_POST['LName']) ) ) {
 	// Names of variables to put in array
-	$Variables = ['FName','LName','NoviceYear'];
+	$Variables = ['FName','LName','NoviceYear','StudentID'];
 	
 	// Set all variables
 	foreach ( $Variables as $Name ) {
