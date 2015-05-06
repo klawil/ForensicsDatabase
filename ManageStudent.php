@@ -208,6 +208,13 @@ function PostToPage(PostString) {
 		}
 	}
 }
+function DeleteStudent(StudentID) {
+	// Create PostString
+	PostString = "delete=1&StudentID=" + StudentID;
+	
+	// Execute Post
+	PostToPage(PostString);
+}
 function SubmitStudent(StudentID) {
 	// Set default SeasonID
 	StudentID = StudentID || -1;
