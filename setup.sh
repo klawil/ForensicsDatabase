@@ -37,7 +37,7 @@ echo -en "What is the admin email? "
 read AdminEmail
 echo -en "What is the school name? "
 read SchoolName
-$mysqlc --database=Schools -e "insert into Subdomains set Subdomain='"$subdomain"', GeneralAccess=1, AdminEmail='"$AdminEmail"', SchoolName='"$SchoolName"', DBName='"$mysqldbname"';"
+$mysqlc --database=Schools -e "insert into Subdomains set Subdomain='$subdomain', GeneralAccess=1, AdminEmail='$AdminEmail', SchoolName='$SchoolName', DBName='$mysqldbname';"
 if [ "$?" != "0" ]; then
 	echo -en "Error inserting school into Schools database. Continue anyway (y/n)? "
 	read continuevar
