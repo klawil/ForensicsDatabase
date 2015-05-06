@@ -64,6 +64,10 @@ if ( !$DoQuery && (isset($_POST['EventID']) || isset($_POST['EventName']) ) ) {
 		echo $DupQuery['Query'];
 		return 0;
 	}
+	if ( mysqli_num_rows($DupQuery['Query']) != 0 ) {
+		echo 'An event with that name and/or abbreviation already exists';
+		return 0;
+	}
 }
 
 // Handle update
