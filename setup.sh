@@ -6,7 +6,7 @@ echo -en "Enter the database name desired: "
 read mysqldbname
 mysqlwebuser="forensics" # Username for php user
 mysqlwebpass="A15j89%%8JsTk991LexzQ#" # Password for php user
-mysqlcommand="mysql --user=$mysqluser --password=$mysqlpass"
+mysqlc="mysql --user=$mysqluser --password=$mysqlpass"
 $mysqlc -e "create database $mysqldbname;"
 if [ "$?" != "0" ]; then
 	echo -en "Error creating database $mysqldbname. Continue anyway (y/n)? "
