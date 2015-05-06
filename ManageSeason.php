@@ -135,10 +135,10 @@ while ( $CurrentRow <= $NumRows ) {
 	
 	// Add a row to the html table?>
 <tr>
-	<td><span title="Name to assign to the season (i.e. 2014-2015)"><input type="text" id="SeasonName<?php echo $SeasonData['SeasonID']; ?>" value="<?php echo $SeasonData['SeasonName']; ?>" oninput="ShowHideButton(<?php echo $SeasonData['SeasonID']; ?>)"></span></td>
-	<td><span title="First year of the season (i.e. 2014)"><input type="number" id="StartYear<?php echo $SeasonData['SeasonID']; ?>" value="<?php echo $SeasonData['StartYear']; ?>" onchange="ShowHideButton(<?php echo $SeasonData['SeasonID']; ?>)"></span></td>
+	<td><span title="Name to assign to the season (i.e. 2014-2015)"><input type="text" id="SeasonName<?php echo $SeasonData['SeasonID']; ?>" value="<?php echo $SeasonData['SeasonName']; ?>"></span></td>
+	<td><span title="First year of the season (i.e. 2014)"><input type="number" id="StartYear<?php echo $SeasonData['SeasonID']; ?>" value="<?php echo $SeasonData['StartYear']; ?>"></span></td>
 	<td><span title="Delete this season"><input type="button" value="Delete Season" onclick="DeleteSeason(<?php echo $SeasonData['SeasonID']; ?>)"></span></td>
-	<td class="ChangeCell" id="<?php echo $SeasonData['SeasonID']; ?>"><span title="Save changes to the season"><input type="button" value="Save Changes" onclick="SubmitSeason(<?php echo $SeasonData['SeasonID']; ?>)"></span></td>
+	<td><span title="Save changes to the season"><input type="button" value="Save Changes" onclick="SubmitSeason(<?php echo $SeasonData['SeasonID']; ?>)"></span></td>
 </tr>
 <?php
 	$CurrentRow++;
@@ -154,30 +154,6 @@ while ( $CurrentRow <= $NumRows ) {
 function pad (str, max) {
   str = str.toString();
   return str.length < max ? pad("0" + str, max) : str;
-}
-function ShowHideButton(SeasonID) {
-	// Set Element Names
-	StartYearElement = "StartYear" + SeasonID;
-	SeasonNameElement = "SeasonName" + SeasonID;
-	ButtonElement = SeasonID;
-	
-	// Get start year
-	StartYear = document.getElementById(StartYearElement).value;
-	document.getElementById(StartYearElement).value = StartYear;
-	
-	// Get Season name
-	SeasonName = document.getElementById(SeasonNameElement).value;
-	
-	// Show save button if the value is changed
-	if ( document.getElementById(StartYearElement).value != document.getElementById(StartYearElement).defaultValue ) {
-		// Start Year is changed
-		document.getElementById(ButtonElement).style.display = "inline";
-	} else if ( document.getElementById(SeasonNameElement).value != document.getElementById(SeasonNameElement).defaultValue ) {
-		// Season name is changed
-		document.getElementById(ButtonElement).style.display = "inline";
-	} else {
-		document.getElementById(ButtonElementName).style.display = "none";
-	}
 }
 function PostToPage(PostString) {
 	// Encode string
