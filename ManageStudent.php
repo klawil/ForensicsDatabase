@@ -108,8 +108,8 @@ while ( $CurrentRow <= $NumRows ) {
 	
 	// Echo data as HTML table?>
 <tr>
-	<td><input type="text" id="LName<?php echo $StudentData['StudentID']; ?>" value="<?php echo $StudentData['LName']; ?>"></td>
-	<td><input type="text" id="FName<?php echo $StudentData['StudentID']; ?>" value="<?php echo $StudentData['FName']; ?>"></td>
+	<td><input type="text" id="LName<?php echo $StudentData['StudentID']; ?>" value="<?php echo $StudentData['LName']; ?>" onchange="ShowHideButton(<?php echo $StudentData['StudentID']; ?>)"></td>
+	<td><input type="text" id="FName<?php echo $StudentData['StudentID']; ?>" value="<?php echo $StudentData['FName']; ?>" onchange="ShowHideButton(<?php echo $StudentData['StudentID']; ?>)"></td>
 	<td><?php echo CreateSeasonList($DBConn,NULL,$StudentData['NoviceYear'],'NoviceSeason' . $StudentData['StudentID'],'ShowHideButton(' . $StudentData['StudentID'] . ')'); ?></td>
 	<td><input type="button" value="Delete Student" onclick="DeleteStudent(<?php echo $StudentData['StudentID']; ?>)"></td>
 	<td class="ChangeCell" id="<?php echo $StudentData['StudentID']; ?>"><input type="button" value="Save Changes" onclick="SubmitStudent(<?php echo $StudentData['StudentID']; ?>)"></td>
