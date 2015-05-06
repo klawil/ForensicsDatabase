@@ -77,7 +77,7 @@ function CreateStudentList($DBConn, $IncludeAll = NULL, $DefaultStudentID = NULL
 	// @return String - html code for student select
 	
 	// Get student information
-	$SQuery = MySQLQuery($DBConn, 'select FName, LName, StudentID from Students order by LName, FName;');
+	$SQuery = MySQLQuery($DBConn, 'select FName, LName, StudentID from Students, Seasons where Students.NoviceYear = Seasons.SeasonID order by Seasons.StartYear desc, Students.LName, Students.FName;');
 	if ( !$SQuery['Result'] ) {
 		return $SQuery['Query'];
 	}
