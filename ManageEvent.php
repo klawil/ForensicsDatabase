@@ -136,11 +136,11 @@ while ( $CurrentRow <= $NumRows ) {
 	
 	// Return data as HTML table?>
 <tr>
-	<td><span title="Name of the event"><input type="text" id="EventName<?php echo $EventID; ?>" value="<?php echo $EventData['EventName']; ?>" onchange="ShowHideButton(<?php echo $EventID; ?>)"></span></td>
-	<td><span title="Abbreviation of the event"><input type="text" id="EventAbbr<?php echo $EventID; ?>" value="<?php echo $EventData['EventAbbr']; ?>" onchange="ShowHideButton(<?php echo $EventID; ?>)"></span></td>
-	<td><span title="Is this a partner event?"><input type="checkbox" id="Partner<?php echo $EventID; ?>" onchange="ShowHideButton(<?php echo $EventID; ?>)"<?php if ( $EventData['Partner'] == 1 ) { echo ' checked'; }?>></span></td>
+	<td><span title="Name of the event"><input type="text" id="EventName<?php echo $EventID; ?>" value="<?php echo $EventData['EventName']; ?>"></span></td>
+	<td><span title="Abbreviation of the event"><input type="text" id="EventAbbr<?php echo $EventID; ?>" value="<?php echo $EventData['EventAbbr']; ?>"></span></td>
+	<td><span title="Is this a partner event?"><input type="checkbox" id="Partner<?php echo $EventID; ?>"<?php if ( $EventData['Partner'] == 1 ) { echo ' checked'; }?>></span></td>
 	<td><span title="Delete this event"><input type="button" onclick="DeleteEvent(<?php echo $EventID; ?>)" value="Delete Event"></span></td>
-	<td class="ChangeCell" id="<?php echo $EventID; ?>"><span title="Save changes to this event"><input type="button" value="Save Changes" onclick="SubmitEvent(<?php echo $EventID; ?>)"></span></td>
+	<td><span title="Save changes to this event"><input type="button" value="Save Changes" onclick="SubmitEvent(<?php echo $EventID; ?>)"></span></td>
 </tr>
 <?php
 	$CurrentRow++;
@@ -154,32 +154,6 @@ while ( $CurrentRow <= $NumRows ) {
 </tr>
 </table>
 <script>
-function ShowHideButton(EventID) {
-	// Set Elements names
-	EventNameElement = "EventName" + EventID;
-	EventAbbrElement = "EventAbbr" + EventID;
-	PartnerElement = "Partner" + EventID;
-	ButtonElement = EventID;
-	
-	// Get variables
-	EventName = document.getElementById(EventNameElement).value;
-	EventAbbr = document.getElementById(EventAbbrElement).value;
-	Partner = document.getElementById(PartnerElement).checked;
-	
-	// Check for changes
-	if ( EventName != document.getElementById(EventNameElement).defaultValue ) {
-		DisplayType = "inline";
-	} else if ( EventAbbr != document.getElementById(EventAbbrElement).defaultValue ) {
-		DisplayType = "inline";
-	} else if ( Partner != document.getElementById(PartnerElement).defaultChecked ) {
-		DisplayType = "inline";
-	} else {
-		DisplayType = "none";
-	}
-	
-	// Show/hide button accordingly
-	document.getElementById(ButtonElement).style.display = DisplayType;
-}
 function PostToPage(PostString) {
 	// Encode string
 	PostString = encodeURI(PostString);
@@ -211,7 +185,24 @@ function PostToPage(PostString) {
 	}
 }
 function SubmitEvent(EventID) {
+	// Set default EventID
+	EventID = EventID || -1;
 	
+	// Declare PostString
+	PostString = "";
+	
+	// Set Element Names
+	EventNameElement = "EventName";
+	EventAbbrElement = "EventAbbr";
+	PartnerElement = "Partner";
+	if ( EventID != -1 ) {
+		EventNameElement =  + EventID
+		EventAbbrElement =  + EventID
+		PartnerElement =  + EventID
+	}
+	
+	// Get PostString data
+	EventName = encodeURIComponent();
 }
 function DeleteEvent(EventID) {
 	// Create PostString
