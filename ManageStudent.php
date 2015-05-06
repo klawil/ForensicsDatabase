@@ -59,14 +59,16 @@ if ( !$DoQuery && (isset($_POST['StudentID']) || isset($_POST['LName']) ) ) {
 	}
 	
 	// Check for duplicate entry
-	$DupQuery = MySQLQuery($DBConn,'select StudentID from Students where FName="' . $StudentData['FName'] . '" and LName="' . $StudentData['LName'] . '";');
-	if ( !$DupQuery['Result'] ) {
-		echo $DupQuery['Query'];
-		return 0;
-	}
-	if ( mysqli_num_rows($DupQuery['Query']) != 0 ) {
-		echo 'A student with that name already exists';
-		return 0;
+	if ( !isset($_POST['StudentID']) ) {
+		$DupQuery = MySQLQuery($DBConn,'select StudentID from Students where FName="' . $StudentData['FName'] . '" and LName="' . $StudentData['LName'] . '";');
+		if ( !$DupQuery['Result'] ) {
+			echo $DupQuery['Query'];
+			return 0;
+		}
+		if ( mysqli_num_rows($DupQuery['Query']) != 0 ) {
+			echo 'A student with that name already exists';
+			return 0;
+		}
 	}
 }
 

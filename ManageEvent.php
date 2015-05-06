@@ -59,14 +59,16 @@ if ( !$DoQuery && (isset($_POST['EventID']) || isset($_POST['EventName']) ) ) {
 	}
 	
 	// Check for duplicate entry
-	$DupQuery = MySQLQuery($DBConn,'select EventID from Events where EventName="' . $EventData['EventName'] . '" or EventAbbr="' . $EventData['EventAbbr'] . '";');
-	if ( !$DupQuery['Result'] ) {
-		echo $DupQuery['Query'];
-		return 0;
-	}
-	if ( mysqli_num_rows($DupQuery['Query']) != 0 ) {
-		echo 'An event with that name and/or abbreviation already exists';
-		return 0;
+	if ( !isset($_POST['EventID']) ) {
+		$DupQuery = MySQLQuery($DBConn,'select EventID from Events where EventName="' . $EventData['EventName'] . '" or EventAbbr="' . $EventData['EventAbbr'] . '";');
+		if ( !$DupQuery['Result'] ) {
+			echo $DupQuery['Query'];
+			return 0;
+		}
+		if ( mysqli_num_rows($DupQuery['Query']) != 0 ) {
+			echo 'An event with that name and/or abbreviation already exists';
+			return 0;
+		}
 	}
 }
 
