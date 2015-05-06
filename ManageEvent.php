@@ -57,6 +57,13 @@ if ( !$DoQuery && (isset($_POST['EventID']) || isset($_POST['EventName']) ) ) {
 		echo $Validation['Error'];
 		return 0;
 	}
+	
+	// Check for duplicate entry
+	$DupQuery = MySQLQuery($DBConn,'select EventID from Events where EventName="' . $EventData['EventName'] . '" or EventAbbr="' . $EventData['EventAbbr'] . '";');
+	if ( !$DupQuery['Result'] ) {
+		echo $DupQuery['Query'];
+		return 0;
+	}
 }
 
 // Handle update
