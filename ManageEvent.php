@@ -210,6 +210,12 @@ function PostToPage(PostString) {
 		}
 	}
 }
+function SubmitEvent(EventID) {
+	
+}
+function DeleteEvent(EventID) {
+	
+}
 </script>
 </body>
 </html>
