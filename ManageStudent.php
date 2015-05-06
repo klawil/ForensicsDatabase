@@ -211,7 +211,7 @@ function SubmitStudent(StudentID) {
 	// Get name and add to PostString
 	FName = encodeURIComponent(document.getElementById(FirstNameElement).value);
 	LName = encodeURIComponent(document.getElementById(LastNameElement).value);
-	PostString = PostString + "FName=" + FName + "&LName=" + LName;
+	PostString = PostString + "FName=" + FName + "&LName=" + LName + "&";
 	
 	// Get Novice year and add to PostString
 	NoviceYear = document.getElementById(NoviceSeasonElement).options[document.getElementById(NoviceSeasonElement).selectedIndex].value;
