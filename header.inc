@@ -10,43 +10,44 @@
 <h1><?php if ( isset($GLOBALS['PageName']) ) { echo $GLOBALS['PageName']; } else { echo 'ForensicsDB.com'; }?></h1>
 <nav>
 	<ul class="TopMenu">
-	<a href="/"><li class="TopMenuItem">Home</li></a>
-	<a href="Results.php"><li class="TopMenuItem">Results</li></a>
+	<a href="/" title="Return to the subdomain's home"><li class="TopMenuItem">Home</li></a>
+	<a href="Results.php" title="Get specific results"><li class="TopMenuItem">Results</li></a>
 	<li class="TopMenuItem">Summaries
 		<ul class="SubMenu">
-		<a href="StudentSummary.php"><li class="SubMenuItem">Student</li></a>
-		<a href="TournamentSummary.php"><li class="SubMenuItem">Tournament</li></a>
-		<a href="TeamSummary.php"><li class="SubMenuItem">Team</li></a>
+		<a href="StudentSummary.php" title="Summary of a student's results"><li class="SubMenuItem">Student</li></a>
+		<a href="TournamentSummary.php" title="Summary of a tournament's results"><li class="SubMenuItem">Tournament</li></a>
+		<a href="TeamSummary.php" title="Summary of the team's results"><li class="SubMenuItem">Team</li></a>
 		</ul>
 	</li>
 <?php
 if ( isset($GLOBALS['CanUserEdit']) && $GLOBALS['CanUserEdit'] == 1 ) {
-	echo '	<li class="TopMenuItem">Management
+?>
+<li class="TopMenuItem">Management
 		<ul class="SubMenu">
-		<a href="ResultInsert.php"><li class="SubMenuItem">Enter Results</li></a>
-		<a href="ResultEdit.php"><li class="SubMenuItem">Edit Results</li></a>
-		<a href="ManageSeason.php"><li class="SubMenuItem">Manage Seasons</li></a>
-		<a href="ManageStudent.php"><li class="SubMenuItem">Manage Students</li></a>
-		<a href="ManageEvent.php"><li class="SubMenuItem">Manage Events</li></a>
-		<a href="ManageTournament.php"><li class="SubMenuItem">Manage Tournaments</li></a>
-		<a href="ManageUser.php"><li class="SubMenuItem">Manage Users</li></a>
+		<a href="ResultInsert.php" title="Enter new results"><li class="SubMenuItem">Enter Results</li></a>
+		<a href="ResultEdit.php" title="Edit previous results"><li class="SubMenuItem">Edit Results</li></a>
+		<a href="ManageSeason.php" title="Create, modify, and delete seasons"><li class="SubMenuItem">Manage Seasons</li></a>
+		<a href="ManageStudent.php" title="Create, modify, and delete students"><li class="SubMenuItem">Manage Students</li></a>
+		<a href="ManageEvent.php" title="Create, modify, and delete events"><li class="SubMenuItem">Manage Events</li></a>
+		<a href="ManageTournament.php" title="Create, modify, and delete tournaments"><li class="SubMenuItem">Manage Tournaments</li></a>
+		<a href="ManageUser.php" title="Create, modify, and delete users"><li class="SubMenuItem">Manage Users</li></a>
 		</ul>
 	</li>
-	<a href="https://github.com/klawil/ForensicsDatabase" target="_blank"><li class="TopMenuItem">The Project on Github</li></a>
+	<a href="https://github.com/klawil/ForensicsDatabase" target="_blank" title="View the code that runs the site or officially report an issue"><li class="TopMenuItem">The Project on Github</li></a>
 	<!--<a href="IssueReport.php"><li class="TopMenuItem">Report an Issue</li></a>-->
-';
+<?php
 }
 ?>
 	<li class="UserItem"><a onclick="ShowInOutForm();"><?php
 if ( isset($GLOBALS['UserName']) && $GLOBALS['UserName'] != "" ) {
-	echo $GLOBALS['UserData']['LName'] . ', ' . $GLOBALS['UserData']['FName'] . '</a>
+	echo $GLOBALS['UserData']['LName'] . ', ' . $GLOBALS['UserData']['FName']?></a>
 	<ul id="LogInOut">
 		<li class="Alert" id="UserMessage"></li>
 		<a href="#" onclick="UserLogout();"><li class="SubMenuItem">Log Out</li></a>
 		<!--<a href="ManageSelf.php"><li class="SubMenuItem">Manage Account</li></a>-->
-';
+<?php
 } else {
-	echo 'Login</a>
+	?>Login</a>
 		<ul id="LogInOut">
 		<li class="Alert" id="UserMessage"></li>
 		<form id="LoginForm">
@@ -58,7 +59,7 @@ if ( isset($GLOBALS['UserName']) && $GLOBALS['UserName'] != "" ) {
 		</table>
 		</li>
 		</form>
-';
+<?php
 }
 ?>
 		</ul>
