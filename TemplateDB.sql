@@ -51,7 +51,7 @@ DROP TABLE IF EXISTS `Events`;
 CREATE TABLE `Events` (
   `EventID` int(11) NOT NULL AUTO_INCREMENT,
   `EventName` varchar(50) NOT NULL,
-  `Partner` int(11) NOT NULL,
+  `Partner` tinyint(1) NOT NULL,
   `EventAbbr` varchar(10) NOT NULL,
   PRIMARY KEY (`EventID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
