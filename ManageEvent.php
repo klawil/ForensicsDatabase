@@ -206,11 +206,6 @@ function PostToPage(PostString) {
 	}
 }
 function SubmitEvent(EventID) {
-	// Check if they are certain
-	if ( !window.confirm("DANGER DANGER!!\nThis will PERMANENTLY erase this event.\n\nFOREVER\n\nDo you still want to do this?") ) {
-		return 0;
-	}
-	
 	// Set default EventID
 	EventID = EventID || -1;
 	
@@ -243,6 +238,11 @@ function SubmitEvent(EventID) {
 	PostToPage(PostString);
 }
 function DeleteEvent(EventID) {
+	// Check if they are certain
+	if ( !window.confirm("DANGER DANGER!!\nThis will PERMANENTLY erase this event.\n\nFOREVER\n\nDo you still want to do this?") ) {
+		return 0;
+	}
+	
 	// Create PostString
 	PostString = "delete=1&EventID=" + EventID;
 	
