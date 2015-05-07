@@ -74,6 +74,12 @@ function IsLength($String,$Length,$Mode = NULL) {
 	// @return boolean
 	return strlen($String) <= $Length;
 }
+function IsDate($String) {
+	// Determines whether a string is a valid date in format YYYY-MM-DD
+	// @param $String - the string to test
+	// @return boolean
+	return (strtotime($myDateString) && date("Y-m-d", strtotime($myDateString)) == $myDateString);
+}
 function InsertBallots($Ballots, $DBConn = NULL, $Insert = NULL) {
 	// Inserts Ballots from an array
 	// @param $Ballots: [ResultID: ResultID,
