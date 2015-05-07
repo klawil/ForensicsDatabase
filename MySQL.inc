@@ -98,7 +98,7 @@ function CreateList($DBConn, $Type, $IncludeAll = NULL, $DefaultID = NULL, $Sele
 		$ListData = mysqli_fetch_assoc($ListQuery['Query']);
 		
 		// Create the option
-		$SelectString = $SelectString . '<option value="' . $ListData[$GuideArray['ID']] . '>' . $GuideArray['Display']($ListData) . '</option>';
+		$SelectString = $SelectString . '<option value="' . $ListData[$GuideArray['ID']] . '">' . $GuideArray['Display']($ListData) . '</option>';
 		
 		$CurrentRow++;
 	}
