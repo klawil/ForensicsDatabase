@@ -29,7 +29,7 @@ if ( isset($_POST['UName']) ) {
 	}
 	
 	// Create testing array
-	$CheckArray = [['variable' => 'UName','IsSet' => 1, 'Validate' => function($var){return IsID($DBConn,$var,'UName');}, 'Error' => 'Invalid username'],
+	$CheckArray = [['variable' => 'UName','IsSet' => 1, 'Validate' => function($var,$DBConn){return IsID($DBConn,$var,'UName');}, 'Error' => 'Invalid username'],
 	['variable' => 'CanMod', 'IsSet' => 1, 'Validate' => function($var){return IsBool($var);}, 'Error' => 'Invalid modification option']];
 	
 	// Validate variables
