@@ -127,6 +127,13 @@ if ( $DoQuery ) {
 }
 
 // Create a query of all tournaments
+$TournamentQuery = MySQLQuery($DBConn,'select TournamentName, NumRounds, NumJudges, NumElimRounds, NumElimJudges, StartDate, EndDate, Season, TournamentID from Tournaments order by Season, StartDate, EndDate, TournamentName;');
+if ( !$TournamentQuery['Result'] ) {
+	$GLOBALS['ErrorMessage'] = $TournamentQuery['Query'];
+	require_once 'ErrorPage.inc';
+}
+
+// Create header
 require_once 'header.inc';
 ?>
 <h3>Update, create, and delete students</h3>
