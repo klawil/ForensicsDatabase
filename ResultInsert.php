@@ -16,7 +16,7 @@ input[type=number] {
 <div id="PostMessage" class="ErrorMessage"><?php echo $ErrorString;?></div>
 <?php if ( !isset($_POST['TournamentID']) ) { ?>
 <form id="TournamentSelect" action="ResultInsert.php" method="post">
-Select a Tournament: <?php echo CreateList($DBConn, 'Tournaments');?> <input type="submit" value="Select Tournament">
+Select a Tournament: <?php echo CreateList($DBConn, 'Tournaments', NULL, NULL, NULL, NULL, 'TournamentSelect');?> <input type="submit" value="Select Tournament">
 </form>
 <?php } else {
 	echo $_POST['TournamentID'];
