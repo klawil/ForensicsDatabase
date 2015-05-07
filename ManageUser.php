@@ -37,6 +37,14 @@ if ( isset($_POST['delete']) ) {
 		return 0;
 	}
 	
+	// Email the user to let them know they are deleted
+	$Body = '<h3>Your account on ForensicsDB.com has been deleted</h3><br>The school administrator has deleted your account. If you believe this was in error, please email accounts@forensicsdb.com with your username and the school you created the account to use with.';
+	$Email = EmailUser($UserData['UName'],'ForensicsDB Account Deletion',$Body,$DBConn);
+	if ( !$Email['Done'] ) {
+		echo $Email['Error'] . ' while emailing the user';
+		return 0;
+	}
+	
 	// Create Post String
 	$UserString = 'delete from Users where UName="' . $UserData['UName'] . '";';
 	$DoQuery = true;
