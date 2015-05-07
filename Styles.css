@@ -37,7 +37,7 @@ input[type="number"] {
 input[type=number] {
 	width: 5em;
 }
-.SmallInt {
+input[type=number] .SmallInt {
 	width: 3em;
 }
 
