@@ -12,8 +12,38 @@ if ( $GLOBALS['UserData']['Email'] != $GLOBALS['DBData']['AdminEmail'] && $GLOBA
 	die();
 }
 
+// Prevent admin modification/deletion
+if ( isset($_POST['UName']) && $_POST['UName'] == 'admin' ) {
+	echo 'The admin account cannot be modified';
+	return 0;
+}
+
+$DoQuery = false;
+
+// Handle Deletion
+if ( isset($_POST['delete']) ) {
+	// Check for username
+	if ( !isset($_POST['UName']) ) {
+		echo 'User name is required';
+		return 0;
+	}
+	$UserData['UName'] = MySQLEscape($_POST['UName'],$DBConn);
+	
+	// Validate ID
+	$CheckArray = [['variable' => 'UName', 'IsSet' => 1, 'Validate' => function($var,$DBConn){return IsID($DBConn,$var,'UName');}, 'Error' => 'Invalid username']];
+	$Validation = ValidateArray($UserData,$CheckArray,$DBConn);
+	if ( !$Validation['Pass'] ) {
+		echo $Validation['Error'];
+		return 0;
+	}
+	
+	// Create Post String
+	$UserString = 'delete from Users where UName="' . $UserData['UName'] . '";';
+	$DoQuery = true;
+}
+
 // Handle update
-if ( isset($_POST['UName']) ) {
+if ( !$DoQuery && isset($_POST['UName']) ) {
 	// Names of variables to put in array
 	$Variables = ['UName' => 'User Name','CanMod' => 'Modification privileges'];
 	
@@ -39,8 +69,14 @@ if ( isset($_POST['UName']) ) {
 		return 0;
 	}
 	
-	// Execute query
-	$UserQuery = MySQLQuery($DBConn,'update Users set CanMod="' . $UserData['CanMod'] . '" where UName="' . $UserData['UName'] . '";');
+	// Create Query string
+	$UserString = 'update Users set CanMod="' . $UserData['CanMod'] . '" where UName="' . $UserData['UName'] . '";';
+	$DoQuery = true;
+}
+
+// Execute Query
+if ( $DoQuery ) {
+	$UserQuery = MySQLQuery($DBConn,$UserString);
 	if ( !$UserQuery['Result'] ) {
 		echo $UserQuery['Query'];
 		return 0;
@@ -87,6 +123,7 @@ while ( $CurrentRow <= $NumRows ) {
 	<td><span title="First Name"><?php echo $UserData['FName'];?></span></td>
 	<td><span title="Email"><?php echo $UserData['Email'];?></span></td>
 	<td><span title="Admins can enter and modify results, tournaments, students, etc"><input type="checkbox" id="CanMod<?php echo $UName;?>"<?php if ( $UserData['CanMod'] ) { echo ' checked';}?>></span></td>
+	<td><span title="Delete this user"><input type="button" value="Delete User" onclick="DeleteUser('<?php echo $UName;?>')"></span></td>
 	<td><span title="Save the admin status of this user"><input type="button" value="Save User" onclick="SubmitUser('<?php echo $UName;?>')"></span></td>
 </tr>
 <?php
@@ -144,6 +181,18 @@ function SubmitUser(UName) {
 	} else {
 		PostString = PostString + "&CanMod=0";
 	}
+	
+	// Execute Post
+	PostToPage(PostString);
+}
+function DeleteUser(UName) {
+	// Check if they are certain
+	if ( !window.confirm("DANGER DANGER!!\nThis will PERMANENTLY erase this event.\n\nFOREVER\n\nDo you still want to do this?") ) {
+		return 0;
+	}
+	
+	// Create PostString
+	PostString = "delete=1&UName=" + UName;
 	
 	// Execute Post
 	PostToPage(PostString);
