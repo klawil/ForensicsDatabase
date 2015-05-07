@@ -229,7 +229,7 @@ Email: ' . $UserInfo['Email'] . '
 	$Mail = mail($UserInfo['Email'],'New User on ForensicsDB',$message,$header);
 	if ( !$Mail ) {
 		$ReturnArray['Done'] = false;
-		$ReturnArray['Error'] = 'Error sending mail to subdomain admin';
+		$ReturnArray['Error'] = 'Error sending mail to user';
 		return $ReturnArray;
 	}
 	
@@ -238,6 +238,41 @@ Email: ' . $UserInfo['Email'] . '
 	if ( !$InsQuery['Result'] ) {
 		$ReturnArray['Done'] = false;
 		$ReturnArray['Error'] = $InsQuery['Query'];
+		return $ReturnArray;
+	}
+	$ReturnArray['Done'] = true;
+	return $ReturnArray;
+}
+function EmailUser($UN,$Subject,$Body,$DBConn) {
+	// Send email to a particular user (BCC's root)
+	// @param $UN - Username of the user to send email to
+	// @param $Subject - the subject line of the email
+	// @param $Body - the HTML body of the email
+	// @param $DBConn - a connection to the MySQL server
+	// @return Array - ['Done','Error']
+	
+	// Get user email
+	$UserQuery = MySQLQuery($DBConn,'select Email from Users where UName="' . $UN . '";');
+	if ( !$UserQuery['Result'] ) {
+		$ReturnArray['Done'] = false;
+		$ReturnArray['Error'] = $UserQuery['Query'];
+		return $ReturnArray;
+	} elseif ( mysqli_num_rows($UserQuery['Query']) != 1 ) {
+		$ReturnArray['Done'] = false;
+		$ReturnArray['Error'] = 'User does not exist or has multiple entries';
+		return $ReturnArray;
+	}
+	$UserData = mysqli_fetch_assoc($UserQuery['Query']);
+	
+	// Set email paramters
+	$AdminEmail = $GLOBALS['DBData']['AdminEmail'];
+	$Header = 'Content-type:text/html;charset=UTF-8' . "\r\n" . 'From: noreply@forensicsdb.com' . "\r\n" . 'BCC: root@forensicsdb.com';
+	
+	// Send email
+	$Mail = mail($UserData['Email'],$Subject,$Body,$Header);
+	if ( !$Mail ) {
+		$ReturnArray['Done'] = false;
+		$ReturnArray['Error'] = 'Error sending mail';
 		return $ReturnArray;
 	}
 	$ReturnArray['Done'] = true;
