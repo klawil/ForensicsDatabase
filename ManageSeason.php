@@ -124,7 +124,7 @@ if ( $DoQuery ) {
 }
 
 // Create query of all seasons
-$SeasonQuery = MySQLQuery($DBConn,'select SeasonName, StartYear, SeasonID from Seasons order by StartYear;');
+$SeasonQuery = MySQLQuery($DBConn,'select SeasonName, StartYear, SeasonID from Seasons order by StartYear desc;');
 if ( !$SeasonQuery['Result'] ) {
 	$GLOBALS['ErrorMessage'] = $SeasonQuery['Query'];
 	require_once 'ErrorPage.inc';
