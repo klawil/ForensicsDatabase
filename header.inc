@@ -30,7 +30,13 @@ if ( isset($GLOBALS['CanUserEdit']) && $GLOBALS['CanUserEdit'] == 1 ) {
 		<a href="ManageStudent.php" title="Create, modify, and delete students"><li class="SubMenuItem">Manage Students</li></a>
 		<a href="ManageEvent.php" title="Create, modify, and delete events"><li class="SubMenuItem">Manage Events</li></a>
 		<a href="ManageTournament.php" title="Create, modify, and delete tournaments"><li class="SubMenuItem">Manage Tournaments</li></a>
+<?php
+	if ( $GLOBALS['UserData']['Email'] == $GLOBALS['DBData']['AdminEmail'] || $GLOBALS['UserName'] == 'admin' ) {
+?>
 		<a href="ManageUser.php" title="Create, modify, and delete users"><li class="SubMenuItem">Manage Users</li></a>
+<?php
+	}
+?>
 		</ul>
 	</li>
 	<a href="https://github.com/klawil/ForensicsDatabase" target="_blank" title="View the code that runs the site or officially report an issue"><li class="TopMenuItem">The Project on Github</li></a>
