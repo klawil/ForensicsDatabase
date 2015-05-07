@@ -172,7 +172,7 @@ function pad (str, max) {
 function PostToPage(PostString) {
 	// Alert user
 	document.getElementById("PostMessage").innerHTML = "Processing request...";
-	document.getElementById("PostMessage").style.dispay = "inline";
+	document.getElementById("PostMessage").style.display = "inline";
 	
 	// Encode string
 	PostString = encodeURI(PostString);
