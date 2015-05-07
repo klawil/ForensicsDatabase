@@ -73,7 +73,7 @@ function CreateList($DBConn, $Type, $IncludeAll = NULL, $DefaultID = NULL, $Sele
 	}
 	
 	// Set up string
-	if ( $SelectName = NULL ) {
+	if ( $SelectName == NULL ) {
 		$SelectName = $GuideArray['ID'];
 	}
 	$SelectString = '<select id="' . $SelectName . '" name="' . $SelectName . '"';
