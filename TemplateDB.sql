@@ -202,7 +202,7 @@ CREATE TABLE `Users` (
 --
 
 LOCK TABLES `Users` WRITE;
-INSERT INTO `Users` VALUES ('admin','William','Klausmeyer','admin@forensicsdb.com','$2y$10$i2PxUObvxbFnyq7UPJgHtuGqD1eAPhQabV908rAtVa39TN8iRpbD.',NULL,NULL,1,1,'2015-05-02');
+INSERT INTO `Users` VALUES ('admin','William','Klausmeyer','admin@forensicsdb.com','',NULL,NULL,1,1,'2015-05-02');
 /*!40000 ALTER TABLE `Users` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Users` ENABLE KEYS */;
 UNLOCK TABLES;
