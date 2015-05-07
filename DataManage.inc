@@ -57,6 +57,7 @@ function IsID($DBConn, $ID, $Type) {
 	}
 	
 	// Query the table to determine validity
+	echo 'select ' . $Type . ' from ' . $Table . ' where ' . $Type . '="' . $ID . '";';
 	$IDQuery = MySQLQuery($DBConn,'select ' . $Type . ' from ' . $Table . ' where ' . $Type . '="' . $ID . '";');
 	if ( !$IDQuery['Result'] ) {
 		ErrorLog($IDQuery['Query']);
