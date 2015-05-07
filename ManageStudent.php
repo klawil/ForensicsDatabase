@@ -139,7 +139,7 @@ require_once 'header.inc';
 <tr>
 	<td><span title="Last Name of the student"><input type="text" id="LName" autofocus="autofocus"></span></td>
 	<td><span title="First Name of the student"><input type="text" id="FName"></span></td>
-	<td><span title="The novice season of the student"><?php echo CreateSeasonList($DBConn,NULL,NULL,'NoviceSeason'); ?></span></td>
+	<td><span title="The novice season of the student"><?php echo CreateList($DBConn,'Seasons',NULL,NULL,'NoviceSeason'); ?></span></td>
 	<td><span title="Create the student"><input type="button" value="Create Student" onclick="SubmitStudent()"></span></td>
 </tr>
 <?php
@@ -156,7 +156,7 @@ while ( $CurrentRow <= $NumRows ) {
 <tr>
 	<td><span title="Last Name of the student"><input type="text" id="LName<?php echo $StudentData['StudentID']; ?>" value="<?php echo $StudentData['LName']; ?>"></span></td>
 	<td><span title="First Name of the student"><input type="text" id="FName<?php echo $StudentData['StudentID']; ?>" value="<?php echo $StudentData['FName']; ?>"></span></td>
-	<td><span title="The novice season of the student"><?php echo CreateSeasonList($DBConn,NULL,$StudentData['NoviceYear'],'NoviceSeason' . $StudentData['StudentID']); ?></span></td>
+	<td><span title="The novice season of the student"><?php echo CreateList($DBConn,'Seasons',NULL,$StudentData['NoviceYear'],'NoviceSeason' . $StudentData['StudentID']); ?></span></td>
 	<td><span title="Delete the student"><input type="button" value="Delete Student" onclick="DeleteStudent(<?php echo $StudentData['StudentID']; ?>)"></span></td>
 	<td><span title="Save changes to the student"><input type="button" value="Save Changes" onclick="SubmitStudent(<?php echo $StudentData['StudentID']; ?>)"></span></td>
 </tr>
