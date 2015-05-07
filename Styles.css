@@ -37,8 +37,8 @@ input[type="number"] {
 input[type=number] {
 	width: 5em;
 }
-input[type=date] {
-	width: 10em;
+.SmallInt {
+	width: 3em;
 }
 
 /****************\
