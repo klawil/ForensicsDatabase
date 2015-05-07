@@ -279,7 +279,7 @@ function SubmitTournament(TournamentID) {
 	Season = document.getElementById(SeasonElement).options[document.getElementById(SeasonElement).selectedIndex].value;
 	
 	// Create Post String
-	PostString = "TournamentName=" + TournamentName + "&NumRounds=" + NumRounds + "&NumJudges=" + NumJudges + "&NumElimRounds=" + NumElimRounds + "&NumElimJudges=" + NumElimJudges + "&StartDate=" + StartDate + "&EndDate=" + EndDate + "&Season=" + Season;
+	PostString = PostString + "TournamentName=" + TournamentName + "&NumRounds=" + NumRounds + "&NumJudges=" + NumJudges + "&NumElimRounds=" + NumElimRounds + "&NumElimJudges=" + NumElimJudges + "&StartDate=" + StartDate + "&EndDate=" + EndDate + "&Season=" + Season;
 	
 	// Execute Post
 	PostToPage(PostString);
