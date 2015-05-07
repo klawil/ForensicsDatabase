@@ -134,6 +134,7 @@ if ( !$SeasonQuery['Result'] ) {
 require_once 'header.inc';
 ?>
 <h3>Update, create, and delete seasons</h3>
+<div id="PostMessage" class="alert"></div>
 <table class="Table">
 <tr><th>Season Name</th><th>Start Year</th></tr>
 <tr>
@@ -169,6 +170,10 @@ function pad (str, max) {
   return str.length < max ? pad("0" + str, max) : str;
 }
 function PostToPage(PostString) {
+	// Alert user
+	document.getElementById("PostMessage").innerHTML = "Processing request...";
+	document.getElementById("PostMessage").style.dispay = "inline";
+	
 	// Encode string
 	PostString = encodeURI(PostString);
 	
@@ -190,10 +195,12 @@ function PostToPage(PostString) {
 				location.reload();
 			} else {
 				// Show error if error
+				document.getElementById("PostMessage").style.display = "none";
 				window.alert(response);
 			}
 		} else if ( xmlhttp.readyState == 4 ) {
 			// Handle unsuccessful response
+			document.getElementById("PostMessage").style.display = "none";
 			window.alert("Error: Status code " + xmlhttp.status);
 		}
 	}

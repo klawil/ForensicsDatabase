@@ -142,6 +142,7 @@ input[type=number] {
 }
 </style>
 <h3>Update, create, and delete tournaments</h3>
+<div id="PostMessage" class="alert"></div>
 <table class="Table">
 <tr><th></th><th colspan="2">Prelims</th><th colspan="2">Elims</th></tr>
 <tr><th>Tournament Name</th><th>Rounds</th><th>Judges</th><th>Rounds</th><th>Judges</th><th>Start Date</th><th>End Date</th><th>Season</th></tr>
@@ -187,6 +188,10 @@ while ( $CurrentRow <= $NumRows ) {
 </table>
 <script>
 function PostToPage(PostString) {
+	// Alert user
+	document.getElementById("PostMessage").innerHTML = "Processing request...";
+	document.getElementById("PostMessage").style.dispay = "inline";
+	
 	// Encode string
 	PostString = encodeURI(PostString);
 	
@@ -208,10 +213,12 @@ function PostToPage(PostString) {
 				location.reload();
 			} else {
 				// Show error if error
+				document.getElementById("PostMessage").style.display = "none";
 				window.alert(response);
 			}
 		} else if ( xmlhttp.readyState == 4 ) {
 			// Handle unsuccessful response
+			document.getElementById("PostMessage").style.display = "none";
 			window.alert("Error: Status code " + xmlhttp.status);
 		}
 	}

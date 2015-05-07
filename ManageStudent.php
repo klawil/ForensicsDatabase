@@ -133,6 +133,7 @@ if ( !$StudentQuery['Result'] ) {
 require_once 'header.inc';
 ?>
 <h3>Update, create, and delete students</h3>
+<div id="PostMessage" class="alert"></div>
 <table class="Table">
 <tr><th>Last Name</th><th>First Name</th><th>Novice Season</th></tr>
 <tr>
@@ -166,6 +167,10 @@ while ( $CurrentRow <= $NumRows ) {
 </table>
 <script>
 function PostToPage(PostString) {
+	// Alert user
+	document.getElementById("PostMessage").innerHTML = "Processing request...";
+	document.getElementById("PostMessage").style.dispay = "inline";
+	
 	// Encode string
 	PostString = encodeURI(PostString);
 	
@@ -187,10 +192,12 @@ function PostToPage(PostString) {
 				location.reload();
 			} else {
 				// Show error if error
+				document.getElementById("PostMessage").style.display = "none";
 				window.alert(response);
 			}
 		} else if ( xmlhttp.readyState == 4 ) {
 			// Handle unsuccessful response
+			document.getElementById("PostMessage").style.display = "none";
 			window.alert("Error: Status code " + xmlhttp.status);
 		}
 	}
