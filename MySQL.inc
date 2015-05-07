@@ -34,6 +34,81 @@ function MySQLQuery($DBConn,$QueryString) {
 	}
 	return $ReturnArray;
 }
+function CreateList($DBConn, $Type, $IncludeAll = NULL, $DefaultID = NULL, $SelectName = NULL, $OnChange = NULL, $FormName = NULL) {
+	// Creates an html list
+	// @param $DBConn - connection to MySQL database
+	// @param $Type - the type of item to list (Tournament, Student, Event, Season)
+	// @param $IncludeAll - whether to include an "All" option
+	// @param $DefaultID - the default option
+	// @param $SelectName - the name and ID to give the select
+	// @param $OnChange - the function to call when the selected is changed
+	// @param $FormName - the name of the parent form to assign the select to
+	// @return String - either error message or an html select
+	
+	// Create an array that will guide the creation of the select
+	switch ($Type) {
+		case 'Tournaments':
+			$GuideArray = ['Display' => function($var){return $var['TournamentName'];}, 'ID' => 'TournamentID', 'QueryString' => 'select Tournaments.TournamentName, Tournaments.TournamentID from Tournaments, Seasons where Tournaments.Season = Seasons.SeasonID order by Seasons.StartYear desc, Tournaments.StartDate desc, Tournaments.EndDate desc, Tournaments.TournamentName;'];
+			break;
+		case 'Students':
+			$GuideArray = ['Display' => function($var){return $var['LName'] . ', ' . $var['FName'];}, 'ID' => 'StudentID', 'QueryString' => 'select Students.LName, Students.FName, Students.StudentID from Students, Seasons where Students.NoviceYear = Seasons.SeasonID order by Seasons.StartYear desc, Students.LName, Students.FName;'];
+			break;
+		case 'Seasons':
+			$GuideArray = ['Display' => function($var){return $var['SeasonName'];}, 'ID' => 'SeasonID', 'QueryString' => 'select SeasonName, SeasonID from Seasons order by StartYear desc;'];
+			break;
+		case 'Events':
+			$GuideArray = ['Display' => function($var){return $var['EventName'];}, 'ID' => 'EventID', 'QueryString' => 'select EventName, EventID from Events order by Events.EventName;'];
+			break;
+		default:
+			return 'Invalid type of select';
+	}
+	
+	// Get a list of items
+	$ListQuery = MySQLQuery($DBConn,$GuideArray['QueryString']);
+	if ( !$ListQuery['Result'] ) {
+		return $ListQuery['Query'];
+	}
+	if ( mysqli_num_rows($ListQuery['Query']) == 0 ) {
+		return 'No ' . $Type;
+	}
+	
+	// Set up string
+	if ( $SelectName = NULL ) {
+		$SelectName = $GuideArray['ID'];
+	}
+	$SelectString = '<select id="' . $SelectName . '" name="' . $SelectName . '"';
+	if ( $OnChange != NULL ) {
+		$SelectString = $SelectString . ' onchange="' . $OnChange . '"';
+	}
+	if ( $FormName != NULL ) {
+		$SelectString = $SelectString . ' form="' . $FormName . '"';
+	}
+	$SelectString = $SelectString . '>';
+	if ( $IncludeAll != NULL ) {
+		$SelectString = $SelectString . '<option value="-1">All ' . $Type . '</option>';
+	}
+	
+	// Set up loop
+	$CurrentRow = 1;
+	$NumRows = mysqli_num_rows($ListQuery['Query']);
+	
+	// Loop through options
+	while ( $CurrentRow <= $NumRows ) {
+		// Get the data
+		$ListData = mysqli_fetch_assoc($ListQuery['Query']);
+		
+		// Create the option
+		$SelectString = $SelectString . '<option value="' . $ListData[$GuideArray['ID']] . '>' . $GuideArray['Display']($ListData) . '</option>';
+		
+		$CurrentRow++;
+	}
+	
+	// Finish string
+	$SelectString = $SelectString . '</select>';
+	
+	// Return the string
+	return $SelectString;
+}
 function CreateTournamentList($DBConn, $IncludeAll = NULL, $DefaultTournamentID = NULL) {
 	// Creates an html list of all the tournaments sorted by date
 	// @param $DBConn - connection to MySQL database
