@@ -78,7 +78,7 @@ function IsDate($String) {
 	// Determines whether a string is a valid date in format YYYY-MM-DD
 	// @param $String - the string to test
 	// @return boolean
-	return (bool)strtotime($String) && date("Y-m-d", strtotime($String)) == $String);
+	return (strtotime($String) && date("Y-m-d", strtotime($String)) == $String);
 }
 function InsertBallots($Ballots, $DBConn = NULL, $Insert = NULL) {
 	// Inserts Ballots from an array
