@@ -152,3 +152,7 @@ input[type=number] {
 	display: none;
 	padding-left: 10;
 }
+.ErrorMessage {
+	color: red;
+	padding-left: 10;
+}
