@@ -131,7 +131,8 @@ require_once 'header.inc';
 ?>
 <h3>Update, create, and delete students</h3>
 <table class="Table">
-<tr><th>Tournament Name</th><th>Number Rounds</th><th>Judges/Round</th><th>Number Elim Rounds</th><th>Judges/Elim Round</th><th>Start Date</th><th>End Date</th><th>Season</th></tr>
+<tr><th></th><th colspan="2">Prelims</th><th colspan="2">Elims</th></tr>
+<tr><th>Tournament Name</th><th>Rounds</th><th>Judges</th><th>Rounds</th><th>Judges</th><th>Start Date</th><th>End Date</th><th>Season</th></tr>
 <tr>
 	<td><span title="The name of the tournament"><input type="text" id="TournamentName" autofocus="autofocus"></span></td>
 	<td><span title="The number of preliminary rounds at the tournament"><input type="number" id="NumRounds"></span></td>
