@@ -243,4 +243,23 @@ Email: ' . $UserInfo['Email'] . '
 	$ReturnArray['Done'] = true;
 	return $ReturnArray;
 }
+function CheckPassword($UN,$PW) {
+	// Checks the given password for the user
+	// @param $UN - the username
+	// @param $PW - the password
+	// @return bool - whether the password is valid
+	
+	// Get password hash and check username existence
+	$UserString = 'select password from Users where UName="' . $UN . '";';
+	$UserQuery = MySQLQuery($DBConn,$UserString);
+	if ( !$UserQuery['Result'] || mysqli_num_rows($UserQuery['Query']) != 1 ) {
+		return false;
+	}
+	$Data = mysqli_fetch_assoc($UserQuery['Query']);
+	if ( !password_verify($PW,$Data['password']) ) {
+		return false;
+	} else {
+		return true;
+	}
+}
 ?>
