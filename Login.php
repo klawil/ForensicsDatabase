@@ -39,6 +39,9 @@ if ( isset($_POST['UName']) ) {
 			echo 'true';
 			WriteLog($UN . ' logged in');
 			return 0;
+		} else {
+			echo 'Error setting cookie';
+			return 0;
 		}
 	} else {
 		echo $IncorrectString;
