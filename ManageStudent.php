@@ -203,7 +203,7 @@ function DeleteStudent(StudentID) {
 	PostToPage(PostString);
 }
 function SubmitStudent(StudentID) {
-	// Set default SeasonID
+	// Set default StudentID
 	StudentID = StudentID || -1;
 	
 	// Declare PostString
