@@ -10,6 +10,7 @@ if ( isset($_POST['delete']) ) {
 	// Set StudentID
 	if ( !isset($_POST['StudentID']) ) {
 		echo 'Student ID is required';
+		return 0;
 	}
 	$StudentData['StudentID'] = MySQLEscape($_POST['StudentID'],$DBConn);
 	

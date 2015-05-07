@@ -10,6 +10,7 @@ if ( isset($_POST['delete']) ) {
 	// Set EventID
 	if ( !isset($_POST['EventID']) ) {
 		echo 'Event ID is required';
+		return 0;
 	}
 	$EventData['EventID'] = MySQLEscape($_POST['EventID'],$DBConn);
 	
