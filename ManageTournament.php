@@ -70,7 +70,7 @@ if ( !$DoQuery && (isset($_POST['TournamentID']) || isset($_POST['TournamentName
 			echo $DupQuery['Query'];
 			return 0;
 		}
-		if ( mysqli_num_rows($DupQuery['Query'] != 0 ) {
+		if ( mysqli_num_rows($DupQuery['Query']) != 0 ) {
 			echo 'That tournament already exists';
 			return 0;
 		}
