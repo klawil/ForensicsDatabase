@@ -145,7 +145,7 @@ require_once 'header.inc';
 	<td><span title="The number of preliminary rounds at the tournament"><input type="number" id="NumRounds" class="SmallInt"></span></td>
 	<td><span title="The maximum number of judges in a preliminary round"><input type="number" id="NumJudges" class="SmallInt"></span></td>
 	<td><span title="The number of elim rounds at the tournament"><input type="number" id="NumElimRounds" class="SmallInt"></span></td>
-	<td><span title="The maximum number of judges in an elimination round"><input type="number" id="NumElimJudges" size="3"></span></td>
+	<td><span title="The maximum number of judges in an elimination round"><input type="number" id="NumElimJudges" style="width: 3em;"></span></td>
 	<td><span title="The first day of the tournament"><input type="date" id="StartDate"></span></td>
 	<td><span title="The last day of the tournament"><input type="date" id="EndDate"></span></td>
 	<td><span title="The season the tournament occured during"><?php echo CreateSeasonList($DBConn,NULL,NULL,'Season'); ?></span></td>
