@@ -238,4 +238,10 @@ if ( ! $DBConn ) {
 	$GLOBALS['ErrorMessage'] = 'Connection failed: ' . mysqli_connect_error();
 	require_once 'ErrorPage.inc';
 }
+
+// Create "CurrentYear" for determining student's year
+$CurrentYear = date('Y');
+if ( date('n') <= 7 ) {
+	$CurrentYear = $CurrentYear - 1;
+}
 ?>
