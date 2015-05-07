@@ -86,7 +86,7 @@ while ( $CurrentRow <= $NumRows ) {
 	<td><span title="First Name"><?php echo $UserData['FName'];?></span></td>
 	<td><span title="Email"><?php echo $UserData['Email'];?></span></td>
 	<td><span title="Admins can enter and modify results, tournaments, students, etc"><input type="checkbox" id="CanMod<?php echo $UName;?>"<?php if ( $UserData['CanMod'] ) { echo ' checked';}?>></span></td>
-	<td><span title="Save the admin status of this user"><input type="button" value="Save User" onclick="SubmitUser(<?php echo $UName;?>)"></span></td>
+	<td><span title="Save the admin status of this user"><input type="button" value="Save User" onclick="SubmitUser('<?php echo $UName;?>')"></span></td>
 </tr>
 <?php
 	$CurrentRow++;
