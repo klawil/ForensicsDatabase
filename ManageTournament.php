@@ -136,16 +136,21 @@ if ( !$TournamentQuery['Result'] ) {
 // Create header
 require_once 'header.inc';
 ?>
+<style>
+input[type=number] {
+	width: 3em;
+}
+</style>
 <h3>Update, create, and delete tournaments</h3>
 <table class="Table">
 <tr><th></th><th colspan="2">Prelims</th><th colspan="2">Elims</th></tr>
 <tr><th>Tournament Name</th><th>Rounds</th><th>Judges</th><th>Rounds</th><th>Judges</th><th>Start Date</th><th>End Date</th><th>Season</th></tr>
 <tr>
 	<td><span title="The name of the tournament"><input type="text" id="TournamentName" autofocus="autofocus"></span></td>
-	<td><span title="The number of preliminary rounds at the tournament"><input type="number" id="NumRounds" class="SmallInt"></span></td>
-	<td><span title="The maximum number of judges in a preliminary round"><input type="number" id="NumJudges" class="SmallInt"></span></td>
-	<td><span title="The number of elim rounds at the tournament"><input type="number" id="NumElimRounds" class="SmallInt"></span></td>
-	<td><span title="The maximum number of judges in an elimination round"><input type="number" id="NumElimJudges" style="width: 3em;"></span></td>
+	<td><span title="The number of preliminary rounds at the tournament"><input type="number" id="NumRounds"></span></td>
+	<td><span title="The maximum number of judges in a preliminary round"><input type="number" id="NumJudges"></span></td>
+	<td><span title="The number of elim rounds at the tournament"><input type="number" id="NumElimRounds"></span></td>
+	<td><span title="The maximum number of judges in an elimination round"><input type="number" id="NumElimJudges"></span></td>
 	<td><span title="The first day of the tournament"><input type="date" id="StartDate"></span></td>
 	<td><span title="The last day of the tournament"><input type="date" id="EndDate"></span></td>
 	<td><span title="The season the tournament occured during"><?php echo CreateSeasonList($DBConn,NULL,NULL,'Season'); ?></span></td>
