@@ -50,6 +50,8 @@ function IsID($DBConn, $ID, $Type) {
 		$Table = 'Events';
 	} elseif ( $Type == 'SeasonID' ) {
 		$Table = 'Seasons';
+	} elseif ( $Type == 'UName' ) {
+		$Table = 'Users';
 	} else {
 		return false;
 	}
