@@ -217,6 +217,11 @@ function PostToPage(PostString) {
 	}
 }
 function DeleteTournament(TournamentID) {
+	// Check if they are certain
+	if ( !window.confirm("DANGER DANGER!!\nThis will PERMANENTLY erase this tournament.\n\nFOREVER\n\nDo you still want to do this?") ) {
+		return 0;
+	}
+	
 	// Create PostString
 	PostString = "delete=1&TournamentID=" + TournamentID;
 	

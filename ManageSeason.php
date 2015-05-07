@@ -227,6 +227,11 @@ function SubmitSeason(SeasonID) {
 	PostToPage(PostString);
 }
 function DeleteSeason(SeasonID) {
+	// Check if they are certain
+	if ( !window.confirm("DANGER DANGER!!\nThis will PERMANENTLY erase this season.\n\nFOREVER\n\nDo you still want to do this?") ) {
+		return 0;
+	}
+	
 	// Create PostString
 	PostString = "delete=1&SeasonID=" + SeasonID;
 	
