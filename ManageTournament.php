@@ -99,7 +99,7 @@ if ( !$DoQuery && isset($_POST['TournamentID']) ) {
 }
 
 // Handle creation
-if ( !$DoQuery && isset($_POST['LName']) ) {
+if ( !$DoQuery && isset($_POST['TournamentName']) ) {
 	// Create query string
 	$TournamentString = '';
 	foreach ( $TournamentData as $Name => $Value ) {
@@ -136,7 +136,7 @@ if ( !$TournamentQuery['Result'] ) {
 // Create header
 require_once 'header.inc';
 ?>
-<h3>Update, create, and delete students</h3>
+<h3>Update, create, and delete tournaments</h3>
 <table class="Table">
 <tr><th></th><th colspan="2">Prelims</th><th colspan="2">Elims</th></tr>
 <tr><th>Tournament Name</th><th>Rounds</th><th>Judges</th><th>Rounds</th><th>Judges</th><th>Start Date</th><th>End Date</th><th>Season</th></tr>
