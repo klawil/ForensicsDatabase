@@ -260,6 +260,7 @@ function SubmitTournament(TournamentID) {
 		StartDateElement = "StartDate" + TournamentID;
 		EndDateElement = "EndDate" + TournamentID;
 		SeasonElement = "Season" + TournamentID;
+		PostString = "TournamentID=" + TournamentID + "&";
 	}
 	
 	// declare function to get data
