@@ -123,7 +123,7 @@ for ( $Judge = 1; $Judge <= $TournamentData['NumJudges']; $Judge++ ) {
 </table><br>
 </div>
 Place: <input type="number" id="place"><br><br>
-<input type="submit" value="Submit">
+<input type="Submit" value="Submit">
 <?php
 }
 ?>
