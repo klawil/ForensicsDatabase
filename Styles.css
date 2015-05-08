@@ -156,3 +156,6 @@ input[type=number] {
 	color: red;
 	padding-left: 10;
 }
+.hidden {
+	display: none;
+}
