@@ -5,7 +5,7 @@ require_once 'restrictedpage.inc';
 
 $ErrorString = '';
 
-if ( isset($_POST['TournamentID']) ) {do {
+if ( isset($_POST['TournamentID']) ) { do {
 	// Set TournamentID and validate it
 	$TournamentID = MySQLEscape($_POST['TournamentID']);
 	if ( !IsID($DBConn,$TournamentID,'Tournaments') ) {
@@ -29,14 +29,14 @@ input[type=number] {
 	width: 3em;
 }
 </style>
-<?php if ( isset($TournamentData['TournamentName']) ) {?>
+<?php if ( isset($TournamentData['TournamentName']) ) { ?>
 <h2><?php echo $TournamentData['TournamentName']; ?></h2>
 <?php } ?>
 <h3>Insert results from tournament</h3>
-<div id="PostMessage" class="ErrorMessage"><?php echo $ErrorString;?></div>
+<div id="PostMessage" class="ErrorMessage"><?php echo $ErrorString; ?></div>
 <?php if ( !isset($_POST['TournamentID']) ) { ?>
 <form id="TournamentSelect" action="ResultInsert.php" method="post">
-Select a Tournament: <?php echo CreateList($DBConn, 'Tournaments');?> <input type="submit" value="Select Tournament">
+Select a Tournament: <?php echo CreateList($DBConn, 'Tournaments'); ?> <input type="submit" value="Select Tournament">
 </form>
 <?php
 } else {
@@ -47,13 +47,13 @@ Student: <?php echo CreateList($DBConn,'Students'); ?><br>
 Event: <?php echo CreateList($DBConn,'Events'); ?><br>
 <table class="Table">
 <tr>
-	<th></th><?php for ( $Judge = 1; $Judge <= $TournamentData['NumJudges']; $Judge++ ) {?><th colspan="2">Judge <?php echo $Judge; ?></th><?php} ?>
+	<th></th><?php for ( $Judge = 1; $Judge <= $TournamentData['NumJudges']; $Judge++ ) { ?><th colspan="2">Judge <?php echo $Judge; ?></th><?php } ?>
 </tr>
 <?php
 	for ( $Round = 1; $Round <= $TournamentData['NumRounds']; $Round++ ) {
 ?>
 <tr>
-	<td>Round <?php echo $Round; ?></td><?php for ( $Judge = 1; $Judge <= $TournamentData['NumJudges']; $Judge++ ) {?><td><input type="number" id="Round[<?php echo $Round; ?>][<?php echo $Judge; ?>]['Rank']"></td><td><input type="number" id="Round[<?php echo $Round; ?>][<?php echo $Judge; ?>]['Qual']"></td><?php }?>
+	<td>Round <?php echo $Round; ?></td><?php for ( $Judge = 1; $Judge <= $TournamentData['NumJudges']; $Judge++ ) {?><td><input type="number" id="Round[<?php echo $Round; ?>][<?php echo $Judge; ?>]['Rank']"></td><td><input type="number" id="Round[<?php echo $Round; ?>][<?php echo $Judge; ?>]['Qual']"></td><?php } ?>
 </tr>
 <?php
 	}
