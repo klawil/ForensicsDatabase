@@ -24,6 +24,17 @@ if ( isset($_POST['TournamentID']) ) { do {
 } while(false); }
 
 require_once 'header.inc';
+foreach ( $_POST as $Name => $Value ) {
+	if ( is_array($Value) ) {
+		echo $Name . '=>[';
+		foreach ( $Value as $Name2 => $Value2 ) {
+			echo $Name2 . '=>' . $Value2 . ', ';
+		}
+		echo ']';
+	} else {
+		echo $Name . '=>' . $Value . '<br>';
+	}
+}
 ?>
 <style>
 input[type=number] {
@@ -43,6 +54,7 @@ Select a Tournament: <?php echo CreateList($DBConn, 'Tournaments'); ?> <input ty
 } else {
 ?>
 <form id="ResultForm" target="ResultInsert.php" method="post">
+<input type="hidden" id="TournamentID" value="<?php echo $TournamentID; ?>">
 Student: <?php echo CreateList($DBConn,'Students'); ?><br><br>
 <div id="PartnerSelect" class="hidden">Partner: <?php echo CreateList($DBConn,'Students',NULL,NULL,'PartnerID'); ?><br><br></div>
 Event: <?php echo CreateList($DBConn,'Events'); ?><br>
@@ -108,8 +120,10 @@ for ( $Judge = 1; $Judge <= $TournamentData['NumJudges']; $Judge++ ) {
 		echo '</tr>';
 	}
 ?>
-</table>
+</table><br>
 </div>
+Place: <input type="number" id="place"><br><br>
+<input type="submit" value="Submit">
 <?php
 }
 ?>
