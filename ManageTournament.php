@@ -127,7 +127,7 @@ if ( $DoQuery ) {
 }
 
 // Create a query of all tournaments
-$TournamentQuery = MySQLQuery($DBConn,'select TournamentName, NumRounds, NumJudges, NumElimRounds, NumElimJudges, StartDate, EndDate, Season, TournamentID from Tournaments, Seasons where Tournaments.Season = Seasons.SeasonID order by Seasons.StartYear desc, Tournaments.StartDate desc, Tournaments.EndDate desc, TournamentName;');
+$TournamentQuery = MySQLQuery($DBConn,'select Tournaments.TournamentName, Tournaments.NumRounds, Tournaments.NumJudges, Tournaments.NumElimRounds, Tournaments.NumElimJudges, Tournaments.StartDate, Tournaments.EndDate, Tournaments.Season, Tournaments.TournamentID from Tournaments, Seasons where Tournaments.Season = Seasons.SeasonID order by Seasons.StartYear desc, Tournaments.StartDate desc, Tournaments.EndDate desc, Tournaments.TournamentName;');
 if ( !$TournamentQuery['Result'] ) {
 	$GLOBALS['ErrorMessage'] = $TournamentQuery['Query'];
 	require_once 'ErrorPage.inc';
