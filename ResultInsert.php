@@ -43,12 +43,15 @@ Select a Tournament: <?php echo CreateList($DBConn, 'Tournaments'); ?> <input ty
 } else {
 ?>
 <form id="ResultForm" target="ResultInsert.php" method="post">
-Student: <?php echo CreateList($DBConn,'Students'); ?><br>
-<div id="PartnerSelect" class="hidden">Partner: <?php echo CreateList($DBConn,'Students',NULL,NULL,'PartnerID'); ?><br></div>
+Student: <?php echo CreateList($DBConn,'Students'); ?><br><br>
+<div id="PartnerSelect" class="hidden">Partner: <?php echo CreateList($DBConn,'Students',NULL,NULL,'PartnerID'); ?><br><br></div>
 Event: <?php echo CreateList($DBConn,'Events'); ?><br>
 <table class="Table">
 <tr>
 	<th></th><?php for ( $Judge = 1; $Judge <= $TournamentData['NumJudges']; $Judge++ ) { ?><th colspan="2">Judge <?php echo $Judge; ?></th><?php } ?>
+</tr>
+<tr>
+	<th>Round</th><?php for ( $Judge = 1; $Judge <= $TournamentData['NumJudges']; $Judge++ ) { ?><th>Rank</th><th>Qual</th><? } ?>
 </tr>
 <?php
 	for ( $Round = 1; $Round <= $TournamentData['NumRounds']; $Round++ ) {
@@ -56,11 +59,33 @@ Event: <?php echo CreateList($DBConn,'Events'); ?><br>
 <tr>
 	<td>Round <?php echo $Round; ?></td><?php for ( $Judge = 1; $Judge <= $TournamentData['NumJudges']; $Judge++ ) {?><td><input type="number" id="Round[<?php echo $Round; ?>][<?php echo $Judge; ?>]['Rank']"></td><td><input type="number" id="Round[<?php echo $Round; ?>][<?php echo $Judge; ?>]['Qual']"></td><?php } ?>
 </tr>
+<input type="checkbox" id="broke" onchange="ShowHideElims()">Broke to elimination rounds<br>
+<input type="checkbox" id="State">Qualified for the state tournament<br>
+<div id="ElimTable">
+<table class="Table">
+<tr>
+	<th></th><?php for ( $Judge = 1; $Judge <= $TournamentData['NumJudges']; $Judge++ ) { ?><th colspan="2">Judge <?php echo $Judge; ?></th><?php } ?>
+</tr>
+<tr>
+	<th>Round</th><?php for ( $Judge = 1; $Judge <= $TournamentData['NumJudges']; $Judge++ ) { ?><th>Rank</th><th>Qual</th><? } ?>
+</tr>
+</table>
+</div>
 <?php
 	}
 }
 ?>
 </table>
 </form>
+<script>
+function ShowHideElims() {
+	if ( document.getElementById("broke").checked ) {
+		DisplayStyle = "inline";
+	} else {
+		DisplayStyle = "none";
+	}
+	document.getElementById("ElimTable").style.display = DisplayStyle;
+}
+</script>
 </body>
 </html>
