@@ -87,7 +87,7 @@ for ( $Judge = 1; $Judge <= $TournamentData['NumJudges']; $Judge++ ) {
 	}
 ?>
 </table>
-<input type="checkbox" name="broke" onchange="ShowHideElims()">Broke to elimination rounds<br>
+<input type="checkbox" name="broke" id="broke" onchange="ShowHideElims()">Broke to elimination rounds<br>
 <input type="checkbox" name="State">Qualified for the state tournament<br>
 <div id="ElimTable" class="hidden">
 <table class="Table">
