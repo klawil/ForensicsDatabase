@@ -97,7 +97,7 @@ for ( $Judge = 1; $Judge <= $TournamentData['NumJudges']; $Judge++ ) {
 </tr>
 <?php
 	// Create an elimination name array
-	$ElimArray[1 => "Finals", 2 => "Semis", 3 => "Quarters", 4 => "Octos", 5 => "Double Octos", 6 => "Triple Octos"];
+	$ElimArray = [1 => "Finals", 2 => "Semis", 3 => "Quarters", 4 => "Octos", 5 => "Double Octos", 6 => "Triple Octos"];
 	
 	// Create the rows
 	for ( $Round = $TournamentData['NumElimRounds']; $Round <= 1; $Round-- ) {
