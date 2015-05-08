@@ -151,10 +151,14 @@ function SubmitResult() {
 			SubString = FormElements[Index].name + "=" + FormElements[Index].checked;
 		} else if ( FormElements[Index].type == "select" ) {
 			SubString = FormElements[Index].name + "=" + FormElements[Index].options[FormElements[Index].selectedIndex].value;
+		} else if ( FormElements[Index].type == "submit" ) {
+			SubString = "-1";
 		} else {
 			SubString = FormElements[Index].name + "=" + FormElements[Index].value;
 		}
-		if ( PostString == "" ) {
+		if ( SubString == "-1" ) {
+			SubString = "";
+		} else if ( PostString == "" ) {
 			PostString = SubString;
 		} else {
 			PostString = PostString + "&" + SubString;
