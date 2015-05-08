@@ -54,7 +54,7 @@ Select a Tournament: <?php echo CreateList($DBConn, 'Tournaments'); ?> <input ty
 } else {
 ?>
 <form id="ResultForm" action="ResultInsert.php" method="post">
-<input type="hidden" id="TournamentID" value="<?php echo $TournamentID; ?>">
+<input type="hidden" name="TournamentID" value="<?php echo $TournamentID; ?>">
 Student: <?php echo CreateList($DBConn,'Students'); ?><br><br>
 <div id="PartnerSelect" class="hidden">Partner: <?php echo CreateList($DBConn,'Students',NULL,NULL,'PartnerID'); ?><br><br></div>
 Event: <?php echo CreateList($DBConn,'Events'); ?><br>
@@ -81,14 +81,14 @@ for ( $Judge = 1; $Judge <= $TournamentData['NumJudges']; $Judge++ ) {
 	<tr>
 		<td>Round ' . $Round . '</td>';
 		for ( $Judge = 1; $Judge <= $TournamentData['NumJudges']; $Judge++ ) {
-			echo '<td><input type="number" id="Round[' . $Round. '][' . $Judge . '][\'Rank\']"></td><td><input type="number" id="Round[' . $Round . '][' . $Judge . '][\'Qual\']"></td>';
+			echo '<td><input type="number" name="Round[' . $Round. '][' . $Judge . '][\'Rank\']"></td><td><input type="number" name="Round[' . $Round . '][' . $Judge . '][\'Qual\']"></td>';
 		}
 		echo '</tr>';
 	}
 ?>
 </table>
-<input type="checkbox" id="broke" onchange="ShowHideElims()">Broke to elimination rounds<br>
-<input type="checkbox" id="State">Qualified for the state tournament<br>
+<input type="checkbox" name="broke" onchange="ShowHideElims()">Broke to elimination rounds<br>
+<input type="checkbox" name="State">Qualified for the state tournament<br>
 <div id="ElimTable" class="hidden">
 <table class="Table">
 <tr>
@@ -115,14 +115,14 @@ for ( $Judge = 1; $Judge <= $TournamentData['NumJudges']; $Judge++ ) {
 	for ( $Round = $TournamentData['NumElimRounds']; $Round >= 1; $Round-- ) {
 		echo '<tr><td>' . $ElimArray[$Round] . '</td>';
 		for ( $Judge = 1; $Judge <= $TournamentData['NumElimJudges']; $Judge++ ) {
-			echo '<td><input type="number" id="Judge[' . $Round. '][' . $Judge . '][\'Rank\']"></td><td><input type="number" id="Judge[' . $Round . '][' . $Judge . '][\'Qual\']"></td>';
+			echo '<td><input type="number" name="Judge[' . $Round. '][' . $Judge . '][\'Rank\']"></td><td><input type="number" name="Judge[' . $Round . '][' . $Judge . '][\'Qual\']"></td>';
 		}
 		echo '</tr>';
 	}
 ?>
 </table><br>
 </div>
-Place: <input type="number" id="place"><br><br>
+Place: <input type="number" name="place"><br><br>
 <input type="Submit" value="Submit">
 <?php
 }
