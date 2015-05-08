@@ -48,27 +48,51 @@ Student: <?php echo CreateList($DBConn,'Students'); ?><br><br>
 Event: <?php echo CreateList($DBConn,'Events'); ?><br>
 <table class="Table">
 <tr>
-	<th></th><?php for ( $Judge = 1; $Judge <= $TournamentData['NumJudges']; $Judge++ ) { ?><th colspan="2">Judge <?php echo $Judge; ?></th><?php } ?>
+	<th></th>
+<?php
+for ( $Judge = 1; $Judge <= $TournamentData['NumJudges']; $Judge++ ) {
+	echo '<th colspan="2">Judge ' . $Judge . '</th>';
+}
+?>
 </tr>
 <tr>
-	<th>Round</th><?php for ( $Judge = 1; $Judge <= $TournamentData['NumJudges']; $Judge++ ) { ?><th>Rank</th><th>Qual</th><? } ?>
+	<th>Round</th>
+<?php
+for ( $Judge = 1; $Judge <= $TournamentData['NumJudges']; $Judge++ ) {
+	echo '<th>Rank</th><th>Qual</th>';
+}
+?>
 </tr>
 <?php
 	for ( $Round = 1; $Round <= $TournamentData['NumRounds']; $Round++ ) {
+		echo '
+	<tr>
+		<td>Round ' . $Round . '</td>';
+		for ( $Judge = 1; $Judge <= $TournamentData['NumJudges']; $Judge++ ) {
+			echo '<td><input type="number" id="Round[' . $Round. '][' . $Judge . '][\'Rank\']"></td><td><input type="number" id="Round[' . $Round . '][' . $Judge . '][\'Qual\']"></td>';
+		}
+		echo '</tr>';
+	}
 ?>
-<tr>
-	<td>Round <?php echo $Round; ?></td><?php for ( $Judge = 1; $Judge <= $TournamentData['NumJudges']; $Judge++ ) { ?><td><input type="number" id="Round[<?php echo $Round; ?>][<?php echo $Judge; ?>]['Rank']"></td><td><input type="number" id="Round[<?php echo $Round; ?>][<?php echo $Judge; ?>]['Qual']"></td><?php } ?>
-</tr>
-<?php } ?>
 <input type="checkbox" id="broke" onchange="ShowHideElims()">Broke to elimination rounds<br>
 <input type="checkbox" id="State">Qualified for the state tournament<br>
 <div id="ElimTable">
 <table class="Table">
 <tr>
-	<th></th><?php for ( $Judge = 1; $Judge <= $TournamentData['NumElimJudges']; $Judge++ ) { ?><th colspan="2">Judge <?php echo $Judge; ?></th><?php } ?>
+	<th></th>
+<?php
+	for ( $Judge = 1; $Judge <= $TournamentData['NumElimJudges']; $Judge++ ) {
+		echo '<th colspan="2">Judge ' . $Judge . '</th>';
+	}
+?>
 </tr>
 <tr>
-	<th>Round</th><?php for ( $Judge = 1; $Judge <= $TournamentData['NumElimJudges']; $Judge++ ) { ?><th>Rank</th><th>Qual</th><? } ?>
+	<th>Round</th>
+<?php
+	for ( $Judge = 1; $Judge <= $TournamentData['NumElimJudges']; $Judge++ ) {
+		echo '<th>Rank</th><th>Qual</th>';
+	}
+?>
 </tr>
 </table>
 </div>
