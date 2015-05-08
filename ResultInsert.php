@@ -31,7 +31,15 @@ foreach ( $_POST as $Name => $Value ) {
 			if ( is_array($Value2) ) {
 				echo $Name2 . '=>[';
 				foreach ( $Value2 as $Name3 => $Value3 ) {
-					echo $Name3 . '=>' . $Value3 . ', ';
+					if ( is_array($Value3) ) {
+						echo $Name3 . '=>[';
+						foreach ( $Value3 as $Name4 => $Value4 ) {
+							echo $Name4 . '=>' . $Value4 . ', ';
+						}
+						echo ']<br>';
+					} else {
+						echo $Name . '=>' . $Value . '<br>';
+					}
 				}
 				echo ']<br>';
 			} else {
