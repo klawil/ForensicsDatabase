@@ -23,34 +23,11 @@ if ( isset($_POST['TournamentID']) ) { do {
 	$TournamentData = mysqli_fetch_assoc($TournamentQuery['Query']);
 } while(false); }
 
-require_once 'header.inc';
-foreach ( $_POST as $Name => $Value ) {
-	if ( is_array($Value) ) {
-		echo $Name . '=>[';
-		foreach ( $Value as $Name2 => $Value2 ) {
-			if ( is_array($Value2) ) {
-				echo $Name2 . '=>[';
-				foreach ( $Value2 as $Name3 => $Value3 ) {
-					if ( is_array($Value3) ) {
-						echo $Name3 . '=>[';
-						foreach ( $Value3 as $Name4 => $Value4 ) {
-							echo $Name4 . '=>' . $Value4 . ', ';
-						}
-						echo ']<br>';
-					} else {
-						echo $Name . '=>' . $Value . '<br>';
-					}
-				}
-				echo ']<br>';
-			} else {
-				echo $Name . '=>' . $Value . '<br>';
-			}
-		}
-		echo ']<br>';
-	} else {
-		echo $Name . '=>' . $Value . '<br>';
-	}
+if ( isset($_POST['StudentID']) ) {
+	echo 'MEOW';
 }
+
+require_once 'header.inc';
 ?>
 <style>
 input[type=number] {
@@ -147,12 +124,43 @@ Place: <input type="number" name="place"><br><br>
 </form>
 <script>
 function ShowHideElims() {
+	// Show or hide elimination info depending on broke
 	if ( document.getElementById("broke").checked ) {
 		DisplayStyle = "inline";
 	} else {
 		DisplayStyle = "none";
 	}
 	document.getElementById("ElimTable").style.display = DisplayStyle;
+}
+function HasPartner() {
+	// Show partner select if event requires partner
+}
+function SubmitResult() {
+	// Stop submission
+	event.preventDefault;
+	
+	// Get form
+	FormElements = document.getElementById("ResultForm").elements;
+	
+	// Declar PostString
+	PostString = "";
+	
+	// Loop through elements
+	for ( var Index = 0; Index < FormElements.length; Index++ ) {
+		if ( FormElements[Index].type == "checkbox" ) {
+			SubString = FormElements[Index].name + "=" + FormElements[Index].checked;
+		} else if ( FormElements[Index].type == "select" ) {
+			SubString = FormElements[Index].name + "=" + FormElements[Index].options[FormElements[Index].selectedIndex].value;
+		} else {
+			SubString = FormElements[Index].name + "=" + FormElements[Index].value;
+		}
+		if ( PostString == "" ) {
+			PostString = SubString;
+		} else {
+			PostString = PostString + "&" + SubString;
+		}
+	}
+	window.alert(PostString);
 }
 </script>
 </body>
