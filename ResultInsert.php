@@ -1,6 +1,6 @@
 <?php
 require_once 'include.inc';
-$GLOBALS['PageName'] = 'Tournament Management';
+$GLOBALS['PageName'] = 'Insert Results';
 require_once 'restrictedpage.inc';
 
 $ErrorString = '';
@@ -116,7 +116,7 @@ for ( $Judge = 1; $Judge <= $TournamentData['NumJudges']; $Judge++ ) {
 </table><br>
 </div>
 Place: <input type="number" name="place"><br><br>
-<input type="Submit" value="Submit">
+<input type="Submit" value="Submit" onclick="SubmitResult()">
 <?php
 }
 ?>
