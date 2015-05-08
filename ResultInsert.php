@@ -57,7 +57,7 @@ Event: <?php echo CreateList($DBConn,'Events'); ?><br>
 	for ( $Round = 1; $Round <= $TournamentData['NumRounds']; $Round++ ) {
 ?>
 <tr>
-	<td>Round <?php echo $Round; ?></td><?php for ( $Judge = 1; $Judge <= $TournamentData['NumJudges']; $Judge++ ) {?><td><input type="number" id="Round[<?php echo $Round; ?>][<?php echo $Judge; ?>]['Rank']"></td><td><input type="number" id="Round[<?php echo $Round; ?>][<?php echo $Judge; ?>]['Qual']"></td><?php } ?>
+	<td>Round <?php echo $Round; ?></td><?php for ( $Judge = 1; $Judge <= $TournamentData['NumJudges']; $Judge++ ) { ?><td><input type="number" id="Round[<?php echo $Round; ?>][<?php echo $Judge; ?>]['Rank']"></td><td><input type="number" id="Round[<?php echo $Round; ?>][<?php echo $Judge; ?>]['Qual']"></td><?php } ?>
 </tr>
 <input type="checkbox" id="broke" onchange="ShowHideElims()">Broke to elimination rounds<br>
 <input type="checkbox" id="State">Qualified for the state tournament<br>
