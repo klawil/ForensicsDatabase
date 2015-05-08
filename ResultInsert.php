@@ -8,6 +8,7 @@ $ErrorString = '';
 if ( isset($_POST['TournamentID']) ) { do {
 	// Set TournamentID and validate it
 	$TournamentID = MySQLEscape($_POST['TournamentID']);
+	echo $TournamentID;
 	if ( !IsID($DBConn,$TournamentID,'TournamentID') ) {
 		$ErrorString = 'Invalid tournament';
 		unset($_POST['TournamentID']);
