@@ -65,10 +65,10 @@ Event: <?php echo CreateList($DBConn,'Events'); ?><br>
 <div id="ElimTable">
 <table class="Table">
 <tr>
-	<th></th><?php for ( $Judge = 1; $Judge <= $TournamentData['NumJudges']; $Judge++ ) { ?><th colspan="2">Judge <?php echo $Judge; ?></th><?php } ?>
+	<th></th><?php for ( $Judge = 1; $Judge <= $TournamentData['NumElimJudges']; $Judge++ ) { ?><th colspan="2">Judge <?php echo $Judge; ?></th><?php } ?>
 </tr>
 <tr>
-	<th>Round</th><?php for ( $Judge = 1; $Judge <= $TournamentData['NumJudges']; $Judge++ ) { ?><th>Rank</th><th>Qual</th><? } ?>
+	<th>Round</th><?php for ( $Judge = 1; $Judge <= $TournamentData['NumElimJudges']; $Judge++ ) { ?><th>Rank</th><th>Qual</th><? } ?>
 </tr>
 </table>
 </div>
