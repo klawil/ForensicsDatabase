@@ -102,7 +102,7 @@ for ( $Judge = 1; $Judge <= $TournamentData['NumJudges']; $Judge++ ) {
 	// Create the rows
 	for ( $Round = $TournamentData['NumElimRounds']; $Round >= 1; $Round-- ) {
 		echo '<tr><td>' . $ElimArray[$Round] . '</td>';
-		for ( $Judge = 1; $Judge <= $TournamentData['NumJudges']; $Judge++ ) {
+		for ( $Judge = 1; $Judge <= $TournamentData['NumElimJudges']; $Judge++ ) {
 			echo '<td><input type="number" id="Judge[' . $Round. '][' . $Judge . '][\'Rank\']"></td><td><input type="number" id="Judge[' . $Round . '][' . $Judge . '][\'Qual\']"></td>';
 		}
 		echo '</tr>';
