@@ -177,7 +177,7 @@ while ( $CurrentRow <= $NumRows ) {
 	<td><span title="The maximum number of judges in an elimination round"><input type="number" id="NumElimJudges<?php echo $TournamentID; ?>" value="<?php echo $TournamentData['NumElimJudges']; ?>"></span></td>
 	<td><span title="The first day of the tournament"><input type="date" id="StartDate<?php echo $TournamentID; ?>" value="<?php echo $TournamentData['StartDate']; ?>"></span></td>
 	<td><span title="The last day of the tournament"><input type="date" id="EndDate<?php echo $TournamentID; ?>" value="<?php echo $TournamentData['EndDate']; ?>"></span></td>
-	<td><span title="The season the tournament occured during"><?php echo CreateList($DBConn.'Seasons',NULL,$TournamentData['Season'],'Season' . $TournamentID); ?></span></td>
+	<td><span title="The season the tournament occured during"><?php echo CreateList($DBConn,'Seasons',NULL,$TournamentData['Season'],'Season' . $TournamentID); ?></span></td>
 	<td><span title="Delete this tournament"><input type="button" value="Delete Tournament" onclick="DeleteTournament(<?php echo $TournamentID; ?>)"></span></td>
 	<td><span title="Save changes to this tournament"><input type="button" value="Save Changes" onclick="SubmitTournament(<?php echo $TournamentID; ?>)"></span></td>
 </tr>
