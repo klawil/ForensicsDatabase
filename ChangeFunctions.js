@@ -34,7 +34,7 @@ function GetChange(ParseID) {
 	if ( IsChange ) {
 		DisplayStyle = "inline";
 		if ( typeof ChangeArrayGlobal[ParseID] == "undefined" ) {
-			ChangeArrayGlobal.push = [ParseID: true];
+			ChangeArrayGlobal[ParseID] = true;
 			IsChangeGlobal = true;
 		}
 	} else {
