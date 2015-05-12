@@ -9,7 +9,7 @@ function GetChange(ParseID) {
 	// Loop through the array of id's to check
 	for ( var Index = 0; Index < ChangeArray.length; Index++ ) {
 		// Get the element checking
-		ElementToCheck = document.getElementById(ChangeArray[Index} + ParseID);
+		ElementToCheck = document.getElementById(ChangeArray[Index] + ParseID);
 
 		// Check the element for change
 		switch ( Element.type ) {
