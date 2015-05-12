@@ -45,6 +45,7 @@ function GetChange(ParseID) {
 				IsChangeGlobal = false;
 			}
 		}
+	}
 	document.getElementById("ChangeCell" + ParseID).style.display = DisplayStyle;
 }
 
