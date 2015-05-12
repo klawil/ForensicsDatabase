@@ -266,8 +266,8 @@ function GetChange(EventID) {
 	// Loop through the change array and find a change
 	for ( Index = 0; Index <= ChangeArray.length; Index++ ) {
 		// Set the information needed
-		id = ChangeArray[Index] + EventID;
-		Element = document.getElementById(id);
+		ElementID = ChangeArray[Index] + EventID;
+		Element = document.getElementById(ElementID);
 		switch ( Element.type ) {
 			case "checkbox":
 				if ( Element.checked != Element.defaultChecked ) {
