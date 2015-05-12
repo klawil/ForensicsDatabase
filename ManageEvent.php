@@ -168,10 +168,11 @@ while ( $CurrentRow <= $NumRows ) {
 	$CurrentRow++;
 }
 ?>
-
 </table>
 <script>
-IsChange = false;
+// Create array to check for changes
+ChangeArray = ["EventName","EventAbbr","Partner"];
+
 function PostToPage(PostString) {
 	// Alert user
 	document.getElementById("PostMessage").innerHTML = "Processing request...";
