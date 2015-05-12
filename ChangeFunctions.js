@@ -48,7 +48,7 @@ function GetChange(ParseID) {
 	document.getElementById("ChangeCell" + ParseID).style.display = DisplayStyle;
 }
 
-window.onbeforeunload function (e) {
+window.onbeforeunload = function (e) {
 	if ( IsChangeGlobal ) {
 		var message = "There are unsaved changes on this page. Are you sure you want to leave?",
 		e = e || window.event;
