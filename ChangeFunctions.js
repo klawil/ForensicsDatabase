@@ -1,5 +1,5 @@
 // Set global change detection variable and array
-var IsChangeGlobal = false;
+var IsChangeGlobal = true;
 var ChangeArrayGlobal = new Array();
 
 function GetChange(ParseID) {
