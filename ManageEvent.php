@@ -264,7 +264,7 @@ function GetChange(EventID) {
 	var ischange = false;
 
 	// Loop through the change array and find a change
-	for ( Index = 0; Index <= ChangeArray.length; Index++ ) {
+	for ( var Index = 0; Index <= ChangeArray.length; Index++ ) {
 		// Set the information needed
 		var ElementID = ChangeArray[Index] + EventID;
 		var Element = document.getElementById(ElementID);
