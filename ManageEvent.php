@@ -170,7 +170,7 @@ while ( $CurrentRow <= $NumRows ) {
 </table>
 <script>
 // Create array to check for changes
-ChangeArray = ["EventName","EventAbbr","Partner"];
+var ChangeArray = ["EventName","EventAbbr","Partner"];
 
 function PostToPage(PostString) {
 	// Alert user

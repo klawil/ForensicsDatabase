@@ -4,27 +4,27 @@ var ChangeArrayGlobal = new Array();
 
 function GetChange(ParseID) {
 	// Set flag to determine if change has occured
-	IsChange = false;
+	var IsChange = false;
 
 	// Loop through the array of id's to check
 	for ( var Index = 0; Index < ChangeArray.length; Index++ ) {
 		// Get the element checking
-		ElementToCheck = document.getElementById(ChangeArray[Index] + ParseID);
+		var ElementToCheck = document.getElementById(ChangeArray[Index] + ParseID);
 
 		// Check the element for change
-		switch ( Element.type ) {
+		switch ( ElementToCheck.type ) {
 			case "checkbox":
-				if ( Element.checked != Element.defaultChecked ) {
+				if ( ElementToCheck.checked != ElementToCheck.defaultChecked ) {
 					IsChange = true;
 				}
 				break;
 			case "select":
-				if ( !Element.options[Element.selectedIndex].defaultSelected ) {
+				if ( !ElementToCheck.options[ElementToCheck.selectedIndex].defaultSelected ) {
 					IsChange = true;
 				}
 				break;
 			default:
-				if ( Element.defaultValue != Element.value ) {
+				if ( ElementToCheck.defaultValue != ElementToCheck.value ) {
 					IsChange = true;
 				}
 		}
