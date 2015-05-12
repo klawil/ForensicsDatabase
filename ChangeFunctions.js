@@ -50,8 +50,8 @@ function GetChange(ParseID) {
 
 window.onbeforeunload = function (e) {
 	if ( IsChangeGlobal ) {
-		var message = "There are unsaved changes on this page. Are you sure you want to leave?",
-		e = e || window.event;
+		var message = "There are unsaved changes on this page. Are you sure you want to leave?";
+		var e = e || window.event;
 		// Most browsers
 		if (e) {
 			e.returnValue = message;
