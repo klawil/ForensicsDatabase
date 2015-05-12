@@ -161,14 +161,16 @@ while ( $CurrentRow <= $NumRows ) {
 	<td><span title="Abbreviation of the event"><input type="text" id="EventAbbr<?php echo $EventID; ?>" value="<?php echo $EventData['EventAbbr']; ?>"></span></td>
 	<td><span title="Is this a partner event?"><input type="checkbox" id="Partner<?php echo $EventID; ?>"<?php if ( $EventData['Partner'] == 1 ) { echo ' checked'; }?>></span></td>
 	<td><span title="Delete this event"><input type="button" onclick="DeleteEvent(<?php echo $EventID; ?>)" value="Delete Event"></span></td>
-	<td><span title="Save changes to this event"><input type="button" value="Save Changes" onclick="SubmitEvent(<?php echo $EventID; ?>)"></span></td>
+	<td class="ChangeCell" id="ChangeCell<?php echo $EventID; ?>"><span title="Save changes to this event"><input type="button" value="Save Changes" onclick="SubmitEvent(<?php echo $EventID; ?>)"></span></td>
 </tr>
 <?php
 	$CurrentRow++;
 }
 ?>
+
 </table>
 <script>
+IsChange = false;
 function PostToPage(PostString) {
 	// Alert user
 	document.getElementById("PostMessage").innerHTML = "Processing request...";
@@ -205,6 +207,7 @@ function PostToPage(PostString) {
 		}
 	}
 }
+
 function SubmitEvent(EventID) {
 	// Set default EventID
 	EventID = EventID || -1;
@@ -237,6 +240,7 @@ function SubmitEvent(EventID) {
 	// Execute Post
 	PostToPage(PostString);
 }
+
 function DeleteEvent(EventID) {
 	// Check if they are certain
 	if ( !window.confirm("DANGER DANGER!!\nThis will PERMANENTLY erase this event.\n\nFOREVER\n\nDo you still want to do this?") ) {
@@ -248,6 +252,50 @@ function DeleteEvent(EventID) {
 	
 	// Execute Post
 	PostToPage(PostString);
+}
+
+function GetChange(EventID) {
+	// See if there is a change and if so show the save changes button
+	
+	// Create array to guide checking
+	ChangeArray = [["id": "EventName"],
+		["id": "EventAbbr"],
+		["id": "Partner"]];
+	
+	// Initialize variable to check for changes
+	ischange = false;
+
+	// Loop through the change array and find a change
+	for ( Index = 0; Index <= ChangeArray.length; Index++ ) {
+		// Set the information needed
+		id = ChangeArray[Index]["id"] + EventID;
+		Element = document.getElementById(id);
+		switch ( Element.type ) {
+			case "checkbox":
+				if ( Element.checked != Element.defaultChecked ) {
+					ischange = true;
+				}
+				break;
+			case "select":
+				if ( !Element.options[Element.selectedIndex].defaultSelected ) {
+					ischange = true;
+				}
+				break;
+			default:
+				if ( Element.defaultValue != Element.value ) {
+					ischange = true;
+				}
+			}
+		}
+		
+		// If there is change, show the button, otherwise hide it
+		if ( ischange ) {
+			displaytype = "inline";
+		} else {
+			displaytype = "none";
+		}
+		document.getElementById("ChangeCell" + EventID).style.display = displaytype;
+	}
 }
 </script>
 </body>
