@@ -132,7 +132,6 @@ if ( !$EventQuery['Result'] ) {
 // Create header
 require_once 'header.inc';
 ?>
-<script type="text/javascript" src="ChangeFunctions.js"></script>
 <h3>Update, create, and delete events</h3>
 <div id="PostMessage" class="alert"></div>
 <table class="Table">
