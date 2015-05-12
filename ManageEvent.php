@@ -132,6 +132,7 @@ if ( !$EventQuery['Result'] ) {
 // Create header
 require_once 'header.inc';
 ?>
+<script type="text/javascript" src="ChangeFunctions.js"></script>
 <h3>Update, create, and delete events</h3>
 <div id="PostMessage" class="alert"></div>
 <table class="Table">
@@ -252,47 +253,6 @@ function DeleteEvent(EventID) {
 	
 	// Execute Post
 	PostToPage(PostString);
-}
-
-function GetChange(EventID) {
-	// See if there is a change and if so show the save changes button
-	
-	// Create array to guide checking
-	var ChangeArray = ["EventName","EventAbbr","Partner"];
-	
-	// Initialize variable to check for changes
-	var ischange = false;
-
-	// Loop through the change array and find a change
-	for ( var Index = 0; Index < ChangeArray.length; Index++ ) {
-		// Set the information needed
-		var ElementID = ChangeArray[Index] + EventID;
-		var Element = document.getElementById(ElementID);
-		switch ( Element.type ) {
-			case "checkbox":
-				if ( Element.checked != Element.defaultChecked ) {
-					ischange = true;
-				}
-				break;
-			case "select":
-				if ( !Element.options[Element.selectedIndex].defaultSelected ) {
-					ischange = true;
-				}
-				break;
-			default:
-				if ( Element.defaultValue != Element.value ) {
-					ischange = true;
-				}
-		}
-	}
-	
-	// If there is change, show the button, otherwise hide it
-	if ( ischange ) {
-		var displaytype = "inline";
-	} else {
-		var displaytype = "none";
-	}
-	document.getElementById("ChangeCell" + EventID).style.display = displaytype;
 }
 </script>
 </body>
