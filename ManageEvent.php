@@ -258,9 +258,9 @@ function GetChange(EventID) {
 	// See if there is a change and if so show the save changes button
 	
 	// Create array to guide checking
-	ChangeArray = [["id": "EventName"],
-		["id": "EventAbbr"],
-		["id": "Partner"]];
+	ChangeArray = [[id: "EventName"],
+		[id: "EventAbbr"],
+		[id: "Partner"]];
 	
 	// Initialize variable to check for changes
 	ischange = false;
