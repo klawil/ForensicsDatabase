@@ -258,16 +258,16 @@ function GetChange(EventID) {
 	// See if there is a change and if so show the save changes button
 	
 	// Create array to guide checking
-	ChangeArray = ["EventName","EventAbbr","Partner"];
+	var ChangeArray = ["EventName","EventAbbr","Partner"];
 	
 	// Initialize variable to check for changes
-	ischange = false;
+	var ischange = false;
 
 	// Loop through the change array and find a change
 	for ( Index = 0; Index <= ChangeArray.length; Index++ ) {
 		// Set the information needed
-		ElementID = ChangeArray[Index] + EventID;
-		Element = document.getElementById(ElementID);
+		var ElementID = ChangeArray[Index] + EventID;
+		var Element = document.getElementById(ElementID);
 		switch ( Element.type ) {
 			case "checkbox":
 				if ( Element.checked != Element.defaultChecked ) {
@@ -288,9 +288,9 @@ function GetChange(EventID) {
 	
 	// If there is change, show the button, otherwise hide it
 	if ( ischange ) {
-		displaytype = "inline";
+		var displaytype = "inline";
 	} else {
-		displaytype = "none";
+		var displaytype = "none";
 	}
 	document.getElementById("ChangeCell" + EventID).style.display = displaytype;
 }
