@@ -258,9 +258,7 @@ function GetChange(EventID) {
 	// See if there is a change and if so show the save changes button
 	
 	// Create array to guide checking
-	ChangeArray = [[id: "EventName"],
-		[id: "EventAbbr"],
-		[id: "Partner"]];
+	ChangeArray = ["EventName","EventAbbr","Partner"];
 	
 	// Initialize variable to check for changes
 	ischange = false;
@@ -268,7 +266,7 @@ function GetChange(EventID) {
 	// Loop through the change array and find a change
 	for ( Index = 0; Index <= ChangeArray.length; Index++ ) {
 		// Set the information needed
-		id = ChangeArray[Index]["id"] + EventID;
+		id = ChangeArray[Index] + EventID;
 		Element = document.getElementById(id);
 		switch ( Element.type ) {
 			case "checkbox":
