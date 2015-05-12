@@ -283,17 +283,16 @@ function GetChange(EventID) {
 				if ( Element.defaultValue != Element.value ) {
 					ischange = true;
 				}
-			}
 		}
-		
-		// If there is change, show the button, otherwise hide it
-		if ( ischange ) {
-			displaytype = "inline";
-		} else {
-			displaytype = "none";
-		}
-		document.getElementById("ChangeCell" + EventID).style.display = displaytype;
 	}
+	
+	// If there is change, show the button, otherwise hide it
+	if ( ischange ) {
+		displaytype = "inline";
+	} else {
+		displaytype = "none";
+	}
+	document.getElementById("ChangeCell" + EventID).style.display = displaytype;
 }
 </script>
 </body>
