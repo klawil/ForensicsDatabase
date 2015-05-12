@@ -1,5 +1,5 @@
 // Set global change detection variable and array
-var IsChangeGlobal = true;
+var IsChangeGlobal = false;
 var ChangeArrayGlobal = new Array();
 
 function GetChange(ParseID) {
@@ -51,7 +51,7 @@ function GetChange(ParseID) {
 
 window.onbeforeunload = function (e) {
 	if ( IsChangeGlobal ) {
-		var message = "There are unsaved changes on this page. Are you sure you want to leave?";
+		var message = "There are unsaved changes on this page.";
 		var e = e || window.event;
 		// Most browsers
 		if (e) {
