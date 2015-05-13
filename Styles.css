@@ -62,9 +62,6 @@ input[type=number] {
 /****************\
 |*  Navigation  *|
 \****************/
-.current {
-	text-decoration: underline;
-}
 .TopMenu {
 	background: hsl(240, 0%, 50%);
 	padding: 0 20px;
@@ -82,9 +79,8 @@ input[type=number] {
 .TopMenuItem {
 	color: #FFFFFF;
 	float: left;
-	padding: 7px;
+	padding: 7px 15px 7px 7px;
 	font-size: 17px;
-	width: 6em;
 }
 .SubMenuItem:hover, .TopMenuItem:hover {
 	background: #000000;
@@ -106,13 +102,11 @@ input[type=number] {
 }
 .SubMenuItem {
 	color: #FFFFFF;
-	padding: 5px;
-	padding-bottom: 10px;
+	padding: 5px 20px 10px 5px;
 	margin-bottom: 10px;
 	background: hsl(240, 0%, 50%);
 	font-size: 17px;
 	border-radius: 0;
-	width: 7em;
 }
 .UserItem {
 	float: right;
@@ -159,6 +153,10 @@ input[type=number] {
 	border-radius: 0 0 10px 10px;
 	position: relative;
 	left: -10px;
+}
+.current {
+	/*text-decoration: underline;*/
+	color: black;
 }
 
 /*************\
