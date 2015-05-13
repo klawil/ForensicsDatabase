@@ -1,13 +1,18 @@
+body {
+	font-family: "Times New Roman";
+}
 h1 {
 	margin: 0;
 	line-height: 1;
 	padding-left: 10;
-	color: #0000FF;
+	color: hsl(0, 0%, 0%);
 }
 h2, h3, h4, h5 {
 	margin: 0;
 	line-height: 1;
+	padding-left: 10;
 	padding-bottom: 2;
+	color: hsl(0, 0%, 0%);
 }
 #tab {
 	padding-left:1em;
@@ -58,7 +63,7 @@ input[type=number] {
 |*  Navigation  *|
 \****************/
 .TopMenu {
-	background: #0000FF;
+	background: hsl(240, 0%, 50%);
 	padding: 0 20px;
 	border-radius: 10px;
 	list-style: none;
@@ -66,6 +71,7 @@ input[type=number] {
 	display: inline-table;
 	width: calc(100% - 40px);
 	z-index: 10;
+	box-shadow: 5px 5px hsl(240, 0%, 75%);
 }
 .TopMenu a {
 	text-decoration: none;
@@ -75,6 +81,7 @@ input[type=number] {
 	float: left;
 	padding: 7px;
 	font-size: 17px;
+	width: 5em;
 }
 .SubMenuItem:hover, .TopMenuItem:hover {
 	background: #000000;
@@ -86,9 +93,10 @@ input[type=number] {
 	display: none;
 	position: absolute;
 	top: 33px;
-	background: #0000FF;
-	border-radius: 0;
+	background: hsl(240, 0%, 50%);
+	border-radius: 0 0 10px 10px;
 	list-style: none;
+	box-shadow: 5px 5px hsl(240, 0%, 75%);
 }
 .TopMenuItem:hover .SubMenu {
 	display: block;
@@ -96,8 +104,12 @@ input[type=number] {
 .SubMenuItem {
 	color: #FFFFFF;
 	padding: 5px;
-	background: #0000FF;
+	padding-bottom: 10px;
+	margin-bottom: 10px;
+	background: hsl(240, 0%, 50%);
 	font-size: 17px;
+	border-radius: 0;
+	width: 7em;
 }
 .UserItem {
 	float: right;
@@ -118,11 +130,15 @@ input[type=number] {
 	float: right;
 }
 #UserMessage {
-	background: #0000FF;
+	background: hsl(240, 0%, 50%);
 }
 .LogInOutForm {
 	color: #FFFFFF;
-	background: #0000FF;
+	background: hsl(240, 0%, 50%);
+	box-shadow: 5px 5px hsl(240, 0%, 75%);
+	border-radius: 0 0 10px 10px;
+	position: relative;
+	left: -10px;
 }
 
 /*************\
