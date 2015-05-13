@@ -131,8 +131,6 @@ input[type=number] {
 	top: 33px;
 	list-style: none;
 	float: right;
-	position: relative;
-	left: -10px;
 }
 #UserMessage {
 	background: hsl(240, 0%, 50%);
@@ -150,6 +148,8 @@ input[type=number] {
 	background: hsl(240, 0%, 50%);
 	box-shadow: 5px 5px hsl(240, 0%, 75%);
 	border-radius: 0 0 10px 10px;
+	position: relative;
+	left: -10px;
 }
 .Github {
 	width: auto;
@@ -157,6 +157,8 @@ input[type=number] {
 .LogoutButton {
 	box-shadow: 5px 5px hsl(240, 0%, 75%);
 	border-radius: 0 0 10px 10px;
+	position: relative;
+	left: -10px;
 }
 
 /*************\
