@@ -50,7 +50,7 @@ if ( isset($GLOBALS['UserName']) && $GLOBALS['UserName'] != "" ) {
 	echo $GLOBALS['UserData']['LName'] . ', ' . $GLOBALS['UserData']['FName']?></a>
 	<ul id="LogInOut">
 		<li class="Alert" id="UserMessage"></li>
-		<a href="#" onclick="UserLogout();"><li class="SubMenuItem">Log Out</li></a>
+		<a href="#" onclick="UserLogout();"><li class="SubMenuItem LogoutButton">Log Out</li></a>
 		<!--<a href="ManageSelf.php"><li class="SubMenuItem">Manage Account</li></a>-->
 <?php
 } else {
