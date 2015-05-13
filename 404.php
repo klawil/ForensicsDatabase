@@ -1,11 +1,8 @@
-<html>
-<head>
-<title>404 Not Found | ForensicsDB.com</title>
-<link rel="stylesheet" type="text/css" href="Styles.css">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
+<?php
+require_once 'include.inc';
+$GLOBALS['PageName'] = '404 Not Found';
+require_once 'header.inc';
+?>
 <center>
 <h1>Oops! You've caught us speechless!</h1>
 <img src="404.png" alt="This was a really cool meme!" style="width:100%;max-width:636px;padding-top:20px">
