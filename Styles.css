@@ -157,6 +157,7 @@ input[type=number] {
 .LogoutButton {
 	box-shadow: 5px 5px hsl(240, 0%, 75%);
 	border-radius: 0 0 10px 10px;
+	left: -10px;
 }
 
 /*************\
