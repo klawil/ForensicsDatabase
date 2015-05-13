@@ -84,7 +84,7 @@ input[type=number] {
 	float: left;
 	padding: 7px;
 	font-size: 17px;
-	width: 5em;
+	width: 6em;
 }
 .SubMenuItem:hover, .TopMenuItem:hover {
 	background: #000000;
