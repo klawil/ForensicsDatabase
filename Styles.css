@@ -1,24 +1,29 @@
+body {
+	font-family: "Times New Roman";
+}
 h1 {
 	margin: 0;
 	line-height: 1;
 	padding-left: 10;
-	color: #0000FF;
+	color: hsl(0, 0%, 0%);
 }
 h2, h3, h4, h5 {
 	margin: 0;
 	line-height: 1;
+	padding-left: 10;
 	padding-bottom: 2;
+	color: hsl(0, 0%, 0%);
 }
 #tab {
 	padding-left:1em;
 }
 td {
-    padding-right: 10;
+    padding-right: 3;
     padding-left: 3;
 }
 th {
-    padding-right: 10;
-    padding-left: 10;
+    padding-right: 3;
+    padding-left: 3;
     text-align: center;
 }
 #Results-Table {
@@ -27,6 +32,15 @@ th {
 }
 input[type="number"] {
    width:40px;
+}
+.Table {
+	padding: 10px;
+}
+.ChangeCell {
+	display: none;
+}
+input[type=number] {
+	width: 5em;
 }
 
 /****************\
@@ -42,13 +56,14 @@ input[type="number"] {
 .SubmitButton {
 	width: 100%;
 	float: left;
+	padding-bottom: 10;
 }
 
 /****************\
 |*  Navigation  *|
 \****************/
-nav ul {
-	background: #0000ff;
+.TopMenu {
+	background: hsl(240, 0%, 50%);
 	padding: 0 20px;
 	border-radius: 10px;
 	list-style: none;
@@ -56,66 +71,96 @@ nav ul {
 	display: inline-table;
 	width: calc(100% - 40px);
 	z-index: 10;
-	color: #FFFFFF;
+	box-shadow: 5px 5px hsl(240, 0%, 75%);
 }
-nav ul a {
-	color: #FFFFFF;
+.TopMenu a {
 	text-decoration: none;
 }
-nav ul #login {
-	float: right;
-}
-nav ul li ul {
-	padding-top: 0px;
-	padding-left: 0px;
-	padding-right: 0px;
-	padding-bottom: 0px;
-	border-radius: 0px;
-	width: auto;
-	z-index: 10;
-}
-nav ul li a {
+.TopMenuItem {
 	color: #FFFFFF;
-	text-decoration: none;
+	float: left;
+	padding: 7px 15px 7px 7px;
+	font-size: 17px;
 }
-nav ul li:hover {
+.SubMenuItem:hover, .TopMenuItem:hover, .SubMenuItem:focus, .TopMenuItem:focus {
 	background: #000000;
 }
-nav ul li {
-	float: left;
-	padding: 5px;
-	padding-right: 30px;
-}
-nav ul li ul li {
-	float: none;
-	padding: 5px;
-	padding-right: 30px;
-	z-index: 10;
-}
-li ul {
+.SubMenu {
+	padding: 0;
+	width: auto;
+	z-index: 11;
 	display: none;
 	position: absolute;
-	top: 28px;
+	top: 33px;
+	background: hsl(240, 0%, 50%);
+	border-radius: 0 0 10px 10px;
+	list-style: none;
+	box-shadow: 5px 5px hsl(240, 0%, 75%);
 }
-li #loginwin {
-	right: 0;
-}
-#logoutwin {
-	display: none;
-}
-#logoutwin li {
-	padding-right: 5;
-	padding-left: 5;
-}
-#loginwin li {
-	padding-right: 5;
-	padding-left: 5;
-}
-#loginwin {
-	display: none;
-}
-li:hover ul {
+.TopMenuItem:hover .SubMenu, .TopMenuItem:focus .SubMenu {
 	display: block;
+}
+.SubMenuItem {
+	color: #FFFFFF;
+	padding: 5px 20px 10px 5px;
+	margin-bottom: 10px;
+	background: hsl(240, 0%, 50%);
+	font-size: 17px;
+	border-radius: 0;
+}
+.UserItem {
+	float: right;
+	color: #FFFFFF;
+	padding: 7px;
+	font-size: 17px;
+	font-weight: bold;
+}
+.UserItem:hover, .UserItem:focus {
+	background: #000000;
+}
+#LogInOut {
+	display: none;
+	position: absolute;
+	right: 0px;
+	top: 33px;
+	list-style: none;
+	float: right;
+}
+#UserMessage {
+	background: hsl(240, 0%, 50%);
+	box-shadow: 5px 5px hsl(240, 0%, 75%);
+	padding-right: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	border-radius: 0 0 10px;
+	position: relative;
+	left: -10px;
+
+}
+.LogInOutForm {
+	color: #FFFFFF;
+	background: hsl(240, 0%, 50%);
+	box-shadow: 5px 5px hsl(240, 0%, 75%);
+	border-radius: 0 0 10px 10px;
+	position: relative;
+	left: -10px;
+}
+.Github {
+	width: auto;
+}
+.LogoutButton {
+	box-shadow: 5px 5px hsl(240, 0%, 75%);
+	border-radius: 0 0 10px 10px;
+	position: relative;
+	left: -10px;
+}
+.current {
+	/*text-decoration: underline;*/
+	color: black;
+}
+.current:hover, .current:focus {
+	color: white;
+	text-decoration: underline;
 }
 
 /*************\
@@ -135,4 +180,20 @@ li:hover ul {
 .right {
 	float: left;
 	width: 33%;
+}
+
+/***********\
+|*  Other  *|
+\***********/
+.Alert {
+	color: red;
+	display: none;
+	padding-left: 10;
+}
+.ErrorMessage {
+	color: red;
+	padding-left: 10;
+}
+.hidden {
+	display: none;
 }

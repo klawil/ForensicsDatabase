@@ -1,90 +1,104 @@
-<html>
-<head><title>New User | ForensicsDB.com</title></head>
-<link rel="stylesheet" type="text/css" href="Styles.css">
-<link rel="stylesheet" media="(max-width: 800px)" href="MobileStyles.css" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta charset="UTF-8">
-<body>
-<h1>New User</h1>
 <?php
-include 'CommonFunctions.php';
-MakeHeader();
+require_once 'include.inc';
+$GLOBALS['PageName'] = 'Create New User';
+require_once 'header.inc';
+$UserData['UName'] = '';
+$UserData['FName'] = '';
+$UserData['LName'] = '';
+$UserData['Email'] = '';
 if ( isset($_POST['UName']) ) {
-	$iswrong = 0;
-	$UName = $_POST['UName'];
-	if ( $_POST['FName'] == "" ) {
-		echo 'You must enter a first name<br>';
-		$iswrong = 1;
-	} elseif ( strlen($_POST['FName']) > 30 ) {
-		echo 'First Name must be less than 30 characters<br>';
-		$iswrong = 1;
-	}
-	if ( $_POST['LName'] == "" ) {
-		echo 'You must enter a last name<br>';
-		$iswrong = 1;
-	} elseif ( strlen($_POST['LName']) > 30 ) {
-		echo 'Last Name must be less than 30 characters<br>';
-		$iswrong = 1;
-	}
-	if ( $_POST['Email'] == "" ) {
-		echo 'You must enter an email<br>';
-		$iswrong = 1;
-	}
-	if ( $_POST['UName'] == "" ) {
-		echo 'You must enter a user name<br>';
-		$iswrong = 1;
-	} elseif ( strlen($_POST['UName']) > 20 ) {
-		echo 'Username must be less than 20 characters<br>';
-		$iswrong = 1;
-	}
-	if ( $_POST['PWord'] == "" ) {
-		echo 'You must enter a password<br>';
-		$iswrong = 1;
-	}
-	if ( $iswrong == 0 ) {
-		$query = mysqli_query($DBConn, "select * from users where UName='" . $_POST['UName'] . "';");
-		if ( ! (mysqli_num_rows($query) == 0 ) ) {
-			echo 'That username already exists<br>';
-			$UName = "";
-			$iswrong = 1;
+	// Check data
+	$ErrorString = '';
+	$VarArray = ['UName' => 'Username','FName' => 'First name','LName' => 'Last name','Email' => 'Email','Password' => 'Password','PasswordVerify' => 'Second password'];
+	foreach ( $VarArray as $Name => $Error ) {
+		if ( !isset($_POST[$Name]) ) {
+			if ( $ErrorString = '' ) {
+				$ErrorString = $Error . ' is required';
+			} else {
+				$ErrorString = $ErrorString . '; ' . $Error . ' is required';
+			}
+			$UserData[$Name] = '';
+		} else {
+			$UserData[$Name] = $_POST[$Name];
 		}
 	}
-	if ( $iswrong == 1 ) {
-		echo '<form id="UserForm" action="NewUser.php" method="post">
-First Name: <input type="text" name="FName" value="' . $_POST['FName'] . '"><br>
-Last Name: <input type="text" name="LName" value="' . $_POST['LName'] . '"><br>
-Email: <input type="text" name="Email" value="' . $_POST['Email'] . '"><br>
-Username: <input type="text" name="UName" value="' . $UName . '"><br>
-Password: <input type="password" name="PWord"><br>
-<input type="submit" value="Submit">
-</form>
+	
+	// Check password
+	if ( $ErrorString == '' && $UserData['Password'] == '' ) {
+		$ErrorString = 'You must enter a password';
+	} elseif ( $ErrorString == '' && strlen($UserData['Password']) < 5 ) {
+		$ErrorString = 'Your password must be at least 5 characters';
+	} elseif ( $ErrorString == '' && $UserData['Password'] != $UserData['PasswordVerify'] ) {
+		$ErrorString = 'Passwords do not match';
+	}
+	
+	// Insert User
+	if ( $ErrorString == '' ) {
+		$CreateUser = CreateUser($UserData['UName'], $UserData['Password'], $UserData['FName'], $UserData['LName'], $UserData['Email'], $DBConn);
+		if ( !$CreateUser['Done'] ) {
+			$ErrorString = $CreateUser['Error'];
+		} else {
+			echo '<h3>Success!</h3><br>
+' . $UserData['FName'] . ' ' . $UserData['LName'] . ' using user name' . $UserData['UName'] . ' was successfully added!<br>
+Navigate to a different page to log in
 </body>
 </html>';
-		return 0;
+			SetAuthCookie($UserData['UName'],$DBConn);
+			return 0;
+		}
 	}
-	$query = mysqli_query($DBConn, "insert into users set UName='" . $_POST['UName'] . "', FName='" . $_POST['FName'] . "', LName='" . $_POST['LName'] . "', Email='" . $_POST['Email'] . "', password='" . password_hash($_POST['PWord'], PASSWORD_DEFAULT) . "';");
-	if ( !$query ) {
-		echo "Error - MySQL error: " . mysqli_error($DBConn) . ".";
-		return 0;
-	}
-	echo 'User ' . $_POST['FName'] . ' ' . $_POST['LName'] . ' (' . $_POST['UName'] . ') has been added.
-<a href="/">Return to Main Page</a>';
-	SetAuthCookie($_POST['UName']);
-	Authorize();
-	shell_exec('text -u timeatwork.wk -p Kt305@1K3g -n 3166315474 -m "New user added: ' . $_POST['FName'] . ' ' . $_POST['LName'] . '"');
-	$myfile = fopen("/var/log/forensics/general.log","a");
-	fwrite($myfile, "User " . $GLOBALS['UserName'] . " created from IP " . $_SERVER['REMOTE_ADDR'] . " on " . date('Y-m-d') . " at " . date('H:i:s') . "\n");
-	fclose($myfile);
-} else {
-	echo '<form id="UserForm" action="NewUser.php" method="post"><br>
-First Name: <input type="text" name="FName"><br>
-Last Name: <input type="text" name="LName"><br>
-Email: <input type="text" name="Email"><br>
-Username: <input type="text" name="UName"><br>
-Password: <input type="password" name="PWord"><br>
-<input type="submit" value="Submit">
-</form>';
 }
 ?>
+<center>
+<h2>Create a New User</h2>
+<?php
+if ( $ErrorString != '' ) {
+	echo '<h3>' . $ErrorString . '</h3>';
+}
+?>
+<form id="NewUser" action="NewUser.php" method="post">
+<table>
+<tr><td align='right'>First Name</td><td><input type="text" name="FName" id="FName" onblur="CheckLength('FName',70);" value="<?php echo $UserData['FName']; ?>" required></td><td><div id="FNameAlert" class="alert"></div></td></tr>
+<tr><td align='right'>Last Name</td><td><input type="text" name="LName" id="LName" onblur="CheckLength('LName',70);" value="<?php echo $UserData['LName']; ?>" required></td><td><div id="LNameAlert" class="alert"></div></td></tr>
+<tr><td align='right'>User Name</td><td><input type="text" name="UName" id="UName" onblur="CheckLength('UName',30);" value="<?php echo $UserData['UName']; ?>" required></td><td><div id="UNameAlert" class="alert"></div></td></tr>
+<tr><td align='right'>Email</td><td><input type="text" name="Email" id="Email" onblur="CheckLength('Email',150,0,1);" value="<?php echo $UserData['Email']; ?>" required></td><td><div id="EmailAlert" class="alert"></div></td></tr>
+<tr><td align='right'>Password</td><td><input type="password" name="Password" id="Password" onblur="CheckLength('Password',30,5);" required></td><td><div id="PasswordAlert" class="alert"></div></td></tr>
+<tr><td align='right'>Confirm Password</td><td><input type="password" name="PasswordVerify" id="PasswordVerify" onblur="PasswordVerifyFunc();" required></td><td><div id="PasswordVerifyAlert" class="alert"></div></td></tr>
+<tr><td align='center' colspan='3'><input type="submit" value="Create User"></td></tr>
+</table>
+</form>
+</center>
+<script>
+function CheckLength(Name,Max,Min,Email) {
+	Min = Min || 0;
+	Email = Email || 0;
+	document.getElementById(Name + 'Alert').style.display = 'inline';
+	if ( document.getElementById(Name).value.length == 0 ) {
+		HTMLString = 'Required';
+	} else if ( document.getElementById(Name).value.length > Max ) {
+		HTMLString = 'Must be less than ' + Max + ' characters';
+	} else if ( Min != 0 && document.getElementById(Name).value.length < Min ) {
+		HTMLString = 'Must be more than ' + Min + ' characters';
+	} else {
+		if ( Email == 0 ) {
+			HTMLString = '';
+			document.getElementById(Name + 'Alert').style.display = 'none';
+		} else {
+			
+		}
+	}
+	document.getElementById(Name + 'Alert').innerHTML = HTMLString;
+}
+function PasswordVerifyFunc() {
+	document.getElementById('PasswordVerifyAlert').style.display = 'inline';
+	if ( document.getElementById('Password').value != document.getElementById('PasswordVerify').value ) {
+		HTMLString = 'Passwords do not match';
+	} else {
+		HTMLString = '';
+		document.getElementById('PasswordVerifyAlert').style.display = 'none';
+	}
+	document.getElementById('PasswordVerifyAlert').innerHTML = HTMLString;
+}
+</script>
 </body>
 </html>

@@ -1,58 +1,47 @@
 #!/bin/bash
-mysqluser="" # MySQL username
-mysqlpass="" # MySQL password
-mysqlwebuser="" # MySQL username used by the website
-mysqlwebpass="" # MySQL password used by the website
-mysqldbname="Forensics_2015" # Forensics database name
+mysqluser="root" # User to create database with
+echo -en "Enter the password for MySQL user root: "
+read mysqlpass
+echo -en "Enter the database name desired: "
+read mysqldbname
+mysqlwebuser="forensics" # Username for php user
+mysqlwebpass="A15j89%%8JsTk991LexzQ#" # Password for php user
 mysqlc="mysql --user=$mysqluser --password=$mysqlpass"
 $mysqlc -e "create database $mysqldbname;"
 if [ "$?" != "0" ]; then
-	echo "Error creating database $mysqldbname"
-	exit
+	echo -en "Error creating database $mysqldbname. Continue anyway (y/n)? "
+	read continuevar
+	if [ "$continuevar" != "y" ]; then
+		exit
+	fi
 fi
-$mysqlc -D $mysqldbname -e "create table Ballots ( RID int not null, Round int, Judge int, Rank int not null, Qual int );"
+$mysqlc --database=$mysqldbname < TemplateDB.sql
 if [ "$?" != "0" ]; then
-	echo "Error creating table Ballots"
-	exit
+	echo -en "Error creating tables. Continue anyway (y/n)? "
+	read continuevar
+	if [ "$continuevar" != "y" ]; then
+		exit
+	fi
 fi
-$mysqlc -D $mysqldbname -e "create table Events ( EID int not null auto_increment, EName varchar(30), Partner int not null, primary key (EID) );"
+$mysqlc --database=$mysqldbname -e "grant all on $mysqldbname.* to '"$mysqlwebuser"'@'localhost';"
 if [ "$?" != "0" ]; then
-	echo "Error creating table Events"
-	exit
+	echo -en "Error granting web user permissions. Continue anyway (y/n)? "
+	read continuevar
+	if [ "$continuevar" != "y" ]; then
+		exit
+	fi
 fi
-$mysqlc -D $mysqldbname -e "create table Results ( SID int not null, EID int not null, TID int not null, broke int not null, State int not null, place int, RID int not null auto_increment, SID2 int, PRanks int, PQuals int, NumberRounds int, FRanks int, NumberJudges int, primary key (RID) );"
+echo -en "What is the subdomain to register? "
+read subdomain
+echo -en "What is the admin email? "
+read AdminEmail
+echo -en "What is the school name? "
+read SchoolName
+$mysqlc --database=Schools -e "insert into Subdomains set Subdomain='$subdomain', GeneralAccess=1, AdminEmail='$AdminEmail', SchoolName='$SchoolName', DBName='$mysqldbname';"
 if [ "$?" != "0" ]; then
-	echo "Error creating table Results"
-	exit
+	echo -en "Error inserting school into Schools database. Continue anyway (y/n)? "
+	read continuevar
+	if [ "$continuevar" != "y" ]; then
+		exit
+	fi
 fi
-$mysqlc -D $mysqldbname -e "create table Students ( LName varchar(50) not null, FName varchar(50) not null, SID int not null auto_increment, Year int not null, primary key (SID) );"
-if [ "$?" != "0" ]; then
-	echo "Error creating table Students"
-	exit
-fi
-$mysqlc -D $mysqldbname -e "create table Tournaments ( TName varchar(50) not null, TID int not null auto_increment, NumRounds int not null, NumFinalsJudges int not null, Date date not null, primary key (TID) );"
-if [ "$?" != "0" ]; then
-	echo "Error creating table Tournaments"
-	exit
-fi
-$mysqlc -D $mysqldbname -e "create table users ( UName varchar(20) not null, FName varchar(30) not null, LName varchar(30) not null, password varchar(255) not null, Email varchar(255), cookie varchar(255), cookieExp varchar(255), CanMod int, primary key (UName) );"
-if [ "$?" != "0" ]; then
-	echo "Error creating table users"
-	exit
-fi
-$mysqlc -e "create user '"$mysqlwebuser"'@'localhost' identified by '"$mysqlwebpass"';"
-if [ "$?" != "0" ]; then
-	echo "Error creating user $mysqlwebuser"
-	exit
-fi
-$mysqlc -e "grant all on $mysqldbname.* to '"$mysqlwebuser"'@'localhost';"
-if [ "$?" != "0" ]; then
-	echo "Error granting $mysqlwebuser proper permissions"
-	exit
-fi
-echo "MySQL Database setup is complete."
-sudo mkdir /var/log/forensics
-sudo touch /var/log/forensics/general.log
-sudo chown -R www-data /var/log/forensics
-sudo chmod 744 /var/log/forensics/general.log
-echo "Log File setup complete"
