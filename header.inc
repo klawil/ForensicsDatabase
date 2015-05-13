@@ -40,7 +40,7 @@ if ( isset($GLOBALS['CanUserEdit']) && $GLOBALS['CanUserEdit'] == 1 ) {
 ?>
 		</ul>
 	</li>
-	<a href="https://github.com/klawil/ForensicsDatabase" target="_blank" title="View the code that runs the site or officially report an issue"><li class="TopMenuItem">The Project on Github</li></a>
+	<a href="https://github.com/klawil/ForensicsDatabase" target="_blank" title="View the code that runs the site or officially report an issue"><li class="TopMenuItem Github">The Project on Github</li></a>
 	<!--<a href="IssueReport.php"><li class="TopMenuItem">Report an Issue</li></a>-->
 <?php
 }

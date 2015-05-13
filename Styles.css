@@ -151,6 +151,9 @@ input[type=number] {
 	position: relative;
 	left: -10px;
 }
+.Github {
+	width: auto;
+}
 
 /*************\
 |*  Columns  *|
