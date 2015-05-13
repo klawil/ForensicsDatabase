@@ -11,13 +11,13 @@
 <h1><?php if ( isset($GLOBALS['PageName']) ) { echo $GLOBALS['PageName']; } else { echo 'ForensicsDB.com'; }?></h1>
 <nav>
 	<ul class="TopMenu">
-	<a href="/" title="Return to the subdomain's home"><li class="TopMenuItem">Home</li></a>
-	<a href="Results.php" title="Get specific results"><li class="TopMenuItem">Results</li></a>
+	<a href="/" title="Return to the subdomain's home"><li class="TopMenuItem<?php if( basename($_SERVER['PHP_SELF']) == 'index.php' ) { echo ' current'; } ?>">Home</li></a>
+	<a href="Results.php" title="Get specific results"><li class="TopMenuItem<?php if( basename($_SERVER['PHP_SELF']) == 'Results.php' ) { echo ' current'; } ?>">Results</li></a>
 	<li class="TopMenuItem">Summaries
 		<ul class="SubMenu">
-		<a href="StudentSummary.php" title="Summary of a student's results"><li class="SubMenuItem">Student</li></a>
-		<a href="TournamentSummary.php" title="Summary of a tournament's results"><li class="SubMenuItem">Tournament</li></a>
-		<a href="TeamSummary.php" title="Summary of the team's results"><li class="SubMenuItem">Team</li></a>
+		<a href="StudentSummary.php" title="Summary of a student's results"><li class="SubMenuItem<?php if( basename($_SERVER['PHP_SELF']) == 'StudentSummary.php' ) { echo ' current'; } ?>">Student</li></a>
+		<a href="TournamentSummary.php" title="Summary of a tournament's results"><li class="SubMenuItem<?php if( basename($_SERVER['PHP_SELF']) == 'TournamentSummary.php' ) { echo ' current'; } ?>">Tournament</li></a>
+		<a href="TeamSummary.php" title="Summary of the team's results"><li class="SubMenuItem<?php if( basename($_SERVER['PHP_SELF']) == 'TeamSummary.php' ) { echo ' current'; } ?>">Team</li></a>
 		</ul>
 	</li>
 <?php
@@ -25,16 +25,16 @@ if ( isset($GLOBALS['CanUserEdit']) && $GLOBALS['CanUserEdit'] == 1 ) {
 ?>
 <li class="TopMenuItem">Management
 		<ul class="SubMenu">
-		<a href="ResultInsert.php" title="Enter new results"><li class="SubMenuItem">Enter Results</li></a>
-		<a href="ResultEdit.php" title="Edit previous results"><li class="SubMenuItem">Edit Results</li></a>
-		<a href="ManageSeason.php" title="Create, modify, and delete seasons"><li class="SubMenuItem">Manage Seasons</li></a>
-		<a href="ManageStudent.php" title="Create, modify, and delete students"><li class="SubMenuItem">Manage Students</li></a>
-		<a href="ManageEvent.php" title="Create, modify, and delete events"><li class="SubMenuItem">Manage Events</li></a>
-		<a href="ManageTournament.php" title="Create, modify, and delete tournaments"><li class="SubMenuItem">Manage Tournaments</li></a>
+		<a href="ResultInsert.php" title="Enter new results"><li class="SubMenuItem<?php if( basename($_SERVER['PHP_SELF']) == 'ResultInsert.php' ) { echo ' current'; } ?>">Enter Results</li></a>
+		<a href="ResultEdit.php" title="Edit previous results"><li class="SubMenuItem<?php if( basename($_SERVER['PHP_SELF']) == 'ResultEdit.php' ) { echo ' current'; } ?>">Edit Results</li></a>
+		<a href="ManageSeason.php" title="Create, modify, and delete seasons"><li class="SubMenuItem<?php if( basename($_SERVER['PHP_SELF']) == 'ManageSeason.php' ) { echo ' current'; } ?>">Manage Seasons</li></a>
+		<a href="ManageStudent.php" title="Create, modify, and delete students"><li class="SubMenuItem<?php if( basename($_SERVER['PHP_SELF']) == 'ManageStudent.php' ) { echo ' current'; } ?>">Manage Students</li></a>
+		<a href="ManageEvent.php" title="Create, modify, and delete events"><li class="SubMenuItem<?php if( basename($_SERVER['PHP_SELF']) == 'ManageEvent.php' ) { echo ' current'; } ?>">Manage Events</li></a>
+		<a href="ManageTournament.php" title="Create, modify, and delete tournaments"><li class="SubMenuItem<?php if( basename($_SERVER['PHP_SELF']) == 'ManageTournament.php' ) { echo ' current'; } ?>">Manage Tournaments</li></a>
 <?php
 	if ( $GLOBALS['UserData']['Email'] == $GLOBALS['DBData']['AdminEmail'] || $GLOBALS['UserName'] == 'admin' ) {
 ?>
-		<a href="ManageUser.php" title="Create, modify, and delete users"><li class="SubMenuItem">Manage Users</li></a>
+		<a href="ManageUser.php" title="Create, modify, and delete users"><li class="SubMenuItem<?php if( basename($_SERVER['PHP_SELF']) == 'ManageUser.php' ) { echo ' current'; } ?>">Manage Users</li></a>
 <?php
 	}
 ?>
