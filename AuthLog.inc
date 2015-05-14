@@ -122,6 +122,7 @@ function CreateUser($UName, $Password, $FName, $LName, $Email, $DBConn) {
 	
 	// Validate variables
 	$UserInfo = compact('UName','Password','FName','LName','Email');
+	$UserInfo['UName'] = strtolower($UserInfo['UName']); // Make username lowercase
 	$CheckArray = [['variable' => 'UName','IsSet' => 1, 'Validate' => function($var){return IsLength($var,30);},'Error' => 'Username is too long'],
 	['variable' => 'FName','IsSet' => 1, 'Validate' => function($var){return IsLength($var,70);},'Error' => 'First Name is too long'],
 	['variable' => 'LName','IsSet' => 1, 'Validate' => function($var){return IsLength($var,70);},'Error' => 'Last Name is too long'],

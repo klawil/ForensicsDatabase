@@ -20,7 +20,7 @@ if ( isset($_POST['UName']) ) {
 	}
 	
 	// Escape variables
-	$UN = MySQLEscape($_POST['UName'], $DBConn);
+	$UN = strtolower(MySQLEscape($_POST['UName'], $DBConn));
 	$PW = MySQLEscape($_POST['PWord'], $DBConn);
 	
 	// Get password hash and check username existence
