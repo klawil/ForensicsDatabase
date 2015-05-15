@@ -48,10 +48,10 @@ if ( isset($_POST['RID']) ) {
 	if ( ! isset($_POST['broke']) ) {
 		echo "Error - No information on whether participant broke.";
 		return 0;
-	} elseif ( $_POST['broke'] == "1" && ! isset($_POST['place']) ) {
+	} /*elseif ( $_POST['broke'] == "1" && ! isset($_POST['place']) ) {
 		echo "Error - No place listed.";
 		return 0;
-	}
+	}*/
 	if (( ! isset($_POST['qual']) )) {
 		echo "Error - No 'State Qualifier' checkbox information.";
 		return 0;
