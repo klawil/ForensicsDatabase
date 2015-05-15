@@ -5,7 +5,6 @@
 <link rel="shortcut icon" type="image/png" href="/FavIcon.png" />
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="/js/bootstrap.js"></script>
-<script src="/PostFunction.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script type="text/javascript" src="CustomFunctions.js"></script>
