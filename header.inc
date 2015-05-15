@@ -3,10 +3,10 @@
 <title><?php if ( isset($GLOBALS['PageName']) ) { echo $GLOBALS['PageName'] . ' | ';}?> ForensicsDB.com</title>
 <!--<link rel="stylesheet" type="text/css" href="Styles.css">
 <link rel="stylesheet" media="(max-width: 850px)" href="MobileStyles.css" />-->
-<link rel="stylesheet" href="/ForensicsDatabase/css/bootstrap.css" />
+<link rel="stylesheet" href="/css/bootstrap.css" />
 <link rel="shortcut icon" type="image/png" href="/FavIcon.png" />
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<script src="/ForensicsDatabase/js/bootstrap.js"></script>
+<script src="/js/bootstrap.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script type="text/javascript" src="ChangeFunctions.js"></script>
