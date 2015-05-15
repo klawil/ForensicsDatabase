@@ -136,11 +136,12 @@ require_once 'header.inc';
 <h3>Update, create, and delete seasons</h3>
 <div id="PostMessage" class="alert"></div>
 <table class="Table">
-<tr><th>Season Name</th><th>Start Year</th></tr>
+<tr><th>Season Name</th><th>Start Year</th><th></th><th></th></tr>
 <tr>
 	<td><span title="Name to assign to the season (i.e. 2014-2015)"><input type="text" id="SeasonName" autofocus="autofocus"></span></td>
 	<td><span title="First year of the season (i.e. 2014)"><input type="number" id="StartYear"></span></td>
 	<td><span title="Create this season"><input type="button" value="Create Season" onclick="SubmitSeason()"></span></td>
+	<td></td>
 </tr>
 <?php
 // Set up loop variables
