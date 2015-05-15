@@ -5,6 +5,7 @@
 <link rel="shortcut icon" type="image/png" href="/FavIcon.png" />
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="/js/bootstrap.js"></script>
+<script src="/PostFunction.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script type="text/javascript" src="ChangeFunctions.js"></script>
@@ -71,10 +72,8 @@
 				<li class="dropdown navbar-right">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><?php echo $GLOBALS['UserData']['LName'] . ', ' . $GLOBALS['UserData']['FName']; ?><span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
-						<p id="UserMessage" class="navbar-text"></p>
-						<li class="text-center">
-							<button onclick="UserLogout()" class="btn btn-default">Logout</button>
-						</li>
+						<p id="LoginMessage" class="navbar-text"></p>
+						<li class="text-center"><a href="#" onclick="UserLogout()">Logout</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -85,7 +84,7 @@
 				<li class="dropdown navbar-right">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Login<span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
-						<p id="UserMessage" class="navbar-text"></p>
+						<p id="LoginMessage" class="navbar-text"></p>
 						<form class="navbar-form" role="login">
 							<div class="form-group">
 								<input type="text" id="UserName" class="form-control" placeholder="Username">
@@ -108,46 +107,24 @@
 
 <script>
 function LoginUser() {
-	event.preventDefault();
+	// Function to log in the user or display a message if the login fails
+	event.preventDefault(); // prevent the form submission from redirecting the page
+
+	// Create the post string of username and password
 	PString = "UName=" + document.getElementById("UserName").value + "&PWord=" + document.getElementById("PWord").value;
-	if ( window.XMLHttpRequest ) {
-		xmlhttp = new XMLHttpRequest();
-	} else {
-		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	xmlhttp.open("POST","Login.php",true);
-	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	xmlhttp.send(PString);
-	document.getElementById("UserMessage").innerHTML = "Checking Credentials...";
-	xmlhttp.onreadystatechange = function() {
-		response = xmlhttp.responseText;
-		if ( response == 'true' ) {
-			location.reload();
-		} else {
-			document.getElementById("PWord").value = "";
-			document.getElementById("UserMessage").innerHTML = response;
-		}
-	}
+	
+	// Execute the post
+	PostToPage(PString,"Login.php","LoginMessage");
 }
 
 function UserLogout() {
+	// Logs the user out
+	// No parameters
+
+	// Set the post string to let the server know the user is logging out (username will be procured from the cookie)
 	PString = "Logout=1";
-	if ( window.XMLHttpRequest ) {
-		xmlhttp = new XMLHttpRequest();
-	} else {
-		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	xmlhttp.open("POST","Login.php",true);
-	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	xmlhttp.send(PString);
-	document.getElementById("UserMessage").innerHTML = "Logging Out...";
-	xmlhttp.onreadystatechange=function() {
-		response = xmlhttp.responseText;
-		if ( response == 'true' ) {
-			location.reload();
-		} else {
-			document.getElementById("UserMessage").innerHTML = response;
-		}
-	}
+
+	// Execute the post
+	PostToPage(PString,"Login.php","LoginMessage");
 }
 </script>
