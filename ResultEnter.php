@@ -46,7 +46,7 @@ Select a Tournament: <?php echo CreateList($DBConn, 'Tournaments'); ?> <input ty
 <?php
 } else {
 ?>
-<form id="ResultForm" action="ResultInsert.php" method="post">
+<form id="ResultForm" action="ResultEnter.php" method="post">
 <input type="hidden" name="TournamentID" value="<?php echo $TournamentID; ?>">
 Student: <?php echo CreateList($DBConn,'Students'); ?><br><br>
 <div id="PartnerSelect" class="hidden">Partner: <?php echo CreateList($DBConn,'Students',NULL,NULL,'PartnerID'); ?><br><br></div>
