@@ -5,6 +5,8 @@
 <link rel="stylesheet" media="(max-width: 850px)" href="MobileStyles.css" />-->
 <link rel="stylesheet" href="/ForensicsDatabase/css/bootstrap.css" />
 <link rel="shortcut icon" type="image/png" href="/FavIcon.png" />
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="/ForensicsDatabase/js/bootstrap.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script type="text/javascript" src="ChangeFunctions.js"></script>
@@ -45,7 +47,7 @@
 
 				<!-- Management Menu -->
 				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Manage<span class="caret"></span></a><!-- Enter Results, Edit Results, Manage Seasons, Manage Students, Manage Events, Manage Tournaments, Manage Users -->
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Manage<span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
 						<li><a href="/ResultEnter.php">Enter Results</a></li>
 						<li><a href="/ResultEdit.php">Edit Results</a></li>
@@ -61,49 +63,26 @@
 				<li><a href="https://github.com/klawil/ForensicsDatabase/" target="_blank">The Project on GitHub</a></li>
 
 				<!-- Login Window -->
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Manage<span class="caret"></span></a><!-- Enter Results, Edit Results, Manage Seasons, Manage Students, Manage Events, Manage Tournaments, Manage Users -->
+				<li class="dropdown navbar-right pull-right">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Login<span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
-						<li><a href="/ResultEnter.php">Enter Results</a></li>
-						<li><a href="/ResultEdit.php">Edit Results</a></li>
-						<li><a href="/ManageSeason.php">Manage Seasons</a></li>
-						<li><a href="/ManageStudent.php">Manage Students</a></li>
-						<li><a href="/ManageEvent.php">Manage Events</a></li>
-						<li><a href="/ManageTournament.php">Manage Tournaments</a></li>
-						<li><a href="/ManageUser.php">Manage Users</a></li>
+						<form class="navbar-form navbar-left" role="login">
+							<div class="form-group">
+								<input type="text" id="UserName" class="form-control" placeholder="Username">
+							</div>
+							<div class="form-group">
+								<input type="password" id="PWord" class="form-control" placeholder="Password">
+							</div>
+							<button type="submit" onclick="LoginUser()" class="btn btn-default">Login</button>
+						</form>
 					</ul>
-				</li>
+				</li> <!-- End Login Window -->
+			</ul> <!-- End Navbar -->
+		</div>
+	</div>
+</nav> <!-- End Nav -->
 
-	<li class="UserItem"><a onclick="ShowInOutForm();"><?php
-if ( isset($GLOBALS['UserName']) && $GLOBALS['UserName'] != "" ) {
-	echo $GLOBALS['UserData']['LName'] . ', ' . $GLOBALS['UserData']['FName']?></a>
-	<ul id="LogInOut">
-		<li class="Alert" id="UserMessage"></li>
-		<a href="#" onclick="UserLogout();"><li class="SubMenuItem LogoutButton">Log Out</li></a>
-		<!--<a href="ManageSelf.php"><li class="SubMenuItem">Manage Account</li></a>-->
-	Login</a>
-		<ul id="LogInOut">
-		<li class="Alert" id="UserMessage"></li>
-		<form id="LoginForm">
-		<li>
-		<table class="LogInOutForm">
-		<tr><td style="text-align: right;">User</td><td><input type="text" name="UserName" id="UserName"></td></tr>
-		<tr><td style="text-align: right;">Password</td><td><input type="password" name="PWord" id="PWord"></td>
-		<tr><td colspan="2" style="text-align: center;"><a href="#"><input type="submit" value="Log In" onclick="LoginUser();"></a> <a href="NewUser.php"><input type="button" value="New User"></a></td></tr>
-		</table>
-		</li>
-		</form>
-		</ul>
-	</li>
-</nav>
 <script>
-function ShowInOutForm() {
-	if ( document.getElementById('LogInOut').style.display != 'block' ) {
-		document.getElementById('LogInOut').style.display = 'block';
-	} else {
-		document.getElementById('LogInOut').style.display = 'none';
-	}
-}
 function LoginUser() {
 	event.preventDefault();
 	PString = "UName=" + document.getElementById("UserName").value + "&PWord=" + document.getElementById("PWord").value;
