@@ -72,18 +72,9 @@
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><?php echo $GLOBALS['UserData']['LName'] . ', ' . $GLOBALS['UserData']['FName']; ?><span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
 						<p id="UserMessage" class="navbar-text"></p>
-						<form class="navbar-form" role="login">
-							<div class="form-group">
-								<input type="text" id="UserName" class="form-control" placeholder="Username">
-							</div>
-							<div class="form-group">
-								<input type="password" id="PWord" class="form-control" placeholder="Password">
-							</div>
-							<div class="text-center">
-								<button type="submit" onclick="LoginUser()" class="btn btn-default">Login</button>
-								<a role="button" class="btn btn-default" href="/NewUser.php">Create User</a>
-							</div>
-						</form>
+						<li class="text-center">
+							<button onclick="UserLogout()" class="btn btn-default"></button>
+						</li>
 					</ul>
 				</li> <!-- End Login Window -->
 			</ul> <!-- End Navbar Section for Login Window -->
@@ -127,7 +118,6 @@ function LoginUser() {
 	xmlhttp.open("POST","Login.php",true);
 	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xmlhttp.send(PString);
-	document.getElementById("UserMessage").style.display = "block";
 	document.getElementById("UserMessage").innerHTML = "Checking Credentials...";
 	xmlhttp.onreadystatechange = function() {
 		response = xmlhttp.responseText;
@@ -150,7 +140,6 @@ function UserLogout() {
 	xmlhttp.open("POST","Login.php",true);
 	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xmlhttp.send(PString);
-	document.getElementById("UserMessage").style.display = "block";
 	document.getElementById("UserMessage").innerHTML = "Logging Out...";
 	xmlhttp.onreadystatechange=function() {
 		response = xmlhttp.responseText;
