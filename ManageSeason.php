@@ -169,42 +169,7 @@ function pad (str, max) {
   str = str.toString();
   return str.length < max ? pad("0" + str, max) : str;
 }
-function PostToPage(PostString) {
-	// Alert user
-	document.getElementById("PostMessage").innerHTML = "Processing request...";
-	document.getElementById("PostMessage").style.display = "inline";
-	
-	// Encode string
-	PostString = encodeURI(PostString);
-	
-	// Set up post
-	if ( window.XMLHttpRequest ) {
-		xmlhttp = new XMLHttpRequest();
-	} else {
-		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	xmlhttp.open("POST","ManageSeason.php",true);
-	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	xmlhttp.send(PostString);
-	xmlhttp.onreadystatechange = function() {
-		if ( xmlhttp.readyState == 4 && xmlhttp.status == 200 ) {
-			// Handle successful response
-			response = xmlhttp.responseText;
-			if ( response == 'true' ) {
-				// Reload page if success
-				location.reload();
-			} else {
-				// Show error if error
-				document.getElementById("PostMessage").style.display = "none";
-				window.alert(response);
-			}
-		} else if ( xmlhttp.readyState == 4 ) {
-			// Handle unsuccessful response
-			document.getElementById("PostMessage").style.display = "none";
-			window.alert("Error: Status code " + xmlhttp.status);
-		}
-	}
-}
+
 function SubmitSeason(SeasonID) {
 	// Set default SeasonID
 	SeasonID = SeasonID || -1;
@@ -233,6 +198,7 @@ function SubmitSeason(SeasonID) {
 	// Execute Post
 	PostToPage(PostString);
 }
+
 function DeleteSeason(SeasonID) {
 	// Check if they are certain
 	if ( !window.confirm("DANGER DANGER!!\nThis will PERMANENTLY erase this season.\n\nFOREVER\n\nDo you still want to do this?") ) {
