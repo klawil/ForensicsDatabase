@@ -135,12 +135,13 @@ require_once 'header.inc';
 <h3>Update, create, and delete students</h3>
 <div id="PostMessage" class="alert"></div>
 <table class="Table">
-<tr><th>Last Name</th><th>First Name</th><th>Novice Season</th></tr>
+<tr><th>Last Name</th><th>First Name</th><th>Novice Season</th><th></th><th></th></tr>
 <tr>
 	<td><span title="Last Name of the student"><input type="text" id="LName" autofocus="autofocus"></span></td>
 	<td><span title="First Name of the student"><input type="text" id="FName"></span></td>
 	<td><span title="The novice season of the student"><?php echo CreateList($DBConn,'Seasons',NULL,NULL,'NoviceSeason'); ?></span></td>
 	<td><span title="Create the student"><input type="button" value="Create Student" onclick="SubmitStudent()"></span></td>
+	<td></td>
 </tr>
 <?php
 // Set up loop
@@ -166,42 +167,6 @@ while ( $CurrentRow <= $NumRows ) {
 ?>
 </table>
 <script>
-function PostToPage(PostString) {
-	// Alert user
-	document.getElementById("PostMessage").innerHTML = "Processing request...";
-	document.getElementById("PostMessage").style.display = "inline";
-	
-	// Encode string
-	PostString = encodeURI(PostString);
-	
-	// Set up post
-	if ( window.XMLHttpRequest ) {
-		xmlhttp = new XMLHttpRequest();
-	} else {
-		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	xmlhttp.open("POST","ManageStudent.php",true);
-	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	xmlhttp.send(PostString);
-	xmlhttp.onreadystatechange = function() {
-		if ( xmlhttp.readyState == 4 && xmlhttp.status == 200 ) {
-			// Handle successful response
-			response = xmlhttp.responseText;
-			if ( response == 'true' ) {
-				// Reload page if success
-				location.reload();
-			} else {
-				// Show error if error
-				document.getElementById("PostMessage").style.display = "none";
-				window.alert(response);
-			}
-		} else if ( xmlhttp.readyState == 4 ) {
-			// Handle unsuccessful response
-			document.getElementById("PostMessage").style.display = "none";
-			window.alert("Error: Status code " + xmlhttp.status);
-		}
-	}
-}
 function DeleteStudent(StudentID) {
 	// Check if they are certain
 	if ( !window.confirm("DANGER DANGER!!\nThis will PERMANENTLY erase this student.\n\nFOREVER\n\nDo you still want to do this?") ) {
@@ -212,8 +177,9 @@ function DeleteStudent(StudentID) {
 	PostString = "delete=1&StudentID=" + StudentID;
 	
 	// Execute Post
-	PostToPage(PostString);
+	PostToPage(PostString,"ManageStudent.php","PostMessage");
 }
+
 function SubmitStudent(StudentID) {
 	// Set default StudentID
 	StudentID = StudentID || -1;
@@ -242,7 +208,7 @@ function SubmitStudent(StudentID) {
 	PostString = PostString + "NoviceYear=" + NoviceYear;
 	
 	// Execute Post
-	PostToPage(PostString);
+	PostToPage(PostString,"ManageStudent.php","PostMessage");
 }
 </script>
 </body>
