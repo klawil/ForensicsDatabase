@@ -71,7 +71,7 @@
 				<li class="dropdown navbar-right">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><?php echo $GLOBALS['UserData']['LName'] . ', ' . $GLOBALS['UserData']['FName']; ?><span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
-						<li id="UserMessage"></li>
+						<p id="UserMessage" class="navbar-text"></p>
 						<form class="navbar-form" role="login">
 							<div class="form-group">
 								<input type="text" id="UserName" class="form-control" placeholder="Username">
@@ -94,7 +94,7 @@
 				<li class="dropdown navbar-right">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Login<span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
-						<li id="UserMessage"></li>
+						<p id="UserMessage" class="navbar-text"></p>
 						<form class="navbar-form" role="login">
 							<div class="form-group">
 								<input type="text" id="UserName" class="form-control" placeholder="Username">
@@ -134,11 +134,12 @@ function LoginUser() {
 		if ( response == 'true' ) {
 			location.reload();
 		} else {
-			document.getElementById("LoginForm").reset();
+			document.getElementById("PWord").reset();
 			document.getElementById("UserMessage").innerHTML = response;
 		}
 	}
 }
+
 function UserLogout() {
 	PString = "Logout=1";
 	if ( window.XMLHttpRequest ) {
