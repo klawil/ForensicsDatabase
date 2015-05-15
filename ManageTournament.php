@@ -145,7 +145,7 @@ input[type=number] {
 <div id="PostMessage" class="alert"></div>
 <table class="Table">
 <tr><th></th><th colspan="2">Prelims</th><th colspan="2">Elims</th></tr>
-<tr><th>Tournament Name</th><th>Rounds</th><th>Judges</th><th>Rounds</th><th>Judges</th><th>Start Date</th><th>End Date</th><th>Season</th></tr>
+<tr><th>Tournament Name</th><th>Rounds</th><th>Judges</th><th>Rounds</th><th>Judges</th><th>Start Date</th><th>End Date</th><th>Season</th><th></th><th></th></tr>
 <tr>
 	<td><span title="The name of the tournament"><input type="text" id="TournamentName" autofocus="autofocus"></span></td>
 	<td><span title="The number of preliminary rounds at the tournament"><input type="number" id="NumRounds"></span></td>
@@ -156,6 +156,7 @@ input[type=number] {
 	<td><span title="The last day of the tournament"><input type="date" id="EndDate"></span></td>
 	<td><span title="The season the tournament occured during"><?php echo CreateList($DBConn,'Seasons',NULL,NULL,'Season'); ?></span></td>
 	<td><span title="Create a tournament with the specified parameters"><input type="button" value="Create Tournament" onclick="SubmitTournament()"></span></td>
+	<td></td>
 </tr>
 <?php
 // Set up loop
@@ -187,42 +188,6 @@ while ( $CurrentRow <= $NumRows ) {
 ?>
 </table>
 <script>
-function PostToPage(PostString) {
-	// Alert user
-	document.getElementById("PostMessage").innerHTML = "Processing request...";
-	document.getElementById("PostMessage").style.display = "inline";
-	
-	// Encode string
-	PostString = encodeURI(PostString);
-	
-	// Set up post
-	if ( window.XMLHttpRequest ) {
-		xmlhttp = new XMLHttpRequest();
-	} else {
-		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	xmlhttp.open("POST","ManageTournament.php",true);
-	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	xmlhttp.send(PostString);
-	xmlhttp.onreadystatechange = function() {
-		if ( xmlhttp.readyState == 4 && xmlhttp.status == 200 ) {
-			// Handle successful response
-			response = xmlhttp.responseText;
-			if ( response == 'true' ) {
-				// Reload page if success
-				location.reload();
-			} else {
-				// Show error if error
-				document.getElementById("PostMessage").style.display = "none";
-				window.alert(response);
-			}
-		} else if ( xmlhttp.readyState == 4 ) {
-			// Handle unsuccessful response
-			document.getElementById("PostMessage").style.display = "none";
-			window.alert("Error: Status code " + xmlhttp.status);
-		}
-	}
-}
 function DeleteTournament(TournamentID) {
 	// Check if they are certain
 	if ( !window.confirm("DANGER DANGER!!\nThis will PERMANENTLY erase this tournament.\n\nFOREVER\n\nDo you still want to do this?") ) {
@@ -233,8 +198,9 @@ function DeleteTournament(TournamentID) {
 	PostString = "delete=1&TournamentID=" + TournamentID;
 	
 	// Execute Post
-	PostToPage(PostString);
+	PostToPage(PostString,"ManageTournament.php","PostMessage");
 }
+
 function SubmitTournament(TournamentID) {
 	// Set default TournamentID
 	TournamentID = TournamentID || -1;
@@ -282,7 +248,7 @@ function SubmitTournament(TournamentID) {
 	PostString = PostString + "TournamentName=" + TournamentName + "&NumRounds=" + NumRounds + "&NumJudges=" + NumJudges + "&NumElimRounds=" + NumElimRounds + "&NumElimJudges=" + NumElimJudges + "&StartDate=" + StartDate + "&EndDate=" + EndDate + "&Season=" + Season;
 	
 	// Execute Post
-	PostToPage(PostString);
+	PostToPage(PostString,"ManageTournament.php","PostMessage");
 }
 </script>
 </body>
