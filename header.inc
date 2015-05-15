@@ -1,12 +1,10 @@
 <html>
 <head>
 <title><?php if ( isset($GLOBALS['PageName']) ) { echo $GLOBALS['PageName'] . ' | ';}?> ForensicsDB.com</title>
-<!--<link rel="stylesheet" type="text/css" href="Styles.css">
-<link rel="stylesheet" media="(max-width: 850px)" href="MobileStyles.css" />-->
-<link rel="stylesheet" href="/css/bootstrap.css" />
+<link rel="stylesheet" href="/ForensicsDatabase/css/bootstrap.css" />
 <link rel="shortcut icon" type="image/png" href="/FavIcon.png" />
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<script src="/js/bootstrap.js"></script>
+<script src="/ForensicsDatabase/js/bootstrap.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script type="text/javascript" src="ChangeFunctions.js"></script>
@@ -45,6 +43,7 @@
 					</ul>
 				</li>
 
+<?php if ( isset($GLOBALS['CanUserEdit']) && $GLOBALS['CanUserEdit'] == 1 ) {?>
 				<!-- Management Menu -->
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Manage<span class="caret"></span></a>
@@ -55,32 +54,62 @@
 						<li><a href="/ManageStudent.php">Manage Students</a></li>
 						<li><a href="/ManageEvent.php">Manage Events</a></li>
 						<li><a href="/ManageTournament.php">Manage Tournaments</a></li>
+	<?php if ( $GLOBALS['UserData']['Email'] == $GLOBALS['DBData']['AdminEmail'] || $GLOBALS['UserName'] == 'admin' ) {?>
 						<li><a href="/ManageUser.php">Manage Users</a></li>
+	<?php } ?>
 					</ul>
 				</li>
 				
 				<!-- Github Link -->
 				<li><a href="https://github.com/klawil/ForensicsDatabase/" target="_blank">The Project on GitHub</a></li>
+<?php } ?>
 			</ul>
 
-				<!-- Login Window -->
+<?php if ( isset($GLOBALS['UserName']) && $GLOBALS['UserName'] != "" ) { ?>
+			<!-- User Section -->
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown navbar-right">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Login<span class="caret"></span></a>
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><?php echo $GLOBALS['UserData']['LName'] . ', ' . $GLOBALS['UserData']['FName']; ?><span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
 						<li id="UserMessage"></li>
-						<form class="navbar-form navbar-left" role="login">
+						<form class="navbar-form" role="login">
 							<div class="form-group">
 								<input type="text" id="UserName" class="form-control" placeholder="Username">
 							</div>
 							<div class="form-group">
 								<input type="password" id="PWord" class="form-control" placeholder="Password">
 							</div>
-							<button type="submit" onclick="LoginUser()" class="btn btn-default">Login</button>
+							<div class="text-center">
+								<button type="submit" onclick="LoginUser()" class="btn btn-default">Login</button>
+								<a role="button" class="btn btn-default" href="/NewUser.php">Create User</a>
+							</div>
 						</form>
 					</ul>
 				</li> <!-- End Login Window -->
 			</ul> <!-- End Navbar Section for Login Window -->
+<?php } else { ?>
+			<!-- Login Window -->
+			<ul class="nav navbar-nav navbar-right">
+				<li class="dropdown navbar-right">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Login<span class="caret"></span></a>
+					<ul class="dropdown-menu" role="menu">
+						<li id="UserMessage"></li>
+						<form class="navbar-form" role="login">
+							<div class="form-group">
+								<input type="text" id="UserName" class="form-control" placeholder="Username">
+							</div>
+							<div class="form-group">
+								<input type="password" id="PWord" class="form-control" placeholder="Password">
+							</div>
+							<div class="text-center">
+								<button type="submit" onclick="LoginUser()" class="btn btn-default">Login</button>
+								<a role="button" class="btn btn-default" href="/NewUser.php">Create User</a>
+							</div>
+						</form>
+					</ul>
+				</li> <!-- End Login Window -->
+			</ul> <!-- End Navbar Section for Login Window -->
+<? } ?>
 		</div>
 	</div>
 </nav> <!-- End Nav -->
