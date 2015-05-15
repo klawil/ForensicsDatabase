@@ -124,7 +124,7 @@ function LoginUser() {
 		if ( response == 'true' ) {
 			location.reload();
 		} else {
-			document.getElementById("PWord").reset();
+			document.getElementById("PWord").value = "";
 			document.getElementById("UserMessage").innerHTML = response;
 		}
 	}
