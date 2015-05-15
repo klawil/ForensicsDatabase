@@ -1,16 +1,16 @@
 <html>
 <head>
-<title><?php if ( isset($GLOBALS['PageName']) ) { echo $GLOBALS['PageName'] . ' | ';}?> ForensicsDB.com</title>
-<link rel="stylesheet" href="/ForensicsDatabase/css/bootstrap.css" />
+<title><?php if ( isset($GLOBALS['PageName']) ) { echo $GLOBALS['PageName'] . ' | ';} ?> ForensicsDB.com</title>
+<link rel="stylesheet" href="/css/bootstrap.css" />
 <link rel="shortcut icon" type="image/png" href="/FavIcon.png" />
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<script src="/ForensicsDatabase/js/bootstrap.js"></script>
+<script src="/js/bootstrap.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script type="text/javascript" src="ChangeFunctions.js"></script>
 </head>
 <body>
-<h1><?php if ( isset($GLOBALS['PageName']) ) { echo $GLOBALS['PageName']; } else { echo 'ForensicsDB.com'; }?></h1>
+<h1><?php if ( isset($GLOBALS['PageName']) ) { echo $GLOBALS['PageName']; } else { echo 'ForensicsDB.com'; } ?></h1>
 <nav class="navbar navbar-inverse">
 	<div class="container-fluid">
 		
@@ -43,7 +43,7 @@
 					</ul>
 				</li>
 
-<?php if ( isset($GLOBALS['CanUserEdit']) && $GLOBALS['CanUserEdit'] == 1 ) {?>
+<?php if ( isset($GLOBALS['CanUserEdit']) && $GLOBALS['CanUserEdit'] == 1 ) { ?>
 				<!-- Management Menu -->
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Manage<span class="caret"></span></a>
@@ -54,7 +54,7 @@
 						<li><a href="/ManageStudent.php">Manage Students</a></li>
 						<li><a href="/ManageEvent.php">Manage Events</a></li>
 						<li><a href="/ManageTournament.php">Manage Tournaments</a></li>
-	<?php if ( $GLOBALS['UserData']['Email'] == $GLOBALS['DBData']['AdminEmail'] || $GLOBALS['UserName'] == 'admin' ) {?>
+	<?php if ( $GLOBALS['UserData']['Email'] == $GLOBALS['DBData']['AdminEmail'] || $GLOBALS['UserName'] == 'admin' ) { ?>
 						<li><a href="/ManageUser.php">Manage Users</a></li>
 	<?php } ?>
 					</ul>
@@ -87,6 +87,7 @@
 					</ul>
 				</li> <!-- End Login Window -->
 			</ul> <!-- End Navbar Section for Login Window -->
+
 <?php } else { ?>
 			<!-- Login Window -->
 			<ul class="nav navbar-nav navbar-right">
@@ -109,7 +110,7 @@
 					</ul>
 				</li> <!-- End Login Window -->
 			</ul> <!-- End Navbar Section for Login Window -->
-<? } ?>
+<?php } ?>
 		</div>
 	</div>
 </nav> <!-- End Nav -->
