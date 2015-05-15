@@ -73,11 +73,11 @@
 					<ul class="dropdown-menu" role="menu">
 						<p id="UserMessage" class="navbar-text"></p>
 						<li class="text-center">
-							<button onclick="UserLogout()" class="btn btn-default"></button>
+							<button onclick="UserLogout()" class="btn btn-default">Logout</button>
 						</li>
 					</ul>
-				</li> <!-- End Login Window -->
-			</ul> <!-- End Navbar Section for Login Window -->
+				</li>
+			</ul>
 
 <?php } else { ?>
 			<!-- Login Window -->
