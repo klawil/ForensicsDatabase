@@ -112,6 +112,8 @@ require_once 'header.inc';
 	<th>First Name</th>
 	<th>Email</th>
 	<th><span title="Admins can enter and modify results, tournaments, students, etc">Admin</span></th>
+	<th></th>
+	<th></th>
 </tr>
 <?php
 // Set up loop
