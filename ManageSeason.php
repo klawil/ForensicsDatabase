@@ -197,7 +197,7 @@ function SubmitSeason(SeasonID) {
 	PostString = PostString + "SeasonName=" + SeasonName;
 	
 	// Execute Post
-	PostToPage(PostString);
+	PostToPage(PostString,"ManageSeason.php","PostMessage");
 }
 
 function DeleteSeason(SeasonID) {
@@ -210,7 +210,7 @@ function DeleteSeason(SeasonID) {
 	PostString = "delete=1&SeasonID=" + SeasonID;
 	
 	// Execute Post
-	PostToPage(PostString);
+	PostToPage(PostString,"ManageSeason.php","PostMessage");
 }
 
 function GetChange(SeasonID) {
