@@ -13,7 +13,7 @@
 </head>
 <body>
 <h1><?php if ( isset($GLOBALS['PageName']) ) { echo $GLOBALS['PageName']; } else { echo 'ForensicsDB.com'; }?></h1>
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-inverse">
 	<div class="container-fluid">
 		
 		<!-- NavBar Header -->
@@ -61,9 +61,11 @@
 				
 				<!-- Github Link -->
 				<li><a href="https://github.com/klawil/ForensicsDatabase/" target="_blank">The Project on GitHub</a></li>
+			</ul>
 
 				<!-- Login Window -->
-				<li class="dropdown navbar-right pull-right">
+			<ul class="nav navbar-nav navbar-right">
+				<li class="dropdown navbar-right">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Login<span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
 						<form class="navbar-form navbar-left" role="login">
@@ -77,7 +79,7 @@
 						</form>
 					</ul>
 				</li> <!-- End Login Window -->
-			</ul> <!-- End Navbar -->
+			</ul> <!-- End Navbar Section for Login Window -->
 		</div>
 	</div>
 </nav> <!-- End Nav -->
