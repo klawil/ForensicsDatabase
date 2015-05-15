@@ -8,7 +8,7 @@
 <script src="/PostFunction.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script type="text/javascript" src="ChangeFunctions.js"></script>
+<script type="text/javascript" src="CustomFunctions.js"></script>
 </head>
 <body>
 <h1><?php if ( isset($GLOBALS['PageName']) ) { echo $GLOBALS['PageName']; } else { echo 'ForensicsDB.com'; } ?></h1>
