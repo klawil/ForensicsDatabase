@@ -144,7 +144,7 @@ input[type=number] {
 <h3>Update, create, and delete tournaments</h3>
 <div id="PostMessage" class="alert"></div>
 <table class="Table">
-<tr><th></th><th colspan="2">Prelims</th><th colspan="2">Elims</th></tr>
+<tr><th></th><th colspan="2" class="text-center">Prelims</th><th colspan="2" class="text-center">Elims</th><th></th><th></th><th></th><th></th><th></th></tr>
 <tr><th>Tournament Name</th><th>Rounds</th><th>Judges</th><th>Rounds</th><th>Judges</th><th>Start Date</th><th>End Date</th><th>Season</th><th></th><th></th></tr>
 <tr>
 	<td><span title="The name of the tournament"><input type="text" id="TournamentName" autofocus="autofocus"></span></td>
