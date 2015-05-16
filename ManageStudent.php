@@ -132,6 +132,7 @@ if ( !$StudentQuery['Result'] ) {
 // Create header
 require_once 'header.inc';
 ?>
+<div class="container">
 <h3>Update, create, and delete students</h3>
 <div id="PostMessage" class="alert"></div>
 <table class="Table">
@@ -166,6 +167,7 @@ while ( $CurrentRow <= $NumRows ) {
 }
 ?>
 </table>
+</div>
 <script>
 function DeleteStudent(StudentID) {
 	// Check if they are certain
