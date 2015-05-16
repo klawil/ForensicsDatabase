@@ -133,6 +133,7 @@ if ( !$SeasonQuery['Result'] ) {
 // Create header
 require_once 'header.inc';
 ?>
+<div class="container">
 <h3>Update, create, and delete seasons</h3>
 <div id="PostMessage" class="alert"></div>
 <table class="Table">
@@ -165,6 +166,7 @@ while ( $CurrentRow <= $NumRows ) {
 }
 ?>
 </table>
+</div>
 <script>
 function pad (str, max) {
   str = str.toString();
