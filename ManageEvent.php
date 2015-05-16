@@ -132,6 +132,7 @@ if ( !$EventQuery['Result'] ) {
 // Create header
 require_once 'header.inc';
 ?>
+<div class="container">
 <h3>Update, create, and delete events</h3>
 <div id="PostMessage" class="alert"></div>
 <table class="Table">
@@ -169,6 +170,7 @@ while ( $CurrentRow <= $NumRows ) {
 }
 ?>
 </table>
+</div>
 <script>
 // Create array to check for changes
 var ChangeArray = ["EventName","EventAbbr","Partner"];
