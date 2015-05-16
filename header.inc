@@ -10,7 +10,7 @@
 <script type="text/javascript" src="CustomFunctions.js"></script>
 </head>
 <body>
-<h1><?php if ( isset($GLOBALS['PageName']) ) { echo $GLOBALS['PageName']; } else { echo 'ForensicsDB.com'; } ?></h1>
+<h1 style="padding-left: 10px;"><?php if ( isset($GLOBALS['PageName']) ) { echo $GLOBALS['PageName']; } else { echo 'ForensicsDB.com'; } ?></h1>
 <nav class="navbar navbar-inverse">
 	<div class="container-fluid">
 		
