@@ -141,6 +141,7 @@ input[type=number] {
 	width: 3em;
 }
 </style>
+<div class="container">
 <h3>Update, create, and delete tournaments</h3>
 <div id="PostMessage" class="alert"></div>
 <table class="Table">
@@ -187,6 +188,7 @@ while ( $CurrentRow <= $NumRows ) {
 }
 ?>
 </table>
+</div>
 <script>
 function DeleteTournament(TournamentID) {
 	// Check if they are certain
