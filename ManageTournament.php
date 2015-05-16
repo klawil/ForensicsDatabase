@@ -140,6 +140,13 @@ require_once 'header.inc';
 input[type=number] {
 	width: 3em;
 }
+input[type=date] {
+	width: 7em;
+}
+.unstyled::-webkit-inner-spin-button, .unstyled::-webkit-calendar-picker-indicator {
+	display: none;
+	-webkit-appearance: none;
+}
 </style>
 <div class="container">
 <h3>Update, create, and delete tournaments</h3>
@@ -153,8 +160,8 @@ input[type=number] {
 	<td><span title="The maximum number of judges in a preliminary round"><input type="number" id="NumJudges"></span></td>
 	<td><span title="The number of elim rounds at the tournament"><input type="number" id="NumElimRounds"></span></td>
 	<td><span title="The maximum number of judges in an elimination round"><input type="number" id="NumElimJudges"></span></td>
-	<td><span title="The first day of the tournament"><input type="date" id="StartDate"></span></td>
-	<td><span title="The last day of the tournament"><input type="date" id="EndDate"></span></td>
+	<td><span title="The first day of the tournament"><input type="date" id="StartDate" class="unstyled"></span></td>
+	<td><span title="The last day of the tournament"><input type="date" id="EndDate" class="unstyled"></span></td>
 	<td><span title="The season the tournament occured during"><?php echo CreateList($DBConn,'Seasons',NULL,NULL,'Season'); ?></span></td>
 	<td><span title="Create a tournament with the specified parameters"><input type="button" value="Create Tournament" onclick="SubmitTournament()"></span></td>
 	<td></td>
@@ -177,8 +184,8 @@ while ( $CurrentRow <= $NumRows ) {
 	<td><span title="The maximum number of judges in a preliminary round"><input type="number" id="NumJudges<?php echo $TournamentID; ?>" value="<?php echo $TournamentData['NumJudges']; ?>"></span></td>
 	<td><span title="The number of elim rounds at the tournament"><input type="number" id="NumElimRounds<?php echo $TournamentID; ?>" value="<?php echo $TournamentData['NumElimRounds']; ?>"></span></td>
 	<td><span title="The maximum number of judges in an elimination round"><input type="number" id="NumElimJudges<?php echo $TournamentID; ?>" value="<?php echo $TournamentData['NumElimJudges']; ?>"></span></td>
-	<td><span title="The first day of the tournament"><input type="date" id="StartDate<?php echo $TournamentID; ?>" value="<?php echo $TournamentData['StartDate']; ?>"></span></td>
-	<td><span title="The last day of the tournament"><input type="date" id="EndDate<?php echo $TournamentID; ?>" value="<?php echo $TournamentData['EndDate']; ?>"></span></td>
+	<td><span title="The first day of the tournament"><input type="date" class="unstyled" id="StartDate<?php echo $TournamentID; ?>" value="<?php echo $TournamentData['StartDate']; ?>"></span></td>
+	<td><span title="The last day of the tournament"><input type="date" class="unstyled" id="EndDate<?php echo $TournamentID; ?>" value="<?php echo $TournamentData['EndDate']; ?>"></span></td>
 	<td><span title="The season the tournament occured during"><?php echo CreateList($DBConn,'Seasons',NULL,$TournamentData['Season'],'Season' . $TournamentID); ?></span></td>
 	<td><span title="Delete this tournament"><input type="button" value="Delete Tournament" onclick="DeleteTournament(<?php echo $TournamentID; ?>)"></span></td>
 	<td><span title="Save changes to this tournament"><input type="button" value="Save Changes" onclick="SubmitTournament(<?php echo $TournamentID; ?>)"></span></td>
