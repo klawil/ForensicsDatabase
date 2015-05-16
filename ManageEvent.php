@@ -132,6 +132,11 @@ if ( !$EventQuery['Result'] ) {
 // Create header
 require_once 'header.inc';
 ?>
+<style>
+.Abbr {
+	width: 5em;
+}
+</style>
 <div class="container">
 <h3>Update, create, and delete events</h3>
 <div id="PostMessage" class="alert"></div>
@@ -139,7 +144,7 @@ require_once 'header.inc';
 <tr><th>Event Name</th><th>Abbreviation</th><th>Partner</th><th></th><th></th></tr>
 <tr>
 	<td><span title="Name of the event"><input type="text" id="EventName" autofocus="autofocus"></span></td>
-	<td><span title="Abbreviation of the event"><input type="text" id="EventAbbr"></span></td>
+	<td><span title="Abbreviation of the event"><input type="text" class="Abbr" id="EventAbbr"></span></td>
 	<td><span title="Is this a partner event?"><input type="checkbox" id="Partner"></span></td>
 	<td><span title="Create this event"><input type="button" value="Create Event" onclick="SubmitEvent()"></span></td>
 	<td></td>
@@ -160,7 +165,7 @@ while ( $CurrentRow <= $NumRows ) {
 	// Return data as HTML table?>
 <tr>
 	<td><span title="Name of the event"><input type="text" id="EventName<?php echo $EventID; ?>" value="<?php echo $EventData['EventName']; ?>" onchange="GetChange(<?php echo $EventID; ?>)"></span></td>
-	<td><span title="Abbreviation of the event"><input type="text" id="EventAbbr<?php echo $EventID; ?>" value="<?php echo $EventData['EventAbbr']; ?>" onchange="GetChange(<?php echo $EventID; ?>)"></span></td>
+	<td><span title="Abbreviation of the event"><input type="text" class="Abbr" id="EventAbbr<?php echo $EventID; ?>" value="<?php echo $EventData['EventAbbr']; ?>" onchange="GetChange(<?php echo $EventID; ?>)"></span></td>
 	<td><span title="Is this a partner event?"><input type="checkbox" id="Partner<?php echo $EventID; ?>" onchange="GetChange(<?php echo $EventID; ?>)"<?php if ( $EventData['Partner'] == 1 ) { echo ' checked'; }?>></span></td>
 	<td><span title="Delete this event"><input type="button" onclick="DeleteEvent(<?php echo $EventID; ?>)" value="Delete Event"></span></td>
 	<td class="ChangeCell" id="ChangeCell<?php echo $EventID; ?>"><span title="Save changes to this event"><input type="button" value="Save Changes" onclick="SubmitEvent(<?php echo $EventID; ?>)"></span></td>
