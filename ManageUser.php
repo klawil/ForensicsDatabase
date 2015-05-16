@@ -103,6 +103,7 @@ if ( !$UserQuery['Result'] ) {
 // create header
 require_once 'header.inc';
 ?>
+<div class="container">
 <h3>Modify user permissions</h3>
 <div id="PostMessage" class="alert"></div>
 <table class="Table">
@@ -141,6 +142,7 @@ while ( $CurrentRow <= $NumRows ) {
 }
 ?>
 </table>
+</div>
 <script>
 function PostToPage(PostString) {
 	// Alert user
