@@ -34,13 +34,14 @@ input[type=number] {
 	width: 3em;
 }
 </style>
+<div class="container">
 <?php if ( isset($TournamentData['TournamentName']) ) { ?>
 <h2><?php echo $TournamentData['TournamentName']; ?></h2>
 <?php } ?>
 <h3>Insert results from tournament</h3>
 <div id="PostMessage" class="ErrorMessage"><?php echo $ErrorString; ?></div>
 <?php if ( !isset($_POST['TournamentID']) ) { ?>
-<form id="TournamentSelect" action="ResultInsert.php" method="post">
+<form id="TournamentSelect" action="ResultEnter.php" method="post">
 Select a Tournament: <?php echo CreateList($DBConn, 'Tournaments'); ?> <input type="submit" value="Select Tournament">
 </form>
 <?php
@@ -49,8 +50,8 @@ Select a Tournament: <?php echo CreateList($DBConn, 'Tournaments'); ?> <input ty
 <form id="ResultForm" action="ResultEnter.php" method="post">
 <input type="hidden" name="TournamentID" value="<?php echo $TournamentID; ?>">
 Student: <?php echo CreateList($DBConn,'Students'); ?><br><br>
-<div id="PartnerSelect" class="hidden">Partner: <?php echo CreateList($DBConn,'Students',NULL,NULL,'PartnerID'); ?><br><br></div>
-Event: <?php echo CreateList($DBConn,'Events'); ?><br>
+<div id="PartnerSelect">Partner: <?php echo CreateList($DBConn,'Students',NULL,NULL,'PartnerID'); ?><br><br></div>
+Event: <?php echo CreateList($DBConn,'Events'); ?><br><br>
 <table class="Table">
 <tr>
 	<th></th>
@@ -80,8 +81,8 @@ for ( $Judge = 1; $Judge <= $TournamentData['NumJudges']; $Judge++ ) {
 	}
 ?>
 </table>
-<input type="checkbox" name="broke" id="broke" onchange="ShowHideElims()">Broke to elimination rounds<br>
-<input type="checkbox" name="State">Qualified for the state tournament<br>
+<input type="checkbox" name="broke" id="broke" onchange="ShowHideElims()"> Broke to elimination rounds<br>
+<input type="checkbox" name="State"> Qualified for the state tournament<br>
 <div id="ElimTable" class="hidden">
 <table class="Table">
 <tr>
@@ -122,6 +123,7 @@ Place: <input type="number" name="place"><br><br>
 ?>
 </table>
 </form>
+</div>
 <script>
 function ShowHideElims() {
 	// Show or hide elimination info depending on broke
