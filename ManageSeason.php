@@ -156,10 +156,10 @@ while ( $CurrentRow <= $NumRows ) {
 	
 	// Add a row to the html table?>
 <tr>
-	<td><span title="Name to assign to the season (i.e. 2014-2015)"><input type="text" id="SeasonName<?php echo $SeasonData['SeasonID']; ?>" value="<?php echo $SeasonData['SeasonName']; ?>"></span></td>
-	<td><span title="First year of the season (i.e. 2014)"><input type="number" id="StartYear<?php echo $SeasonData['SeasonID']; ?>" value="<?php echo $SeasonData['StartYear']; ?>"></span></td>
-	<td><span title="Delete this season"><input type="button" value="Delete Season" onclick="DeleteSeason(<?php echo $SeasonData['SeasonID']; ?>)"></span></td>
-	<td><span title="Save changes to the season"><input type="button" value="Save Changes" onclick="SubmitSeason(<?php echo $SeasonData['SeasonID']; ?>)"></span></td>
+	<td><span title="Name to assign to the season (i.e. 2014-2015)"><input type="text" id="SeasonName<?php echo $SeasonData['SeasonID']; ?>" value="<?php echo $SeasonData['SeasonName']; ?>" onchange="GetChange(<?php echo $SeasonData['SeasonID']; ?>)"></span></td>
+	<td><span title="First year of the season (i.e. 2014)"><input type="number" id="StartYear<?php echo $SeasonData['SeasonID']; ?>" value="<?php echo $SeasonData['StartYear']; ?>" onchange="GetChange(<?php echo $SeasonData['SeasonID']; ?>)"></span></td>
+	<td><span title="Delete this season"><input type="button" value="Delete Season" onclick="DeleteSeason(<?php echo $SeasonData['SeasonID']; ?>)" onchange="GetChange(<?php echo $SeasonData['SeasonID']; ?>)"></span></td>
+	<td><span title="Save changes to the season"><input type="button" value="Save Changes" onclick="SubmitSeason(<?php echo $SeasonData['SeasonID']; ?>)" onchange="GetChange(<?php echo $SeasonData['SeasonID']; ?>)"></span></td>
 </tr>
 <?php
 	$CurrentRow++;
@@ -168,6 +168,12 @@ while ( $CurrentRow <= $NumRows ) {
 </table>
 </div>
 <script>
+// Create array to check for changes
+var ChangeArray = ["SeasonName","StartYear"];
+
+// Name of the row name event
+var NameID = "SeasonName";
+
 function pad (str, max) {
   str = str.toString();
   return str.length < max ? pad("0" + str, max) : str;
