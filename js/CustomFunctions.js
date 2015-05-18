@@ -18,7 +18,7 @@ function GetChange(ParseID) {
 					IsChange = true;
 				}
 				break;
-			case "select":
+			case "select-one":
 				if ( !ElementToCheck.options[ElementToCheck.selectedIndex].defaultSelected ) {
 					IsChange = true;
 				}
