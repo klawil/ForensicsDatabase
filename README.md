@@ -1,6 +1,6 @@
 <h1>Forensics Database</h1>
 <h2>Description</h2>
-This is an organization of php web pages that allow the access and organization of results from Forensics tournaments. The website is served using an Apache web server using a MySQL database. All code is written in PHP, HTML, or JavaScript with the exception of the setup script which is a bash script.
+This is an organization of php web pages that allow the access and organization of results from Forensics tournaments. The website is served using an Apache web server using a MySQL database. All code is written in PHP, HTML, CSS, or JavaScript with the exception of the setup script which is a bash script.
 
 This website was written and tested on Ubuntu 14.04 running PHP 5.5.9-1ubuntu4.9 and MySQL 5.5.41. Compatibility with other versions is not guaranteed.
 <h2>Installation</h2>
