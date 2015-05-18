@@ -47,7 +47,7 @@ function GetChange(ParseID) {
 
 window.onbeforeunload = function (e) {
 	if ( IsChangeGlobal ) {
-		var message = "There are unsaved changes on this page in the following items:\n\n";
+		var message = "There are unsaved changes on this page. The following items have been changed:\n\n";
 		var e = e || window.event;
 		var key;
 
