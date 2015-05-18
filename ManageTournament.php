@@ -179,14 +179,14 @@ while ( $CurrentRow <= $NumRows ) {
 	
 	// Create table row?>
 <tr>
-	<td><span title="The name of the tournament"><input type="text" id="TournamentName<?php echo $TournamentID; ?>" value="<?php echo $TournamentData['TournamentName']; ?>" autofocus="autofocus"></span></td>
-	<td><span title="The number of preliminary rounds at the tournament"><input type="number" id="NumRounds<?php echo $TournamentID; ?>" value="<?php echo $TournamentData['NumRounds']; ?>"></span></td>
-	<td><span title="The maximum number of judges in a preliminary round"><input type="number" id="NumJudges<?php echo $TournamentID; ?>" value="<?php echo $TournamentData['NumJudges']; ?>"></span></td>
-	<td><span title="The number of elim rounds at the tournament"><input type="number" id="NumElimRounds<?php echo $TournamentID; ?>" value="<?php echo $TournamentData['NumElimRounds']; ?>"></span></td>
-	<td><span title="The maximum number of judges in an elimination round"><input type="number" id="NumElimJudges<?php echo $TournamentID; ?>" value="<?php echo $TournamentData['NumElimJudges']; ?>"></span></td>
-	<td><span title="The first day of the tournament"><input type="date" class="unstyled" id="StartDate<?php echo $TournamentID; ?>" value="<?php echo $TournamentData['StartDate']; ?>"></span></td>
-	<td><span title="The last day of the tournament"><input type="date" class="unstyled" id="EndDate<?php echo $TournamentID; ?>" value="<?php echo $TournamentData['EndDate']; ?>"></span></td>
-	<td><span title="The season the tournament occured during"><?php echo CreateList($DBConn,'Seasons',NULL,$TournamentData['Season'],'Season' . $TournamentID); ?></span></td>
+	<td><span title="The name of the tournament"><input type="text" id="TournamentName<?php echo $TournamentID; ?>" value="<?php echo $TournamentData['TournamentName']; ?>" onchange="GetChange(<?php echo $TournamentID; ?>)"></span></td>
+	<td><span title="The number of preliminary rounds at the tournament"><input type="number" id="NumRounds<?php echo $TournamentID; ?>" value="<?php echo $TournamentData['NumRounds']; ?>" onchange="GetChange(<?php echo $TournamentID; ?>)"></span></td>
+	<td><span title="The maximum number of judges in a preliminary round"><input type="number" id="NumJudges<?php echo $TournamentID; ?>" value="<?php echo $TournamentData['NumJudges']; ?>" onchange="GetChange(<?php echo $TournamentID; ?>)"></span></td>
+	<td><span title="The number of elim rounds at the tournament"><input type="number" id="NumElimRounds<?php echo $TournamentID; ?>" value="<?php echo $TournamentData['NumElimRounds']; ?>" onchange="GetChange(<?php echo $TournamentID; ?>)"></span></td>
+	<td><span title="The maximum number of judges in an elimination round"><input type="number" id="NumElimJudges<?php echo $TournamentID; ?>" value="<?php echo $TournamentData['NumElimJudges']; ?>" onchange="GetChange(<?php echo $TournamentID; ?>)"></span></td>
+	<td><span title="The first day of the tournament"><input type="date" class="unstyled" id="StartDate<?php echo $TournamentID; ?>" value="<?php echo $TournamentData['StartDate']; ?>" onchange="GetChange(<?php echo $TournamentID; ?>)"></span></td>
+	<td><span title="The last day of the tournament"><input type="date" class="unstyled" id="EndDate<?php echo $TournamentID; ?>" value="<?php echo $TournamentData['EndDate']; ?>" onchange="GetChange(<?php echo $TournamentID; ?>)"></span></td>
+	<td><span title="The season the tournament occured during"><?php echo CreateList($DBConn,'Seasons',NULL,$TournamentData['Season'],'Season' . $TournamentID,"GetChange(" . $TournamentID .")"); ?></span></td>
 	<td><span title="Delete this tournament"><input type="button" value="Delete Tournament" onclick="DeleteTournament(<?php echo $TournamentID; ?>)"></span></td>
 	<td><span title="Save changes to this tournament"><input type="button" value="Save Changes" onclick="SubmitTournament(<?php echo $TournamentID; ?>)"></span></td>
 </tr>
@@ -197,6 +197,12 @@ while ( $CurrentRow <= $NumRows ) {
 </table>
 </div>
 <script>
+// Create array to check for change from
+var ChangeArray = ["TournamentName","NumRounds","NumJudges","NumElimRounds","NumElimJudges","StartDate","EndDate","Season"];
+
+// The name of the item that has the name of the row in it
+var NameID = "TournamentName";
+
 function DeleteTournament(TournamentID) {
 	// Check if they are certain
 	if ( !window.confirm("DANGER DANGER!!\nThis will PERMANENTLY erase this tournament.\n\nFOREVER\n\nDo you still want to do this?") ) {
