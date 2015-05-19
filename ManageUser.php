@@ -129,7 +129,7 @@ while ( $CurrentRow <= $NumRows ) {
 	
 	// Create HTML table?>
 <tr>
-	<td><span title="Usename"><?php echo $UserData['UName'];?></span></td>
+	<td><span title="Username"><?php echo $UserData['UName'];?></span></td>
 	<td><span title="Last Name"><?php echo $UserData['LName'];?></span></td>
 	<td><span title="First Name"><?php echo $UserData['FName'];?></span></td>
 	<td><span title="Email"><?php echo $UserData['Email'];?></span></td>
@@ -144,6 +144,12 @@ while ( $CurrentRow <= $NumRows ) {
 </table>
 </div>
 <script>
+// Create array to check for changes
+var ChangeArray = ["CanMod"];
+
+// The name of the item that has the name of the row in it
+var NameID = "UName";
+
 function PostToPage(PostString) {
 	// Alert user
 	document.getElementById("PostMessage").innerHTML = "Processing request...";
