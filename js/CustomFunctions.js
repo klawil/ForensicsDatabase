@@ -133,3 +133,47 @@ function PostToPage(PostString,PageName,ElementID) {
 	// Send the PostString
 	xmlhttp.send(PostString);
 }
+
+function CreatePage(PageName,PageTitle) {
+	// Function to load a new page without reloading all the JS, etc
+	// @param PageName - the name of the page to load from
+
+	// Replace the header
+	document.getElementById("PageTitle").innerHTML = PageTitle;
+
+	// Name of the main div to replace
+	MainBodyName = "MainBody";
+	
+	// Create a loading icon in the page
+	document.getElementById(MainBodyName).innerHTML = "Loading...";
+
+	// Post to the new page
+	// Set up XMLHttp request
+	if ( window.XMLHttpRequest ) {
+		xmlhttp = new XMLHttpRequest();
+	} else {
+		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+
+	// Create the post string
+	PostString = "LoadPage=1";
+
+	// Create the function that handles the response
+	xmlhttp.onreadystatechange = function() {
+		if ( xmlhttp.readyState == 4 && xmlhttp.status == 200 ) {
+			// Handle successful response
+			response = xmlhttp.responseText;
+			document.getElementById(MainBodyName).innerHTML = response;
+		} else if ( xmlhttp.readyState == 4 ) {
+			// Handle unsuccessful response
+			document.getElementById(MainBodyName).innerHTML = "Error Submitting Data: Status code " + xmlhttp.status;
+		}
+	}
+
+	// Open the connection to the page
+	xmlhttp.open("POST",PageName,true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+
+	// Send the PostString
+	xmlhttp.send(PostString);
+}
