@@ -103,7 +103,6 @@ if ( !$UserQuery['Result'] ) {
 // create header
 require_once 'header.inc';
 ?>
-<div class="container">
 <h3>Modify user permissions</h3>
 <div id="PostMessage" class="alert"></div>
 <table class="Table">
@@ -142,7 +141,6 @@ while ( $CurrentRow <= $NumRows ) {
 }
 ?>
 </table>
-</div>
 <script>
 // Create array to check for changes
 var ChangeArray = ["CanMod"];
@@ -181,5 +179,12 @@ function DeleteUser(UName) {
 	PostToPage(PostString,"ManageUser.php","PostMessage");
 }
 </script>
+<?php
+if ( !isset($_POST['LoadPage']) ) {
+?>
+</div>
+<?php
+}
+?>
 </body>
 </html>
