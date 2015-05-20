@@ -140,6 +140,7 @@ function CreatePage(PageName,PageTitle) {
 
 	// Replace the header, URL, and title
 	document.getElementById("PageTitle").innerHTML = PageTitle;
+	document.title = PageTitle;
 	window.history.pushState("Object",PageTitle,PageName);
 
 	// Name of the main div to replace
@@ -148,33 +149,65 @@ function CreatePage(PageName,PageTitle) {
 	// Create a loading icon in the page
 	document.getElementById(MainBodyName).innerHTML = "Loading...";
 
-	// Post to the new page
-	// Set up XMLHttp request
-	if ( window.XMLHttpRequest ) {
-		xmlhttp = new XMLHttpRequest();
-	} else {
-		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-	}
+	$("#" + MainBodyName).load(PageName,{LoadPage:1});
+}
 
-	// Create the post string
-	PostString = "LoadPage=1";
+function SubmitChange(ID) {
+	// Function to gather data and send that data to the server
+	// @param ID - the ID of the row being saved (optional)
 
-	// Create the function that handles the response
-	xmlhttp.onreadystatechange = function() {
-		if ( xmlhttp.readyState == 4 && xmlhttp.status == 200 ) {
-			// Handle successful response
-			response = xmlhttp.responseText;
-			document.getElementById(MainBodyName).innerHTML = response;
-		} else if ( xmlhttp.readyState == 4 ) {
-			// Handle unsuccessful response
-			document.getElementById(MainBodyName).innerHTML = "Error Submitting Data: Status code " + xmlhttp.status;
+	// Set ID to -1 if no ID is provided
+	ID = ID || "";
+	
+	// Create the string to store the PostString in
+	PostData = new Object();
+
+	// Loop through the array that tells the function what information to gather
+	for ( Key in StoreInfo ) { //var Index = 0; Index < StoreInfo.length; Index++ ) {
+		// Create a variable with the information for that row in it
+		CurrentRow = StoreInfo[Key];
+
+		// Check if that row is dependent on the ID being valid
+		if ( CurrentRow["IsID"] && ID == "" ) {
+			// If the current row is the ID and there is no ID set
+			continue;
+		} else if ( CurrentRow["IsID"] ) {
+			// If the current row is the ID and there is an ID set
+			
+			// Get the ID
+			ReturnData = ID;
+		} else {
+			// Everything else
+			
+			// Set the Element to Check
+			ElementToCheck = document.getElementById(CurrentRow["ElementID"] + ID);
+
+			// Get the information
+			switch ( ElementToCheck.type ) {
+				case "checkbox":
+					if ( ElementToCheck.checked ) {
+						ReturnData = 1;
+					} else {
+						ReturnData = 0;
+					}
+					break;
+				case "select-one":
+					ReturnData = ElementToCheck.options[ElementToCheck.selectedIndex].value;
+					break;
+				case "text":
+					ReturnData = ElementToCheck.value;
+					break;
+				default:
+					ReturnData = ElementToCheck.innerText;
+			}
 		}
+
+		// Escape the data
+		ReturnData = encodeURIComponent(ReturnData);
+
+		// Build the string
+		PostData[CurrentRow["Name"]] = ReturnData;
 	}
 
-	// Open the connection to the page
-	xmlhttp.open("POST",PageName,true);
-	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-
-	// Send the PostString
-	xmlhttp.send(PostString);
+	window.alert(PostString);
 }
