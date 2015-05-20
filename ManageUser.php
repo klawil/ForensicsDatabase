@@ -183,8 +183,8 @@ function DeleteUser(UName) {
 if ( !isset($_POST['LoadPage']) ) {
 ?>
 </div>
+</body>
+</html>
 <?php
 }
 ?>
-</body>
-</html>
