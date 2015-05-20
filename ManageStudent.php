@@ -156,9 +156,9 @@ while ( $CurrentRow <= $NumRows ) {
 	
 	// Echo data as HTML table?>
 <tr>
-	<td><span title="Last Name of the student"><input type="text" id="LName<?php echo $StudentData['StudentID']; ?>" value="<?php echo $StudentData['LName']; ?>"></span></td>
-	<td><span title="First Name of the student"><input type="text" id="FName<?php echo $StudentData['StudentID']; ?>" value="<?php echo $StudentData['FName']; ?>"></span></td>
-	<td><span title="The novice season of the student"><?php echo CreateList($DBConn,'Seasons',NULL,$StudentData['NoviceYear'],'NoviceSeason' . $StudentData['StudentID']); ?></span></td>
+	<td><span title="Last Name of the student"><input type="text" id="LName<?php echo $StudentData['StudentID']; ?>" value="<?php echo $StudentData['LName']; ?>" onchange="GetChange(<?php echo $StudentData['StudentID']; ?>)"></span></td>
+	<td><span title="First Name of the student"><input type="text" id="FName<?php echo $StudentData['StudentID']; ?>" value="<?php echo $StudentData['FName']; ?>" onchange="GetChange(<?php echo $StudentData['StudentID']; ?>)"></span></td>
+	<td><span title="The novice season of the student"><?php echo CreateList($DBConn,'Seasons',NULL,$StudentData['NoviceYear'],'NoviceSeason' . $StudentData['StudentID'],"GetChange(" . $StudentData['StudentID'] . ")"); ?></span></td>
 	<td><span title="Delete the student"><input type="button" value="Delete Student" onclick="DeleteStudent(<?php echo $StudentData['StudentID']; ?>)"></span></td>
 	<td><span title="Save changes to the student"><input type="button" value="Save Changes" onclick="SubmitStudent(<?php echo $StudentData['StudentID']; ?>)"></span></td>
 </tr>
@@ -169,6 +169,12 @@ while ( $CurrentRow <= $NumRows ) {
 </table>
 </div>
 <script>
+// Create array to check for change from
+var ChangeArray = ["LName","FName","NoviceSeason"];
+
+// The name of the item that has the name of the row in it
+var NameID = "LName";
+
 function DeleteStudent(StudentID) {
 	// Check if they are certain
 	if ( !window.confirm("DANGER DANGER!!\nThis will PERMANENTLY erase this student.\n\nFOREVER\n\nDo you still want to do this?") ) {

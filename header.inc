@@ -3,11 +3,11 @@
 <title><?php if ( isset($GLOBALS['PageName']) ) { echo $GLOBALS['PageName'] . ' | ';} ?> ForensicsDB.com</title>
 <link rel="stylesheet" href="/css/bootstrap.css" />
 <link rel="shortcut icon" type="image/png" href="/FavIcon.png" />
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script type="text/javascript" src="CustomFunctions.js"></script>
+<script type="text/javascript" src="/js/CustomFunctions.js"></script>
 </head>
 <body>
 <h1 style="padding-left: 10px;"><?php if ( isset($GLOBALS['PageName']) ) { echo $GLOBALS['PageName']; } else { echo 'ForensicsDB.com'; } ?></h1>

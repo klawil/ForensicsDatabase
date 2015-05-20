@@ -1,6 +1,6 @@
 // Set global change detection variable and array
 var IsChangeGlobal = false;
-var ChangeArrayGlobal = new Array();
+var ChangeArrayGlobal = new Object();
 
 function GetChange(ParseID) {
 	// Set flag to determine if change has occured
@@ -18,7 +18,7 @@ function GetChange(ParseID) {
 					IsChange = true;
 				}
 				break;
-			case "select":
+			case "select-one":
 				if ( !ElementToCheck.options[ElementToCheck.selectedIndex].defaultSelected ) {
 					IsChange = true;
 				}
@@ -30,32 +30,33 @@ function GetChange(ParseID) {
 		}
 	}
 
-	// Show/hide the save changes button
-	if ( IsChange ) {
-		DisplayStyle = "inline";
-		if ( typeof ChangeArrayGlobal[ParseID] == "undefined" ) {
-			ChangeArrayGlobal[ParseID] = true;
-			IsChangeGlobal = true;
-		}
-	} else {
-		DisplayStyle = "none";
-		if ( typeof ChangeArrayGlobal[ParseID] != "undefined" ) {
-			delete ChangeArrayGlobal[ParseID];
-			if ( ChangeArrayGlobal.length == 0 ) {
-				IsChangeGlobal = false;
-			}
-		}
+	// Set the array entry
+	if ( IsChange && typeof ChangeArrayGlobal[ParseID] == "undefined" ) {
+		ChangeArrayGlobal[ParseID] = true;
+	} else if ( !IsChange && typeof ChangeArrayGlobal[ParseID] != "undefined" ) {
+		delete ChangeArrayGlobal[ParseID];
 	}
-	document.getElementById("ChangeCell" + ParseID).style.display = DisplayStyle;
+	
+	// Set the global change variable
+	if ( Object.keys(ChangeArrayGlobal).length == 0 ) {
+		IsChangeGlobal = false;
+	} else {
+		IsChangeGlobal = true;
+	}
 }
 
 window.onbeforeunload = function (e) {
 	if ( IsChangeGlobal ) {
-		var message = "There are unsaved changes on this page.\n";
+		var message = "There are unsaved changes on this page. The following items have been changed:\n\n";
 		var e = e || window.event;
+		var key;
 
-		for ( var Index = 0; Index < ChangeArrayGlobal.length; Index++ ) {
-			message = message + ChangeArrayGlobal[Index] + "\n";
+		for ( key in ChangeArrayGlobal ) {
+			if ( document.getElementById(NameID + key).type == "text" ) {
+				message = message + document.getElementById(NameID + key).value + "\n";
+			} else {
+				message = message + document.getElementById(NameID + key).innerText + "\n";
+			}
 		}
 
 		// Most browsers

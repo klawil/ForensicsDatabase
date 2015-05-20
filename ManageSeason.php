@@ -156,10 +156,10 @@ while ( $CurrentRow <= $NumRows ) {
 	
 	// Add a row to the html table?>
 <tr>
-	<td><span title="Name to assign to the season (i.e. 2014-2015)"><input type="text" id="SeasonName<?php echo $SeasonData['SeasonID']; ?>" value="<?php echo $SeasonData['SeasonName']; ?>"></span></td>
-	<td><span title="First year of the season (i.e. 2014)"><input type="number" id="StartYear<?php echo $SeasonData['SeasonID']; ?>" value="<?php echo $SeasonData['StartYear']; ?>"></span></td>
-	<td><span title="Delete this season"><input type="button" value="Delete Season" onclick="DeleteSeason(<?php echo $SeasonData['SeasonID']; ?>)"></span></td>
-	<td><span title="Save changes to the season"><input type="button" value="Save Changes" onclick="SubmitSeason(<?php echo $SeasonData['SeasonID']; ?>)"></span></td>
+	<td><span title="Name to assign to the season (i.e. 2014-2015)"><input type="text" id="SeasonName<?php echo $SeasonData['SeasonID']; ?>" value="<?php echo $SeasonData['SeasonName']; ?>" onchange="GetChange(<?php echo $SeasonData['SeasonID']; ?>)"></span></td>
+	<td><span title="First year of the season (i.e. 2014)"><input type="number" id="StartYear<?php echo $SeasonData['SeasonID']; ?>" value="<?php echo $SeasonData['StartYear']; ?>" onchange="GetChange(<?php echo $SeasonData['SeasonID']; ?>)"></span></td>
+	<td><span title="Delete this season"><input type="button" value="Delete Season" onclick="DeleteSeason(<?php echo $SeasonData['SeasonID']; ?>)" onchange="GetChange(<?php echo $SeasonData['SeasonID']; ?>)"></span></td>
+	<td><span title="Save changes to the season"><input type="button" value="Save Changes" onclick="SubmitSeason(<?php echo $SeasonData['SeasonID']; ?>)" onchange="GetChange(<?php echo $SeasonData['SeasonID']; ?>)"></span></td>
 </tr>
 <?php
 	$CurrentRow++;
@@ -168,6 +168,12 @@ while ( $CurrentRow <= $NumRows ) {
 </table>
 </div>
 <script>
+// Create array to check for changes
+var ChangeArray = ["SeasonName","StartYear"];
+
+// Name of the row name event
+var NameID = "SeasonName";
+
 function pad (str, max) {
   str = str.toString();
   return str.length < max ? pad("0" + str, max) : str;
@@ -213,47 +219,6 @@ function DeleteSeason(SeasonID) {
 	
 	// Execute Post
 	PostToPage(PostString,"ManageSeason.php","PostMessage");
-}
-
-function GetChange(SeasonID) {
-	// See if there is a change and if so show the save changes button
-	
-	// Create array to guide checking
-	var ChangeArray = ["SeasonName","StartYear"];
-	
-	// Initialize variable to check for changes
-	var ischange = false;
-
-	// Loop through the change array and find a change
-	for ( var Index = 0; Index < ChangeArray.length; Index++ ) {
-		// Set the information needed
-		var ElementID = ChangeArray[Index] + SeasonID;
-		var Element = document.getElementById(ElementID);
-		switch ( Element.type ) {
-			case "checkbox":
-				if ( Element.checked != Element.defaultChecked ) {
-					ischange = true;
-				}
-				break;
-			case "select":
-				if ( !Element.options[Element.selectedIndex].defaultSelected ) {
-					ischange = true;
-				}
-				break;
-			default:
-				if ( Element.defaultValue != Element.value ) {
-					ischange = true;
-				}
-		}
-	}
-	
-	// If there is change, show the button, otherwise hide it
-	if ( ischange ) {
-		var displaytype = "inline";
-	} else {
-		var displaytype = "none";
-	}
-	document.getElementById("ChangeCell" + SeasonID).style.display = displaytype;
 }
 </script>
 </body>

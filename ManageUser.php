@@ -129,11 +129,11 @@ while ( $CurrentRow <= $NumRows ) {
 	
 	// Create HTML table?>
 <tr>
-	<td><span title="Usename"><?php echo $UserData['UName'];?></span></td>
+	<td><span title="Username" id="UName<?php echo $UName; ?>"><?php echo $UserData['UName'];?></span></td>
 	<td><span title="Last Name"><?php echo $UserData['LName'];?></span></td>
 	<td><span title="First Name"><?php echo $UserData['FName'];?></span></td>
 	<td><span title="Email"><?php echo $UserData['Email'];?></span></td>
-	<td><span title="Admins can enter and modify results, tournaments, students, etc"><input type="checkbox" id="CanMod<?php echo $UName;?>"<?php if ( $UserData['CanMod'] ) { echo ' checked';}?>></span></td>
+	<td><span title="Admins can enter and modify results, tournaments, students, etc"><input type="checkbox" id="CanMod<?php echo $UName;?>" onchange="GetChange('<?php echo $UName; ?>')"<?php if ( $UserData['CanMod'] ) { echo ' checked';}?>></span></td>
 	<td><span title="Delete this user"><input type="button" value="Delete User" onclick="DeleteUser('<?php echo $UName;?>')"></span></td>
 	<td><span title="Save the admin status of this user"><input type="button" value="Save User" onclick="SubmitUser('<?php echo $UName;?>')"></span></td>
 </tr>
@@ -144,42 +144,12 @@ while ( $CurrentRow <= $NumRows ) {
 </table>
 </div>
 <script>
-function PostToPage(PostString) {
-	// Alert user
-	document.getElementById("PostMessage").innerHTML = "Processing request...";
-	document.getElementById("PostMessage").style.display = "inline";
-	
-	// Encode string
-	PostString = encodeURI(PostString);
-	
-	// Set up post
-	if ( window.XMLHttpRequest ) {
-		xmlhttp = new XMLHttpRequest();
-	} else {
-		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	xmlhttp.open("POST","ManageUser.php",true);
-	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	xmlhttp.send(PostString);
-	xmlhttp.onreadystatechange = function() {
-		if ( xmlhttp.readyState == 4 && xmlhttp.status == 200 ) {
-			// Handle successful response
-			response = xmlhttp.responseText;
-			if ( response == 'true' ) {
-				// Reload page if success
-				location.reload();
-			} else {
-				// Show error if error
-				document.getElementById("PostMessage").style.display = "none";
-				window.alert(response);
-			}
-		} else if ( xmlhttp.readyState == 4 ) {
-			// Handle unsuccessful response
-			document.getElementById("PostMessage").style.display = "none";
-			window.alert("Error: Status code " + xmlhttp.status);
-		}
-	}
-}
+// Create array to check for changes
+var ChangeArray = ["CanMod"];
+
+// The name of the item that has the name of the row in it
+var NameID = "UName";
+
 function SubmitUser(UName) {
 	// Set Element Name
 	CanModElement = "CanMod" + UName;
@@ -195,8 +165,9 @@ function SubmitUser(UName) {
 	}
 	
 	// Execute Post
-	PostToPage(PostString);
+	PostToPage(PostString,"ManageUser.php","PostMessage");
 }
+
 function DeleteUser(UName) {
 	// Check if they are certain
 	if ( !window.confirm("DANGER DANGER!!\nThis will PERMANENTLY erase this event.\n\nFOREVER\n\nDo you still want to do this?") ) {
@@ -207,7 +178,7 @@ function DeleteUser(UName) {
 	PostString = "delete=1&UName=" + UName;
 	
 	// Execute Post
-	PostToPage(PostString);
+	PostToPage(PostString,"ManageUser.php","PostMessage");
 }
 </script>
 </body>

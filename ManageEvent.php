@@ -180,6 +180,9 @@ while ( $CurrentRow <= $NumRows ) {
 // Create array to check for changes
 var ChangeArray = ["EventName","EventAbbr","Partner"];
 
+// The name of the item that has the name of the row in it
+var NameID = "EventName";
+
 function SubmitEvent(EventID) {
 	// Set default EventID
 	EventID = EventID || -1;
