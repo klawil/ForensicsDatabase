@@ -145,7 +145,7 @@ require_once 'header.inc';
 	<td><span title="Name of the event"><input type="text" id="EventName" autofocus="autofocus"></span></td>
 	<td><span title="Abbreviation of the event"><input type="text" class="Abbr" id="EventAbbr"></span></td>
 	<td><span title="Is this a partner event?"><input type="checkbox" id="Partner"></span></td>
-	<td><span title="Create this event"><input type="button" value="Create Event" onclick="SubmitEvent()"></span></td>
+	<td><span title="Create this event"><input type="button" value="Create Event" onclick="SubmitChange()"></span></td>
 	<td></td>
 </tr>
 <?php
@@ -167,7 +167,7 @@ while ( $CurrentRow <= $NumRows ) {
 	<td><span title="Abbreviation of the event"><input type="text" class="Abbr" id="EventAbbr<?php echo $EventID; ?>" value="<?php echo $EventData['EventAbbr']; ?>" onchange="GetChange(<?php echo $EventID; ?>)"></span></td>
 	<td><span title="Is this a partner event?"><input type="checkbox" id="Partner<?php echo $EventID; ?>" onchange="GetChange(<?php echo $EventID; ?>)"<?php if ( $EventData['Partner'] == 1 ) { echo ' checked'; }?>></span></td>
 	<td><span title="Delete this event"><input type="button" onclick="DeleteEvent(<?php echo $EventID; ?>)" value="Delete Event"></span></td>
-	<td class="ChangeCell" id="ChangeCell<?php echo $EventID; ?>"><span title="Save changes to this event"><input type="button" value="Save Changes" onclick="SubmitEvent(<?php echo $EventID; ?>)"></span></td>
+	<td class="ChangeCell" id="ChangeCell<?php echo $EventID; ?>"><span title="Save changes to this event"><input type="button" value="Save Changes" onclick="SubmitChange(<?php echo $EventID; ?>)"></span></td>
 </tr>
 <?php
 	$CurrentRow++;
@@ -177,6 +177,12 @@ while ( $CurrentRow <= $NumRows ) {
 <script>
 // Create array to check for changes
 var ChangeArray = ["EventName","EventAbbr","Partner"];
+
+// Create object to have the info pulled from
+var StoreInfo = {EventName: {Name: "EventName", ElementID: "EventName", IsID: false},
+	EventAbbr: {Name: "EventAbbr", ElementID: "EventAbbr", IsID: false},
+	Partner: {Name: "Partner", ElementID: "Partner", IsID: false},
+	EventID: {Name: "EventID", IsID: true}};
 
 // The name of the item that has the name of the row in it
 var NameID = "EventName";
