@@ -138,8 +138,9 @@ function CreatePage(PageName,PageTitle) {
 	// Function to load a new page without reloading all the JS, etc
 	// @param PageName - the name of the page to load from
 
-	// Replace the header
+	// Replace the header, URL, and title
 	document.getElementById("PageTitle").innerHTML = PageTitle;
+	window.history.pushState("Object",PageTitle,PageName);
 
 	// Name of the main div to replace
 	MainBodyName = "MainBody";
