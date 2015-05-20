@@ -75,12 +75,16 @@ function PostToPage(PostString,PageName,ElementID) {
 	// @param PageName - the page to send the post to
 	// @param ElementID - the Element to put the user message in
 
-	// Notify the user that the post is being executed
-	document.getElementById(ElementID).innerHTML = "Processing request...";
-
-	// Make the user message section visible if it isn't already
-	if ( document.getElementById(ElementID).style.display == "none" ) {
-		document.getElementById(ElementID).style.display = "inline";
+	// Check for an ElementID and put a message there if there is one
+	ElementID = ElementID || -1;
+	if ( ElementID != -1 ) {
+		// Notify the user that the post is being executed
+		document.getElementById(ElementID).innerHTML = "Processing request...";
+	
+		// Make the user message section visible if it isn't already
+		if ( document.getElementById(ElementID).style.display == "none" ) {
+			document.getElementById(ElementID).style.display = "inline";
+		}
 	}
 	
 	// Encode post string
@@ -102,12 +106,23 @@ function PostToPage(PostString,PageName,ElementID) {
 				// Reload page if success
 				location.reload();
 			} else {
-				// Show error if error
-				document.getElementById(ElementID).innerHTML = response;
+				if ( ElementID != -1 ) {
+					// Show error if error
+					document.getElementById(ElementID).innerHTML = response;
+				} else {
+					// Create alert window if there isn't an ElementID to work with
+					window.alert(response);
+				}
 			}
 		} else if ( xmlhttp.readyState == 4 ) {
 			// Handle unsuccessful response
-			document.getElementById(ElementID).innerHTML = "Error Submitting Data: Status code " + xmlhttp.status;
+			if ( ElementID != -1 ) {
+				// Put an error message in the ElementID
+				document.getElementById(ElementID).innerHTML = "Error Submitting Data: Status code " + xmlhttp.status;
+			} else {
+				// Alert window if no ElementID
+				window.alert("Error Submitting Data: Status code " + xmlhttp.status);
+			}
 		}
 	}
 
