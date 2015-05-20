@@ -52,7 +52,11 @@ window.onbeforeunload = function (e) {
 		var key;
 
 		for ( key in ChangeArrayGlobal ) {
-			message = message + document.getElementById(NameID + key).value + "\n";
+			if ( document.getElementById(NameID + key).type == "text" ) {
+				message = message + document.getElementById(NameID + key).value + "\n";
+			} else {
+				message = message + document.getElementById(NameID + key).innerText + "\n";
+			}
 		}
 
 		// Most browsers
