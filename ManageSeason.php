@@ -133,7 +133,6 @@ if ( !$SeasonQuery['Result'] ) {
 // Create header
 require_once 'header.inc';
 ?>
-<div class="container">
 <h3>Update, create, and delete seasons</h3>
 <div id="PostMessage" class="alert"></div>
 <table class="Table">
@@ -221,5 +220,12 @@ function DeleteSeason(SeasonID) {
 	PostToPage(PostString,"ManageSeason.php","PostMessage");
 }
 </script>
+<?php
+if ( !isset($_POST['LoadPage']) ) {
+?>
+</div>
 </body>
 </html>
+<?php
+}
+?>

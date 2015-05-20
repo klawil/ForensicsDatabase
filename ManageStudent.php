@@ -132,7 +132,6 @@ if ( !$StudentQuery['Result'] ) {
 // Create header
 require_once 'header.inc';
 ?>
-<div class="container">
 <h3>Update, create, and delete students</h3>
 <div id="PostMessage" class="alert"></div>
 <table class="Table">
@@ -219,5 +218,12 @@ function SubmitStudent(StudentID) {
 	PostToPage(PostString,"ManageStudent.php","PostMessage");
 }
 </script>
+<?php
+if ( !isset($_POST['LoadPage']) ) {
+?>
+</div>
 </body>
 </html>
+<?php
+}
+?>

@@ -148,7 +148,6 @@ input[type=date] {
 	-webkit-appearance: none;
 }
 </style>
-<div class="container">
 <h3>Update, create, and delete tournaments</h3>
 <div id="PostMessage" class="alert"></div>
 <table class="Table">
@@ -266,5 +265,12 @@ function SubmitTournament(TournamentID) {
 	PostToPage(PostString,"ManageTournament.php","PostMessage");
 }
 </script>
+<?php
+if ( !isset($_POST['LoadPage']) ) {
+?>
+</div>
 </body>
 </html>
+<?php
+}
+?>
