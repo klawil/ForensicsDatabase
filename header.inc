@@ -1,3 +1,6 @@
+<?php
+if ( !isset($_POST['LoadPage']) ) {
+?>
 <html>
 <head>
 <title><?php if ( isset($GLOBALS['PageName']) ) { echo $GLOBALS['PageName'] . ' | ';} ?> ForensicsDB.com</title>
@@ -10,7 +13,7 @@
 <script type="text/javascript" src="/js/CustomFunctions.js"></script>
 </head>
 <body>
-<h1 style="padding-left: 10px;"><?php if ( isset($GLOBALS['PageName']) ) { echo $GLOBALS['PageName']; } else { echo 'ForensicsDB.com'; } ?></h1>
+<h1 style="padding-left: 10px;" id="PageTitle"><?php if ( isset($GLOBALS['PageName']) ) { echo $GLOBALS['PageName']; } else { echo 'ForensicsDB.com'; } ?></h1>
 <nav class="navbar navbar-inverse">
 	<div class="container-fluid">
 		
@@ -30,16 +33,16 @@
 			<ul class="nav navbar-nav">
 				
 				<!-- Main navigation -->
-				<li><a href="/">Home</a></li>
-				<li><a href="/Results.php">Results</a></li>
+				<li><a onclick="CreatePage('/index.php','Home')">Home</a></li>
+				<li><a onclick="CreatePage('/Results.php','Results')">Results</a></li>
 
 				<!-- Summaries -->
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Summaries<span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
-						<li><a href="/SummaryStudent.php">Student Summary</a></li>
-						<li><a href="/SummaryTournament.php">Tournament Summary</a></li>
-						<li><a href="/SummaryTeam.php">Team Summary</a></li>
+						<li><a onclick="CreatePage('/SummaryStudent.php','Student Summary')">Student Summary</a></li>
+						<li><a onclick="CreatePage('/SummaryTournament.php','Tournament Summary')">Tournament Summary</a></li>
+						<li><a onclick="CreatePage('/SummaryTeam.php','Team Summary')">Team Summary</a></li>
 					</ul>
 				</li>
 
@@ -48,14 +51,14 @@
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Manage<span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
-						<li><a href="/ResultEnter.php">Enter Results</a></li>
-						<li><a href="/ResultEdit.php">Edit Results</a></li>
-						<li><a href="/ManageSeason.php">Manage Seasons</a></li>
-						<li><a href="/ManageStudent.php">Manage Students</a></li>
-						<li><a href="/ManageEvent.php">Manage Events</a></li>
-						<li><a href="/ManageTournament.php">Manage Tournaments</a></li>
+						<li><a onclick="CreatePage('/ResultEnter.php','Enter Results')">Enter Results</a></li>
+						<li><a onclick="CreatePage('/ResultEdit.php','Edit Results')">Edit Results</a></li>
+						<li><a onclick="CreatePage('/ManageSeason.php','Manage Seasons')">Manage Seasons</a></li>
+						<li><a onclick="CreatePage('/ManageStudent.php','Manage Students')">Manage Students</a></li>
+						<li><a onclick="CreatePage('/ManageEvent.php','Manage Events')">Manage Events</a></li>
+						<li><a onclick="CreatePage('/ManageTournament.php','Manage Tournaments')">Manage Tournaments</a></li>
 	<?php if ( $GLOBALS['UserData']['Email'] == $GLOBALS['DBData']['AdminEmail'] || $GLOBALS['UserName'] == 'admin' ) { ?>
-						<li><a href="/ManageUser.php">Manage Users</a></li>
+						<li><a onclick="CreatePage('/ManageUser.php','Manage Users')">Manage Users</a></li>
 	<?php } ?>
 					</ul>
 				</li>
@@ -127,3 +130,7 @@ function UserLogout() {
 	PostToPage(PString,"Login.php","LoginMessage");
 }
 </script>
+<div class="container" id="MainBody">
+<?php
+}
+?>
