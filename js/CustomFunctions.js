@@ -209,5 +209,8 @@ function SubmitChange(ID) {
 		PostData[CurrentRow["Name"]] = ReturnData;
 	}
 
-	window.alert(PostString);
+	// Post the data to the page and handle the response
+	$.post(PageLocation,PostData,function (data) {
+		window.alert(data);
+	},"text");
 }
