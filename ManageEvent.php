@@ -141,7 +141,7 @@ require_once 'header.inc';
 <div id="PostMessage" class="alert"></div>
 <table class="Table">
 <tr><th>Event Name</th><th>Abbreviation</th><th>Partner</th><th></th><th></th></tr>
-<tr>
+<tr id="New">
 	<td><span title="Name of the event"><input type="text" id="EventName" autofocus="autofocus"></span></td>
 	<td><span title="Abbreviation of the event"><input type="text" class="Abbr" id="EventAbbr"></span></td>
 	<td><span title="Is this a partner event?"><input type="checkbox" id="Partner"></span></td>
@@ -162,7 +162,7 @@ while ( $CurrentRow <= $NumRows ) {
 	$EventID = $EventData['EventID'];
 	
 	// Return data as HTML table?>
-<tr>
+<tr id="<?php echo $EventID; ?>">
 	<td><span title="Name of the event"><input type="text" id="EventName<?php echo $EventID; ?>" value="<?php echo $EventData['EventName']; ?>" onchange="GetChange(<?php echo $EventID; ?>)"></span></td>
 	<td><span title="Abbreviation of the event"><input type="text" class="Abbr" id="EventAbbr<?php echo $EventID; ?>" value="<?php echo $EventData['EventAbbr']; ?>" onchange="GetChange(<?php echo $EventID; ?>)"></span></td>
 	<td><span title="Is this a partner event?"><input type="checkbox" id="Partner<?php echo $EventID; ?>" onchange="GetChange(<?php echo $EventID; ?>)"<?php if ( $EventData['Partner'] == 1 ) { echo ' checked'; }?>></span></td>
@@ -186,6 +186,9 @@ var StoreInfo = {EventName: {Name: "EventName", ElementID: "EventName", IsID: fa
 
 // The name of the item that has the name of the row in it
 var NameID = "EventName";
+
+// The page name for posting purposes
+var PageLocation = "/ManageEvent.php";
 
 function SubmitEvent(EventID) {
 	// Set default EventID
