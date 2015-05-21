@@ -1,2 +1,4 @@
 ErrorDocument 404 /404.php
 ErrorDocument 403 /404.php
+#ExpiresByType text/css "now plus one month"
+#ExpiresByType text/javascript "now plus one month"
