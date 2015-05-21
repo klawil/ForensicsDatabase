@@ -4,10 +4,10 @@ if ( !isset($_POST['LoadPage']) ) {
 <html>
 <head>
 <title><?php if ( isset($GLOBALS['PageName']) ) { echo $GLOBALS['PageName'] . ' | ';} ?> ForensicsDB.com</title>
-<link rel="stylesheet" href="/css/bootstrap.css" />
+<link rel="stylesheet" href="/css/bootstrap.min.css" />
 <link rel="shortcut icon" type="image/png" href="/FavIcon.png" />
 <script src="/js/jquery.min.js"></script>
-<script src="/js/bootstrap.js"></script>
+<script src="/js/bootstrap.min.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script type="text/javascript" src="/js/CustomFunctions.js"></script>
