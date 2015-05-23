@@ -137,11 +137,16 @@ function PostToPage(PostString,PageName,ElementID) {
 function CreatePage(PageName,PageTitle) {
 	// Function to load a new page without reloading all the JS, etc
 	// @param PageName - the name of the page to load from
+	
+	// Create default PageTitle
+	PageTitle = PageTitle || -1;
 
-	// Replace the header, URL, and title
-	document.getElementById("PageTitle").innerHTML = PageTitle;
-	document.title = PageTitle;
-	window.history.pushState("Object",PageTitle,PageName);
+	// Replace the header, URL, and title if a page title was supplied
+	if ( PageTitle != -1 ) {
+		document.getElementById("PageTitle").innerHTML = PageTitle;
+		document.title = PageTitle;
+		window.history.pushState("Object",PageTitle,PageName);
+	}
 
 	// Name of the main div to replace
 	MainBodyName = "MainBody";
@@ -149,6 +154,7 @@ function CreatePage(PageName,PageTitle) {
 	// Create a loading icon in the page
 	document.getElementById(MainBodyName).innerHTML = "Loading...";
 
+	// Post to the page and load the response into the body div
 	$("#" + MainBodyName).load(PageName,{LoadPage:1});
 }
 
@@ -211,7 +217,7 @@ function SubmitChange(ID) {
 
 	// Post the data to the page and handle the response
 	$.post(PageLocation,PostData,function (data) {
-		window.alert(data);
+		CreatePage(PageLocation);
 	},"text");
 }
 
