@@ -166,7 +166,7 @@ while ( $CurrentRow <= $NumRows ) {
 	<td><span title="Name of the event"><input type="text" id="EventName<?php echo $EventID; ?>" value="<?php echo $EventData['EventName']; ?>" onchange="GetChange(<?php echo $EventID; ?>)"></span></td>
 	<td><span title="Abbreviation of the event"><input type="text" class="Abbr" id="EventAbbr<?php echo $EventID; ?>" value="<?php echo $EventData['EventAbbr']; ?>" onchange="GetChange(<?php echo $EventID; ?>)"></span></td>
 	<td><span title="Is this a partner event?"><input type="checkbox" id="Partner<?php echo $EventID; ?>" onchange="GetChange(<?php echo $EventID; ?>)"<?php if ( $EventData['Partner'] == 1 ) { echo ' checked'; }?>></span></td>
-	<td><span title="Delete this event"><input type="button" onclick="DeleteEvent(<?php echo $EventID; ?>)" value="Delete Event"></span></td>
+	<td><span title="Delete this event"><input type="button" onclick="DeleteID(<?php echo $EventID; ?>)" value="Delete Event"></span></td>
 	<td class="ChangeCell" id="ChangeCell<?php echo $EventID; ?>"><span title="Save changes to this event"><input type="button" value="Save Changes" onclick="SubmitChange(<?php echo $EventID; ?>)"></span></td>
 </tr>
 <?php
