@@ -214,3 +214,28 @@ function SubmitChange(ID) {
 		window.alert(data);
 	},"text");
 }
+
+function DeleteID (ID) {
+	// Make sure the ID is valid
+	ID = ID || -1;
+	if ( ID == -1 ) {
+		window.alert("You've tried to delete an invalid ID. Please try again or reload the page if the error persists.");
+		return;
+	}
+
+	// Get the name that corresponds to the ID
+	if ( document.getElementById(NameID + ID).type == "text" ) {
+		DeleteName = document.getElementById(NameID + ID).value;
+	} else {
+		DeleteName = document.getElementById(NameID + ID).innerText;
+	}
+
+	// Check if they are certain
+	if ( !window.confirm("DANGER DANGER!!\nThis will PERMANENTLY erase " + DeleteName + ".\n\nFOREVER\n\nDo you still want to do this?") ) {
+		return 0;
+	}
+
+	// Set up the post data
+	var PostData = { delete: 1,
+		ID: ID };
+}
