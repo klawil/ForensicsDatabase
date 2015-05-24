@@ -216,9 +216,9 @@ function SubmitChange(ID) {
 	}
 
 	// Post the data to the page and handle the response
-	$.post(PageLocation,PostData,function (data) {
+	$.post(PageLocation,PostData,function (data) { PostHandle (data); },/* {
 		CreatePage(PageLocation);
-	},"text");
+	},*/"text");
 }
 
 function DeleteID (ID) {
@@ -244,4 +244,15 @@ function DeleteID (ID) {
 	// Set up the post data
 	var PostData = { delete: 1,
 		ID: ID };
+	
+	// Post the data to the page and handle the response
+	$.post(PageLocation,PostData,function (data) { PostHandle (data); },"text");
+}
+
+function PostHandle (data) {
+	if ( data == "true" ) {
+		CreatePage(PageLocation);
+	} else {
+		window.alert(data);
+	}
 }
