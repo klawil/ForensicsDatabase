@@ -170,8 +170,16 @@ while ( $CurrentRow <= $NumRows ) {
 // Create array to check for changes
 var ChangeArray = ["SeasonName","StartYear"];
 
+// Create object to have the info pulled from
+var StoreInfo = {SeasonName: {Name: "SeasonName", ElementID: "SeasonName", IsID: false},
+	StartYear: {Name: "StartYear", ElementID: "StartYear", IsID: false},
+	SeasonID: {Name: "SeasonID", IsID: true}};
+
 // Name of the row name event
 var NameID = "SeasonName";
+
+// Page location
+var PageLocation = "/ManageSeason.php";
 
 function pad (str, max) {
   str = str.toString();
