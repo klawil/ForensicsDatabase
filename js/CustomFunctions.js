@@ -281,6 +281,12 @@ function DeleteID (ID) {
 function PostHandle (data,ID) {
 	if ( data == "true" ) {
 		delete ChangeArrayGlobal[ID];
+		// Set the global change variable
+		if ( Object.keys(ChangeArrayGlobal).length == 0 ) {
+			IsChangeGlobal = false;
+		} else {
+			IsChangeGlobal = true;
+		}
 		CreatePage(PageLocation);
 	} else {
 		window.alert(data);
