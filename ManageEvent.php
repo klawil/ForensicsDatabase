@@ -189,52 +189,6 @@ var NameID = "EventName";
 
 // The page name for posting purposes
 var PageLocation = "/ManageEvent.php";
-
-function SubmitEvent(EventID) {
-	// Set default EventID
-	EventID = EventID || -1;
-	
-	// Declare PostString
-	PostString = "";
-	
-	// Set Element Names
-	EventNameElement = "EventName";
-	EventAbbrElement = "EventAbbr";
-	PartnerElement = "Partner";
-	if ( EventID != -1 ) {
-		PostString = "EventID=" + EventID + "&";
-		EventNameElement = EventNameElement + EventID
-		EventAbbrElement = EventAbbrElement + EventID
-		PartnerElement = PartnerElement + EventID
-	}
-	
-	// Get PostString data
-	EventName = encodeURIComponent(document.getElementById(EventNameElement).value);
-	EventAbbr = encodeURIComponent(document.getElementById(EventAbbrElement).value);
-	Partner = 0;
-	if ( document.getElementById(PartnerElement).checked ) {
-		Partner = 1;
-	}
-	
-	// Create PostString
-	PostString = PostString + "EventName=" + EventName + "&EventAbbr=" + EventAbbr + "&Partner=" + Partner;
-	
-	// Execute Post
-	PostToPage(PostString,"ManageEvent.php","PostMessage");
-}
-
-function DeleteEvent(EventID) {
-	// Check if they are certain
-	if ( !window.confirm("DANGER DANGER!!\nThis will PERMANENTLY erase this event.\n\nFOREVER\n\nDo you still want to do this?") ) {
-		return 0;
-	}
-	
-	// Create PostString
-	PostString = "delete=1&EventID=" + EventID;
-	
-	// Execute Post
-	PostToPage(PostString,"ManageEvent.php","PostMessage");
-}
 </script>
 <?php
 if ( !isset($_POST['LoadPage']) ) {
