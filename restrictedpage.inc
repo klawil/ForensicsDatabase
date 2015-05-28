@@ -19,9 +19,11 @@ if ( $GLOBALS['CanUserEdit'] == 0 ) {
 	<h3>Please log in to continue</h3>
 	<div class="col-lg-4 col-lg-offset-4 text-center">
 		<div id="LoginMessageMain"></div>
-		<input type="text" id="UserNameMain" class="form-control" placeholder="Username">
-		<input type="password" id="PWordMain" class="form-control" placeholder="Password">
-		<button type="submit" onclick="LoginUserMain()" class="btn btn-default">Login</button>
+		<form>
+			<input type="text" id="UserNameMain" class="form-control" placeholder="Username">
+			<input type="password" id="PWordMain" class="form-control" placeholder="Password">
+			<button type="submit" onclick="LoginUserMain()" class="btn btn-default">Login</button>
+		</form>
 	</div>
 </div>
 <script>
