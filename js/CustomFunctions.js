@@ -2,6 +2,25 @@
 var IsChangeGlobal = false;
 var ChangeArrayGlobal = new Object();
 
+function ListChanges() {
+	// Lists all the changed areas on the page
+	// @return string - List of the names of changed elements with a \n between
+
+	// Declare variables
+	var key;
+	var ChangeNames = "";
+
+	for ( key in ChangeArrayGlobal ) {
+		if ( document.getElementById(NameID + key).type == "text" ) {
+			ChangeNames = ChangeNames + document.getElementById(NameID + key).value + "\n";
+		} else {
+			ChangeNames = ChangeNames + document.getElementById(NameID + key).innerText + "\n";
+		}
+	}
+
+	return ChangeNames;
+}
+
 function GetChange(ParseID) {
 	// Set flag to determine if change has occured
 	var IsChange = false;
@@ -49,20 +68,15 @@ window.onbeforeunload = function (e) {
 	if ( IsChangeGlobal ) {
 		var message = "There are unsaved changes on this page. The following items have been changed:\n\n";
 		var e = e || window.event;
-		var key;
-
-		for ( key in ChangeArrayGlobal ) {
-			if ( document.getElementById(NameID + key).type == "text" ) {
-				message = message + document.getElementById(NameID + key).value + "\n";
-			} else {
-				message = message + document.getElementById(NameID + key).innerText + "\n";
-			}
-		}
 
 		// Most browsers
 		if (e) {
 			e.returnValue = message;
 		}
+
+		// Get all of the changed names
+		ChangedNames = ListChanges();
+		message = message + ChangedNames;
 
 		// Safari
 		return message;
@@ -137,6 +151,17 @@ function PostToPage(PostString,PageName,ElementID) {
 function CreatePage(PageName,PageTitle) {
 	// Function to load a new page without reloading all the JS, etc
 	// @param PageName - the name of the page to load from
+
+	// Check for changes that have been made
+	if ( IsChangeGlobal ) {
+		// Create the confirm window message string
+		var ConfMessage = "There are unsaved changes on this page.\nNavigating away from this page will cause changes in the following areas to be lost:\n\n" + ListChanges();
+		
+		// Confirm loss of changes
+		if ( !window.confirm(ConfMessage) ) {
+			return 0;
+		}
+	}
 	
 	// Create default PageTitle
 	PageTitle = PageTitle || -1;
@@ -147,6 +172,10 @@ function CreatePage(PageName,PageTitle) {
 		document.title = PageTitle;
 		window.history.pushState("Object",PageTitle,PageName);
 	}
+
+	// Empty the change tracking object
+	IsChangeGlobal = false;
+	ChangeArrayGlobal = new Object();
 
 	// Name of the main div to replace
 	MainBodyName = "MainBody";
@@ -216,7 +245,7 @@ function SubmitChange(ID) {
 	}
 
 	// Post the data to the page and handle the response
-	$.post(PageLocation,PostData,function (data) { PostHandle (data); },/* {
+	$.post(PageLocation,PostData,function (data) { PostHandle (data,ID); },/* {
 		CreatePage(PageLocation);
 	},*/"text");
 }
@@ -249,8 +278,9 @@ function DeleteID (ID) {
 	$.post(PageLocation,PostData,function (data) { PostHandle (data); },"text");
 }
 
-function PostHandle (data) {
+function PostHandle (data,ID) {
 	if ( data == "true" ) {
+		delete ChangeArrayGlobal[ID];
 		CreatePage(PageLocation);
 	} else {
 		window.alert(data);
