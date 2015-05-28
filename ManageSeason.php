@@ -12,7 +12,7 @@ if ( isset($_POST['delete']) ) {
 		echo 'Season ID is required';
 		return 0;
 	}
-	$SeasonData['SeasonID'] = MySQLEscape($_POST['SeasonID'],$DBConn);
+	$SeasonData['SeasonID'] = MySQLEscape($_POST['ID'],$DBConn);
 	
 	// Check Array
 	$CheckArray = [['variable' => 'SeasonID','IsSet' => 1, 'Validate' => function($var,$DBConn){return IsID($DBConn,$var,'SeasonID');},'Error' => 'Season ID is invalid']];
@@ -140,7 +140,7 @@ require_once 'header.inc';
 <tr>
 	<td><span title="Name to assign to the season (i.e. 2014-2015)"><input type="text" id="SeasonName" autofocus="autofocus"></span></td>
 	<td><span title="First year of the season (i.e. 2014)"><input type="number" id="StartYear"></span></td>
-	<td><span title="Create this season"><input type="button" value="Create Season" onclick="SubmitSeason()"></span></td>
+	<td><span title="Create this season"><input type="button" value="Create Season" onclick="SubmitChange()"></span></td>
 	<td></td>
 </tr>
 <?php
@@ -157,8 +157,8 @@ while ( $CurrentRow <= $NumRows ) {
 <tr>
 	<td><span title="Name to assign to the season (i.e. 2014-2015)"><input type="text" id="SeasonName<?php echo $SeasonData['SeasonID']; ?>" value="<?php echo $SeasonData['SeasonName']; ?>" onchange="GetChange(<?php echo $SeasonData['SeasonID']; ?>)"></span></td>
 	<td><span title="First year of the season (i.e. 2014)"><input type="number" id="StartYear<?php echo $SeasonData['SeasonID']; ?>" value="<?php echo $SeasonData['StartYear']; ?>" onchange="GetChange(<?php echo $SeasonData['SeasonID']; ?>)"></span></td>
-	<td><span title="Delete this season"><input type="button" value="Delete Season" onclick="DeleteSeason(<?php echo $SeasonData['SeasonID']; ?>)" onchange="GetChange(<?php echo $SeasonData['SeasonID']; ?>)"></span></td>
-	<td><span title="Save changes to the season"><input type="button" value="Save Changes" onclick="SubmitSeason(<?php echo $SeasonData['SeasonID']; ?>)" onchange="GetChange(<?php echo $SeasonData['SeasonID']; ?>)"></span></td>
+	<td><span title="Delete this season"><input type="button" value="Delete Season" onclick="DeleteID(<?php echo $SeasonData['SeasonID']; ?>)" onchange="GetChange(<?php echo $SeasonData['SeasonID']; ?>)"></span></td>
+	<td><span title="Save changes to the season"><input type="button" value="Save Changes" onclick="SubmitChange(<?php echo $SeasonData['SeasonID']; ?>)" onchange="GetChange(<?php echo $SeasonData['SeasonID']; ?>)"></span></td>
 </tr>
 <?php
 	$CurrentRow++;
@@ -180,11 +180,6 @@ var NameID = "SeasonName";
 
 // Page location
 var PageLocation = "/ManageSeason.php";
-
-function pad (str, max) {
-  str = str.toString();
-  return str.length < max ? pad("0" + str, max) : str;
-}
 
 function SubmitSeason(SeasonID) {
 	// Set default SeasonID
