@@ -8,7 +8,7 @@ $DoQuery = false;
 // Handle event deletion
 if ( isset($_POST['delete']) ) {
 	// Set EventID
-	if ( !isset($_POST['EventID']) ) {
+	if ( !isset($_POST['ID']) ) {
 		echo 'Event ID is required';
 		return 0;
 	}
