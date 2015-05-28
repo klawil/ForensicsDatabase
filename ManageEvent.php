@@ -12,7 +12,7 @@ if ( isset($_POST['delete']) ) {
 		echo 'Event ID is required';
 		return 0;
 	}
-	$EventData['EventID'] = MySQLEscape($_POST['EventID'],$DBConn);
+	$EventData['EventID'] = MySQLEscape($_POST['ID'],$DBConn);
 	
 	// Validate ID
 	$CheckArray = [['variable' => 'EventID','IsSet' => 1, 'Validate' => function($var,$DBConn){return IsID($DBConn,$var,'EventID');},'Error' => 'Event ID is invalid']];

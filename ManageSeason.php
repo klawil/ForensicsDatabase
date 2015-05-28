@@ -8,7 +8,7 @@ $DoQuery = false;
 // Handle season deletion
 if ( isset($_POST['delete']) ) {
 	// Set SeasonID
-	if ( !isset($_POST['SeasonID']) ) {
+	if ( !isset($_POST['ID']) ) {
 		echo 'Season ID is required';
 		return 0;
 	}
