@@ -180,48 +180,6 @@ var NameID = "SeasonName";
 
 // Page location
 var PageLocation = "/ManageSeason.php";
-
-function SubmitSeason(SeasonID) {
-	// Set default SeasonID
-	SeasonID = SeasonID || -1;
-	
-	// Declare PostString
-	PostString = "";
-	
-	// Set Element Names
-	StartYearElement = "StartYear";
-	SeasonNameElement = "SeasonName";
-	if ( SeasonID != -1 ) {
-		StartYearElement = StartYearElement + SeasonID;
-		SeasonNameElement = SeasonNameElement + SeasonID;
-		PostString = "SeasonID=" + SeasonID + "&";
-	}
-	
-	// Get start year and add to PostString
-	StartYear = document.getElementById(StartYearElement).value;
-	PostString = PostString + "StartYear=" + StartYear + "&";
-	
-	// Get Season name and add to PostString
-	SeasonName = document.getElementById(SeasonNameElement).value;
-	SeasonName = encodeURIComponent(SeasonName);
-	PostString = PostString + "SeasonName=" + SeasonName;
-	
-	// Execute Post
-	PostToPage(PostString,"ManageSeason.php","PostMessage");
-}
-
-function DeleteSeason(SeasonID) {
-	// Check if they are certain
-	if ( !window.confirm("DANGER DANGER!!\nThis will PERMANENTLY erase this season.\n\nFOREVER\n\nDo you still want to do this?") ) {
-		return 0;
-	}
-	
-	// Create PostString
-	PostString = "delete=1&SeasonID=" + SeasonID;
-	
-	// Execute Post
-	PostToPage(PostString,"ManageSeason.php","PostMessage");
-}
 </script>
 <?php
 if ( !isset($_POST['LoadPage']) ) {
