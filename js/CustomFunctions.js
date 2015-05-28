@@ -195,7 +195,8 @@ function SubmitChange(ID) {
 	ID = ID || "";
 	
 	// Create the string to store the PostString in
-	PostData = new Object();
+	var PostData = new Object();
+	var ReturnData;
 
 	// Loop through the array that tells the function what information to gather
 	for ( Key in StoreInfo ) { //var Index = 0; Index < StoreInfo.length; Index++ ) {
@@ -215,7 +216,7 @@ function SubmitChange(ID) {
 			// Everything else
 			
 			// Set the Element to Check
-			ElementToCheck = document.getElementById(CurrentRow["ElementID"] + ID);
+			var ElementToCheck = document.getElementById(CurrentRow["ElementID"] + ID);
 
 			// Get the information
 			switch ( ElementToCheck.type ) {
@@ -230,6 +231,7 @@ function SubmitChange(ID) {
 					ReturnData = ElementToCheck.options[ElementToCheck.selectedIndex].value;
 					break;
 				case "text":
+				case "number":
 					ReturnData = ElementToCheck.value;
 					break;
 				default:
