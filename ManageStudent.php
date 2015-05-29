@@ -8,11 +8,11 @@ $DoQuery = false;
 // Handle student deletion
 if ( isset($_POST['delete']) ) {
 	// Set StudentID
-	if ( !isset($_POST['StudentID']) ) {
+	if ( !isset($_POST['ID']) ) {
 		echo 'Student ID is required';
 		return 0;
 	}
-	$StudentData['StudentID'] = MySQLEscape($_POST['StudentID'],$DBConn);
+	$StudentData['StudentID'] = MySQLEscape($_POST['ID'],$DBConn);
 	
 	// Validate ID
 	$CheckArray = [['variable' => 'StudentID','IsSet' => 1, 'Validate' => function($var,$DBConn){return IsID($DBConn,$var,'StudentID');},'Error' => 'Student ID is invalid']];
@@ -140,7 +140,7 @@ require_once 'header.inc';
 	<td><span title="Last Name of the student"><input type="text" id="LName" autofocus="autofocus"></span></td>
 	<td><span title="First Name of the student"><input type="text" id="FName"></span></td>
 	<td><span title="The novice season of the student"><?php echo CreateList($DBConn,'Seasons',NULL,NULL,'NoviceSeason'); ?></span></td>
-	<td><span title="Create the student"><input type="button" value="Create Student" onclick="SubmitStudent()"></span></td>
+	<td><span title="Create the student"><input type="button" value="Create Student" onclick="SubmitChange()"></span></td>
 	<td></td>
 </tr>
 <?php
@@ -158,8 +158,8 @@ while ( $CurrentRow <= $NumRows ) {
 	<td><span title="Last Name of the student"><input type="text" id="LName<?php echo $StudentData['StudentID']; ?>" value="<?php echo $StudentData['LName']; ?>" onchange="GetChange(<?php echo $StudentData['StudentID']; ?>)"></span></td>
 	<td><span title="First Name of the student"><input type="text" id="FName<?php echo $StudentData['StudentID']; ?>" value="<?php echo $StudentData['FName']; ?>" onchange="GetChange(<?php echo $StudentData['StudentID']; ?>)"></span></td>
 	<td><span title="The novice season of the student"><?php echo CreateList($DBConn,'Seasons',NULL,$StudentData['NoviceYear'],'NoviceSeason' . $StudentData['StudentID'],"GetChange(" . $StudentData['StudentID'] . ")"); ?></span></td>
-	<td><span title="Delete the student"><input type="button" value="Delete Student" onclick="DeleteStudent(<?php echo $StudentData['StudentID']; ?>)"></span></td>
-	<td><span title="Save changes to the student"><input type="button" value="Save Changes" onclick="SubmitStudent(<?php echo $StudentData['StudentID']; ?>)"></span></td>
+	<td><span title="Delete the student"><input type="button" value="Delete Student" onclick="DeleteID(<?php echo $StudentData['StudentID']; ?>)"></span></td>
+	<td><span title="Save changes to the student"><input type="button" value="Save Changes" onclick="SubmitChange(<?php echo $StudentData['StudentID']; ?>)"></span></td>
 </tr>
 <?php
 	$CurrentRow++;
@@ -173,6 +173,15 @@ var ChangeArray = ["LName","FName","NoviceSeason"];
 
 // The name of the item that has the name of the row in it
 var NameID = "LName";
+
+// Create object to have the info pulled from
+var StoreInfo = {LName: {Name: "LName", ElementID: "LName", IsID: false},
+	FName: {Name: "FName", ElementID: "FName", IsID: false},
+	NoviceYear: {Name: "NoviceYear", ElementID: "NoviceSeason", IsID: false},
+	StudentID: {Name: "StudentID", IsID: true}};
+
+// Page location
+var PageLocation = "/ManageStudent.php";
 
 function DeleteStudent(StudentID) {
 	// Check if they are certain
