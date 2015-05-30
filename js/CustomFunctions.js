@@ -232,6 +232,7 @@ function SubmitChange(ID) {
 					break;
 				case "text":
 				case "number":
+				case "date":
 					ReturnData = ElementToCheck.value;
 					break;
 				default:
