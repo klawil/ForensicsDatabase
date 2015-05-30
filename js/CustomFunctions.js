@@ -152,6 +152,9 @@ function CreatePage(PageName,PageTitle) {
 	// Function to load a new page without reloading all the JS, etc
 	// @param PageName - the name of the page to load from
 
+	// Hide the body div and show the loading spinner
+	HideContent();
+
 	// Check for changes that have been made
 	if ( IsChangeGlobal ) {
 		// Create the confirm window message string
@@ -184,7 +187,7 @@ function CreatePage(PageName,PageTitle) {
 	document.getElementById(MainBodyName).innerHTML = "Loading...";
 
 	// Post to the page and load the response into the body div
-	$("#" + MainBodyName).load(PageName,{LoadPage:1});
+	$("#" + MainBodyName).load(PageName,{LoadPage:1},function() { ShowContent(); });
 }
 
 function SubmitChange(ID) {
@@ -295,3 +298,19 @@ function PostHandle (data,ID) {
 		window.alert(data);
 	}
 }
+
+function ShowContent() {
+	// Function to hide the loading animation and show the primary page
+	$(".loader").hide(); // Hides the loading animation
+	$("#MainBody").show(); // Shows the primary div
+}
+
+function HideContent() {
+	// Function to show the loading animation and hide the primary page
+	$("#MainBody").hide(); // Hides the primary div
+	$(".loader").show(); // Shows the loading animation
+}
+
+$(document).ready(function() {
+	ShowContent();
+});
