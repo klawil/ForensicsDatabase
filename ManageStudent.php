@@ -182,50 +182,6 @@ var StoreInfo = {LName: {Name: "LName", ElementID: "LName", IsID: false},
 
 // Page location
 var PageLocation = "/ManageStudent.php";
-
-function DeleteStudent(StudentID) {
-	// Check if they are certain
-	if ( !window.confirm("DANGER DANGER!!\nThis will PERMANENTLY erase this student.\n\nFOREVER\n\nDo you still want to do this?") ) {
-		return 0;
-	}
-	
-	// Create PostString
-	PostString = "delete=1&StudentID=" + StudentID;
-	
-	// Execute Post
-	PostToPage(PostString,"ManageStudent.php","PostMessage");
-}
-
-function SubmitStudent(StudentID) {
-	// Set default StudentID
-	StudentID = StudentID || -1;
-	
-	// Declare PostString
-	PostString = "";
-	
-	// Set Element Names
-	LastNameElement = "LName";
-	FirstNameElement = "FName";
-	NoviceSeasonElement = "NoviceSeason";
-	if ( StudentID != -1 ) {
-		LastNameElement = LastNameElement + StudentID;
-		FirstNameElement = FirstNameElement + StudentID;
-		NoviceSeasonElement = NoviceSeasonElement + StudentID;
-		PostString = "StudentID=" + StudentID + "&";
-	}
-	
-	// Get name and add to PostString
-	FName = encodeURIComponent(document.getElementById(FirstNameElement).value);
-	LName = encodeURIComponent(document.getElementById(LastNameElement).value);
-	PostString = PostString + "FName=" + FName + "&LName=" + LName + "&";
-	
-	// Get Novice year and add to PostString
-	NoviceYear = document.getElementById(NoviceSeasonElement).options[document.getElementById(NoviceSeasonElement).selectedIndex].value;
-	PostString = PostString + "NoviceYear=" + NoviceYear;
-	
-	// Execute Post
-	PostToPage(PostString,"ManageStudent.php","PostMessage");
-}
 </script>
 <?php
 if ( !isset($_POST['LoadPage']) ) {
