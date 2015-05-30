@@ -8,11 +8,11 @@ $DoQuery = false;
 // Handle tournament deletion
 if ( isset($_POST['delete']) ) {
 	// Set TournamentID
-	if ( !isset($_POST['TournamentID']) ) {
+	if ( !isset($_POST['ID']) ) {
 		echo 'Tournament ID is required';
 		return 0;
 	}
-	$TournamentData['TournamentID'] = MySQLEscape($_POST['TournamentID'],$DBConn);
+	$TournamentData['TournamentID'] = MySQLEscape($_POST['ID'],$DBConn);
 	
 	// Validate ID
 	$CheckArray = [['variable' => 'TournamentID','IsSet' => 1, 'Validate' => function($var,$DBConn){return IsID($DBConn,$var,'TournamentID');},'Error' => 'Tournament ID is invalid']];
@@ -162,7 +162,7 @@ input[type=date] {
 	<td><span title="The first day of the tournament"><input type="date" id="StartDate" class="unstyled"></span></td>
 	<td><span title="The last day of the tournament"><input type="date" id="EndDate" class="unstyled"></span></td>
 	<td><span title="The season the tournament occured during"><?php echo CreateList($DBConn,'Seasons',NULL,NULL,'Season'); ?></span></td>
-	<td><span title="Create a tournament with the specified parameters"><input type="button" value="Create Tournament" onclick="SubmitTournament()"></span></td>
+	<td><span title="Create a tournament with the specified parameters"><input type="button" value="Create Tournament" onclick="SubmitChange()"></span></td>
 	<td></td>
 </tr>
 <?php
@@ -186,8 +186,8 @@ while ( $CurrentRow <= $NumRows ) {
 	<td><span title="The first day of the tournament"><input type="date" class="unstyled" id="StartDate<?php echo $TournamentID; ?>" value="<?php echo $TournamentData['StartDate']; ?>" onchange="GetChange(<?php echo $TournamentID; ?>)"></span></td>
 	<td><span title="The last day of the tournament"><input type="date" class="unstyled" id="EndDate<?php echo $TournamentID; ?>" value="<?php echo $TournamentData['EndDate']; ?>" onchange="GetChange(<?php echo $TournamentID; ?>)"></span></td>
 	<td><span title="The season the tournament occured during"><?php echo CreateList($DBConn,'Seasons',NULL,$TournamentData['Season'],'Season' . $TournamentID,"GetChange(" . $TournamentID .")"); ?></span></td>
-	<td><span title="Delete this tournament"><input type="button" value="Delete Tournament" onclick="DeleteTournament(<?php echo $TournamentID; ?>)"></span></td>
-	<td><span title="Save changes to this tournament"><input type="button" value="Save Changes" onclick="SubmitTournament(<?php echo $TournamentID; ?>)"></span></td>
+	<td><span title="Delete this tournament"><input type="button" value="Delete Tournament" onclick="DeleteID(<?php echo $TournamentID; ?>)"></span></td>
+	<td><span title="Save changes to this tournament"><input type="button" value="Save Changes" onclick="SubmitChange(<?php echo $TournamentID; ?>)"></span></td>
 </tr>
 <?php
 	$CurrentRow++;
@@ -202,68 +202,19 @@ var ChangeArray = ["TournamentName","NumRounds","NumJudges","NumElimRounds","Num
 // The name of the item that has the name of the row in it
 var NameID = "TournamentName";
 
-function DeleteTournament(TournamentID) {
-	// Check if they are certain
-	if ( !window.confirm("DANGER DANGER!!\nThis will PERMANENTLY erase this tournament.\n\nFOREVER\n\nDo you still want to do this?") ) {
-		return 0;
-	}
-	
-	// Create PostString
-	PostString = "delete=1&TournamentID=" + TournamentID;
-	
-	// Execute Post
-	PostToPage(PostString,"ManageTournament.php","PostMessage");
-}
+// Create object to have the info pulled from
+var StoreInfo = {TName: {Name: "TournamentName", ElementID: "TournamentName", IsID: false},
+	NumRounds: {Name: "NumRounds", ElementID: "NumRounds", IsID: false},
+	NumJudges: {Name: "NumJudges", ElementID: "NumJudges", IsID: false},
+	NumElimRounds: {Name: "NumElimRounds", ElementID: "NumElimRounds", IsID: false},
+	NumElimJudges: {Name: "NumElimJudges", ElementID: "NumElimJudges", IsID: false},
+	StartDate: {Name: "StartDate", ElementID: "StartDate", IsID: false},
+	EndDate: {Name: "EndDate", ElementID: "EndDate", IsID: false},
+	SeasonID: {Name: "Season", ElementID: "Season", IsID: false},
+	TournamentID: {Name: "TournamentID", IsID: true}};
 
-function SubmitTournament(TournamentID) {
-	// Set default TournamentID
-	TournamentID = TournamentID || -1;
-	
-	// Declare PostString
-	PostString = "";
-	
-	// Set Element Names
-	TournamentNameElement = "TournamentName";
-	NumRoundsElement = "NumRounds";
-	NumJudgesElement = "NumJudges";
-	NumElimRoundsElement = "NumElimRounds";
-	NumElimJudgesElement = "NumElimJudges";
-	StartDateElement = "StartDate";
-	EndDateElement = "EndDate";
-	SeasonElement = "Season";
-	if ( TournamentID != -1 ) {
-		TournamentNameElement = "TournamentName" + TournamentID;
-		NumRoundsElement = "NumRounds" + TournamentID;
-		NumJudgesElement = "NumJudges" + TournamentID;
-		NumElimRoundsElement = "NumElimRounds" + TournamentID;
-		NumElimJudgesElement = "NumElimJudges" + TournamentID;
-		StartDateElement = "StartDate" + TournamentID;
-		EndDateElement = "EndDate" + TournamentID;
-		SeasonElement = "Season" + TournamentID;
-		PostString = "TournamentID=" + TournamentID + "&";
-	}
-	
-	// declare function to get data
-	function GetData(Element) {
-		return encodeURIComponent(document.getElementById(Element).value);
-	}
-	
-	// Get data
-	TournamentName = GetData(TournamentNameElement);
-	NumRounds = GetData(NumRoundsElement);
-	NumJudges = GetData(NumJudgesElement);
-	NumElimRounds = GetData(NumElimRoundsElement);
-	NumElimJudges = GetData(NumElimJudgesElement);
-	StartDate = GetData(StartDateElement);
-	EndDate = GetData(EndDateElement);
-	Season = document.getElementById(SeasonElement).options[document.getElementById(SeasonElement).selectedIndex].value;
-	
-	// Create Post String
-	PostString = PostString + "TournamentName=" + TournamentName + "&NumRounds=" + NumRounds + "&NumJudges=" + NumJudges + "&NumElimRounds=" + NumElimRounds + "&NumElimJudges=" + NumElimJudges + "&StartDate=" + StartDate + "&EndDate=" + EndDate + "&Season=" + Season;
-	
-	// Execute Post
-	PostToPage(PostString,"ManageTournament.php","PostMessage");
-}
+// Page location
+var PageLocation = "/ManageTournament.php";
 </script>
 <?php
 if ( !isset($_POST['LoadPage']) ) {
