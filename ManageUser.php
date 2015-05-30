@@ -5,7 +5,8 @@ $GLOBALS['PageName'] = 'User Management';
 // Redirect away from page if not a site administrator
 if ( $GLOBALS['UserData']['Email'] != $GLOBALS['DBData']['AdminEmail'] && $GLOBALS['UserName'] != 'admin' ) {
 	if ( sizeof($_POST) == 0 ) {
-		header('Location: http://' . $_SERVER['SERVER_NAME'] . '/');
+		$GLOBALS['CanUserEdit'] = 0;
+		require_once 'restrictedpage.inc';
 	} else {
 		echo 'You must be the site administrator to access this feature';
 	}
@@ -134,7 +135,7 @@ while ( $CurrentRow <= $NumRows ) {
 	<td><span title="Email"><?php echo $UserData['Email'];?></span></td>
 	<td><span title="Admins can enter and modify results, tournaments, students, etc"><input type="checkbox" id="CanMod<?php echo $UName;?>" onchange="GetChange('<?php echo $UName; ?>')"<?php if ( $UserData['CanMod'] ) { echo ' checked';}?>></span></td>
 	<td><span title="Delete this user"><input type="button" value="Delete User" onclick="DeleteUser('<?php echo $UName;?>')"></span></td>
-	<td><span title="Save the admin status of this user"><input type="button" value="Save User" onclick="SubmitUser('<?php echo $UName;?>')"></span></td>
+	<td><span title="Save the admin status of this user"><input type="button" value="Save User" onclick="SubmitChange('<?php echo $UName;?>')"></span></td>
 </tr>
 <?php
 	$CurrentRow++;
@@ -147,6 +148,13 @@ var ChangeArray = ["CanMod"];
 
 // The name of the item that has the name of the row in it
 var NameID = "UName";
+
+// Create object to have the info pulled from
+var StoreInfo = {CanMod: {Name: "CanMod", ElementID: "CanMod", IsID: false},
+	UserName: {Name: "UName", IsID: true}};
+
+// Page location
+var PageLocation = "/ManageUser.php";
 
 function SubmitUser(UName) {
 	// Set Element Name
